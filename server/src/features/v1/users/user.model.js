@@ -22,6 +22,10 @@ const schema = mongoose.Schema(
       type: String,
       required: true,
     },
+    age: {
+      type: Number,
+      required: true,
+    },
     biography: {
       type: String,
     },
