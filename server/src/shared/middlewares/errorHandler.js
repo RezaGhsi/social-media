@@ -9,7 +9,7 @@ const errorHandler = async (err, req, res, next) => {
 
     return res
       .status(409)
-      .json({ status: 409, success: false, error: messages[field] });
+      .json({ status: 409, success: false, message: messages[field] });
   }
 
   const statusCode = err.statusCode || 500;
@@ -19,7 +19,7 @@ const errorHandler = async (err, req, res, next) => {
   return res.status(statusCode).json({
     status: statusCode,
     success: false,
-    error: message,
+    message: message,
     data: err.data,
   });
 };

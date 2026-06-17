@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const schema = mongoose.Schema(
+const schema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -45,6 +45,10 @@ const schema = mongoose.Schema(
       enum: ["USER", "ADMIN"],
       default: "USER",
       uppercase: true,
+    },
+    refreshToken: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true },
