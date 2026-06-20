@@ -8,7 +8,7 @@ const RegisterPage = () => {
       </section>
 
       <img
-        src="/public/images/bg.jpg"
+        src="/images/bg.jpg"
         alt="bg-image"
         className="w-[50%] "
         loading="lazy"

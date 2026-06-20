@@ -5,7 +5,12 @@ exports.registerSchema = z
     email: z.email(),
     username: z.string().min(4).max(32),
     name: z.string().min(3).max(48),
-    age: z.number().min(7).max(120),
+    age: z.refine((value) => Number(value), {
+      error: "Invalid input: expected number",
+      path: "age",
+    }),
+    // .min(7)
+    // .max(120),
     biography: z.string().min(1).max(100).optional(),
     password: z.string().min(8).max(32),
     confirmPassword: z.string().min(8).max(32),
@@ -13,5 +18,12 @@ exports.registerSchema = z
   .refine((body) => body.confirmPassword === body.password, {
     error: "Confirm Password is Not Equal to Password",
     path: ["confirmPassword"],
+  })
+  .strict();
+
+exports.loginSchema = z
+  .object({
+    identifier: z.string().min(4).max(32),
+    password: z.string().min(8).max(32),
   })
   .strict();

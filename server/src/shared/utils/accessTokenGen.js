@@ -6,7 +6,7 @@ const accessTokenGen = (id) => {
   const token = jwt.sign({ id: id.toString() }, accessTokenSecret, {
     expiresIn: "1m",
   });
-  return `Bearer ${token}`;
+  return token;
 };
 
 module.exports = accessTokenGen;

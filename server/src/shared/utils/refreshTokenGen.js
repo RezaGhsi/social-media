@@ -7,7 +7,7 @@ const refreshTokenGen = (id) => {
   const token = jwt.sign({ id: id.toString() }, refreshTokenSecret, {
     expiresIn: `${refreshTokenExpire}d`,
   });
-  return `Bearer ${token}`;
+  return token;
 };
 
 module.exports = refreshTokenGen;

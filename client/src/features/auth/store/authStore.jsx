@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
     const checkSession = async () => {
       dispatch({ type: "AUTH_LOADING" });
       try {
-        const data = await getMeRequest();
+        const { data } = await getMeRequest();
         dispatch({ type: "AUTH_SUCCESS", payload: data.user });
       } catch (error) {
         dispatch({ type: "AUTH_FAILURE", payload: null });

@@ -1,13 +1,15 @@
 const cors = require("cors");
 
-const allowedOrigins = process.env.AlloedOrigins;
+const allowedOrigins = process.env.AllowedOrigins;
 
 const corsMiddleware = cors({
   origin: (origin, callBack) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callBack(null, true);
     } else {
-      callBack(new Error("CORS: این origin مجاز نیست"));
+      callBack(
+        new Error(`CORS: Request is Not Allowed From This Origin ${origin}`),
+      );
     }
   },
   credentials: true,

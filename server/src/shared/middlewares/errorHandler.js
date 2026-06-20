@@ -1,10 +1,12 @@
+const { JsonWebTokenError } = require("jsonwebtoken");
+
 const errorHandler = async (err, req, res, next) => {
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
 
     const messages = {
-      email: "This Email is Already Registered",
-      username: "This Username is Already Registered",
+      email: "This Email is Already Registered LogIn Please",
+      username: "This Username is Already Registered LogIn Please",
     };
 
     return res

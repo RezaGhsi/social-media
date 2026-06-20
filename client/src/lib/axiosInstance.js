@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.BASE_URL;
+const baseURL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL,
@@ -32,7 +32,10 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (originalRequest.url?.includes("/auth/refresh")) {
+    if (
+      originalRequest.url?.includes("/auth/refresh") ||
+      originalRequest.url?.includes("/auth/login")
+    ) {
       return Promise.reject(error);
     }
 
