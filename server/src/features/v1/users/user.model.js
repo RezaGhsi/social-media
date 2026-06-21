@@ -50,6 +50,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    avatarUrl: {
+      type: String,
+      default: "images/default-profile-pic.jpg",
+    },
   },
   { timestamps: true },
 );

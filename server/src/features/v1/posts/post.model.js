@@ -2,17 +2,14 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema(
   {
-    media: {
-      path: {
-        type: String,
-        required: true,
-      },
-      filename: {
-        type: String,
-        required: true,
-      },
+    mediaUrl: {
+      required: true,
+      type: String,
     },
     description: String,
+    hashtags: {
+      type: [String],
+    },
     user: {
       type: mongoose.Types.ObjectId,
       ref: "User",

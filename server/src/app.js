@@ -8,6 +8,7 @@ const errorHandler = require("./shared/middlewares/errorHandler");
 
 //* Routes Import
 const authRouter = require("./features/v1/auth/auth.routes");
+const userRouter = require("./features/v1/users/user.routes");
 
 const app = express();
 
@@ -24,13 +25,11 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 //* Static Routes
-app.use(
-  "/images",
-  express.static(path.join(__dirname, "..", "public", "images")),
-);
+app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 //* Routes
 app.use("/v1/auth", authRouter);
+app.use("/v1/user", userRouter);
 
 //* 404 Handler
 app.use((req, res) => {

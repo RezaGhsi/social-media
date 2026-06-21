@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 let isRefreshing = false;
-let failedQueue = false;
+let failedQueue = [];
 
 const processQueue = (error) => {
   failedQueue.forEach(({ resolve, reject }) => {
@@ -50,14 +50,13 @@ api.interceptors.response.use(
 
     try {
       await api.post("/auth/refresh");
-
       processQueue(null);
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
 
       window.dispatchEvent(new CustomEvent("auth:logout"));
-      return new Promise.reject(refreshError);
+      return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
     }

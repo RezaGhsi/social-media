@@ -58,7 +58,7 @@ export const useAuth = () => {
   return {
     user: state.user,
     isAuthenticated: state.status === "authenticated",
-    isInitializing: state.state === "idle" || state.status === "loading",
+    isInitializing: state.status === "idle" || state.status === "loading",
 
     register,
     login,

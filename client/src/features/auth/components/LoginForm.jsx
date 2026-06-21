@@ -126,11 +126,11 @@ const RegisterForm = () => {
             </span>
           </div>
         </div>
-        <div class="flex items-center gap-1 mt-4 text-sm">
+        <div className="flex items-center gap-1 mt-4 text-sm">
           <span>Forget the password?</span>
           <span>
             <strong>
-              <a href="#" class="text-indigo-700">
+              <a href="#" className="text-indigo-700">
                 recovery
               </a>
             </strong>

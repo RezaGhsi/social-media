@@ -38,6 +38,9 @@ export function AuthProvider({ children }) {
         const { data } = await getMeRequest();
         dispatch({ type: "AUTH_SUCCESS", payload: data.user });
       } catch (error) {
+        console.error(error);
+        console.log("error status:", error?.response?.status);
+        console.log("error message:", error?.message);
         dispatch({ type: "AUTH_FAILURE", payload: null });
       }
     };

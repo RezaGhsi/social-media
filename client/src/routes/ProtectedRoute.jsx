@@ -7,12 +7,7 @@ const ProtectedRoute = () => {
   const location = useLocation();
 
   if (isInitializing || loading) {
-    return (
-      <div>
-        <span>Loading ...</span>
-        <FaSpinner />
-      </div>
-    );
+    return;
   }
 
   return isAuthenticated ? (
