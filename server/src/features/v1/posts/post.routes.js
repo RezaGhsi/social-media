@@ -10,6 +10,6 @@ const router = require("express").Router();
 
 router
   .route("/upload")
-  .post(verifyToken, validate(postUploadSchema), uploadPost, uploadOne);
+  .post(verifyToken, uploadPost, validate(postUploadSchema), uploadOne);
 
 module.exports = router;

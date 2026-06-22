@@ -7,7 +7,7 @@ exports.uploadOne = async (req, res, next) => {
     if (!req.file) throw new AppError("No File Uploaded");
 
     const { hashtags, description } = req.body;
-    const hashtagsList = hashtags.replaceAll(" ", "").split(",");
+    const hashtagsList = hashtags?.replaceAll(" ", "")?.split(",");
 
     const mediaUrl = `uploads/posts/${req.file.filename}`;
 
@@ -20,6 +20,7 @@ exports.uploadOne = async (req, res, next) => {
 
     return successResponse(res, 201, {
       message: "New Post Uploaded Successfully",
+      post,
     });
   } catch (error) {
     next(error);

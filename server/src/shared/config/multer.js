@@ -66,5 +66,5 @@ exports.uploadAvatar = multer({
 exports.uploadPost = multer({
   storage: createStorage("uploads/posts"),
   fileFilter: postFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 50 * 1024 * 1024 },
 }).single("media");
