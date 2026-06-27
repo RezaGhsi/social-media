@@ -55,11 +55,21 @@ const schema = new mongoose.Schema(
       default: "images/default-profile-pic.jpg",
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    // toJSON: { virtuals: true },
+    // toObject: { virtuals: true },
+  },
 );
 
 schema.pre("save", function () {
   this.password = bcrypt.hashSync(this.password);
+});
+
+schema.virtual("posts", {
+  foreignField: "user",
+  localField: "_id",
+  ref: "Post",
 });
 
 const model = mongoose.model("User", schema);

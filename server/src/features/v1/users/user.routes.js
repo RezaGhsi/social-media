@@ -4,10 +4,15 @@ const {
 const {
   verifyToken,
 } = require("./../../../shared/middlewares/auth.middleware");
-const { userAvatarUpload } = require("./user.controller");
+const { userAvatarUpload, getUserPage } = require("./user.controller");
+const validate = require("./../../../shared/middlewares/validate.middleware");
+const { getUserProfileSchema } = require("./user.validator");
 
 const router = require("express").Router();
 
 router.route("/uploadAvatar").put(verifyToken, uploadAvatar, userAvatarUpload);
+router
+  .route("/:username")
+  .get(verifyToken, validate(getUserProfileSchema, "params"), getUserPage);
 
 module.exports = router;
