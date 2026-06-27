@@ -11,7 +11,10 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ index: true, element: <HomePage /> }],
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "/:username", element: <ProfilePage /> },
+    ],
   },
 
   // routes with no layout
@@ -22,7 +25,7 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
-      { path: "/:username", element: <ProfilePage /> },
+      // { path: "/:username", element: <ProfilePage /> },
       { path: "/:username/upload", element: <UploadPage /> },
     ],
   },
