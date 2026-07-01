@@ -20,14 +20,6 @@ exports.getUserPage = async (req, res, next) => {
 
     if (!userProfile) throw new AppError("Page not Found", 404);
 
-    const isFollowing = await isFollowingUser(
-      req.user.username,
-      userProfile.username,
-    );
-
-    if (!isFollowing && userProfile.isPrivate)
-      throw new AppError("This Account is Private", 403);
-
     const followersCount = await followModel.countDocuments({
       following: userProfile.username,
     });
@@ -35,11 +27,21 @@ exports.getUserPage = async (req, res, next) => {
       follower: userProfile.username,
     });
 
+    const isFollowing = await isFollowingUser(
+      req.user.username,
+      userProfile.username,
+    );
+
     Object.assign(userProfile, {
       followersCount,
       followingsCount,
       isFollowing,
     });
+
+    if (!isFollowing && userProfile.isPrivate) {
+      userProfile.posts = undefined;
+      throw new AppError("This Account is Private", 403, { user: userProfile });
+    }
 
     return successResponse(res, 200, {
       user: userProfile,

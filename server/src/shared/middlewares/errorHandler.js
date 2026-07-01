@@ -22,7 +22,7 @@ const errorHandler = async (err, req, res, next) => {
     status: statusCode,
     success: false,
     message: message,
-    data: err.data,
+    ...err.data,
   });
 };
 

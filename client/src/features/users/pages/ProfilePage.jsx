@@ -1,19 +1,21 @@
-import { useState } from "react";
-import { BsGlobe2 } from "react-icons/bs";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+
+import { BsGlobe2 } from "react-icons/bs";
+import { FaSpinner } from "react-icons/fa";
+import { PiCameraSlashBold } from "react-icons/pi";
+import { MdLockOutline } from "react-icons/md";
+
 import UserSuggestCard from "../components/UserSuggestCard";
 import Hashtag from "../../../shared/components/Hashtag";
 import PostsFilterNav from "../components/PostsFilterNav";
 import VerificationError from "../../../shared/components/VerificationError";
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
 import PostCard from "../components/PostCard";
-import { useEffect } from "react";
+
 import { useAuth } from "../../auth/hooks/useAuth";
 import { getUserProfile, followUser, unFollowUser } from "../api/userApi";
-import NotFound from "../../../pages/NotFound";
-import { FaSpinner } from "react-icons/fa";
-import { PiCameraSlashBold } from "react-icons/pi";
-import { toast } from "sonner";
 
 const ProfilePage = () => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
@@ -34,6 +36,7 @@ const ProfilePage = () => {
         setIsFollowing(data.user.isFollowing);
       } catch (error) {
         setError(error);
+        setUserPageInfo(error.response.data.user);
       } finally {
         setLoading(false);
       }
@@ -41,7 +44,7 @@ const ProfilePage = () => {
     getUser(username);
   }, []);
 
-  const handleFollow = (e) => {
+  const handleFollow = () => {
     const followRequest = async (username) => {
       try {
         const { data } = await followUser(username);
@@ -143,6 +146,15 @@ const ProfilePage = () => {
           </section>
           <PostsFilterNav />
 
+          {error?.status === 403 && (
+            <div className="flex flex-col w-full justify-center items-center h-96 rounded-lg">
+              <MdLockOutline className="text-7xl text-neutral-800 mb-4" />
+              <h4 className="text-4xl font-Poppins-Bold text-neutral-800">
+                This Page is Private
+              </h4>
+            </div>
+          )}
+
           {!loading && userPageInfo?.posts?.length < 1 ? (
             <div className="flex flex-col w-full justify-center items-center h-96 rounded-lg">
               <PiCameraSlashBold className="text-7xl text-neutral-800" />
@@ -152,7 +164,7 @@ const ProfilePage = () => {
             </div>
           ) : (
             !loading &&
-            userPageInfo.posts.map((post, i) => (
+            userPageInfo.posts?.map((post, i) => (
               <PostCard avatar={userPageInfo.avatarUrl} key={i} post={post} />
             ))
           )}
