@@ -157,11 +157,13 @@ const UploadPage = () => {
                   Split the hashtags with comma ( , )
                 </span>
               </div>
-              {!user?.isVerified && <VerificationError />}
+
+              {/* {!user?.isVerified && <VerificationError />} */}
+
               <div className="mt-4 flex items-center justify-end">
                 <button
                   type="submit"
-                  disabled={!user.isVerified}
+                  // disabled={!user.isVerified}
                   className="bg-indigo-800 text-white text-xl p-4 rounded-lg mt-1 cursor-pointer transition-all active:bg-indigo-600 disabled:bg-gray-600 disabled:text-neutral-300 disabled:cursor-not-allowed "
                 >
                   {uploading ? "Uploading..." : "Upload post"}

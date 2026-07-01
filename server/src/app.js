@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -10,12 +11,14 @@ const errorHandler = require("./shared/middlewares/errorHandler");
 const authRouter = require("./features/v1/auth/auth.routes");
 const userRouter = require("./features/v1/users/user.routes");
 const postRouter = require("./features/v1/posts/post.routes");
+const followRouter = require("./features/v1/follow/follow.routes");
 
 const app = express();
 
 //* Security
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(corsMiddleware);
+// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 //* Parser
 app.use(express.json({ limit: "50mb" }));
@@ -32,6 +35,7 @@ app.use("/", express.static(path.join(__dirname, "..", "public")));
 app.use("/v1/auth", authRouter);
 app.use("/v1/user", userRouter);
 app.use("/v1/post", postRouter);
+app.use("/v1/follow", followRouter);
 
 //* 404 Handler
 app.use((req, res) => {

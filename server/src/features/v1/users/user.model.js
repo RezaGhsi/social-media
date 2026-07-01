@@ -72,6 +72,18 @@ schema.virtual("posts", {
   ref: "Post",
 });
 
+schema.virtual("followers", {
+  foreignField: "following",
+  localField: "username",
+  ref: "Follow",
+});
+
+schema.virtual("followings", {
+  foreignField: "follower",
+  localField: "username",
+  ref: "Follow",
+});
+
 const model = mongoose.model("User", schema);
 
 module.exports = model;

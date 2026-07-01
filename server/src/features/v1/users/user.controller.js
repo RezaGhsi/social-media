@@ -1,4 +1,5 @@
 const userModel = require("./user.model");
+const followModel = require("./../follow/follow.model");
 const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { removeOldAvatar, isFollowingUser } = require("./user.service");
@@ -7,25 +8,42 @@ exports.getUserPage = async (req, res, next) => {
   try {
     const { username } = req.params;
 
+    // if (username === req.user.username) {
+    //   return successResponse(res, 200, { user: req.user });
+    // }
+
     const userProfile = await userModel
       .findOne({ username })
       .populate("posts")
-      .select("-role -password -isVerified -refreshToken")
+      .select("-role -password -refreshToken")
       .lean();
 
     if (!userProfile) throw new AppError("Page not Found", 404);
-    if (!userProfile.isPrivate) {
-      return successResponse(res, 200, { userProfile });
-    }
 
     const isFollowing = await isFollowingUser(
       req.user.username,
       userProfile.username,
     );
 
-    if (!isFollowing) throw new AppError("This Account is Private", 403);
+    if (!isFollowing && userProfile.isPrivate)
+      throw new AppError("This Account is Private", 403);
 
-    return successResponse(res, 200, { userProfile });
+    const followersCount = await followModel.countDocuments({
+      following: userProfile.username,
+    });
+    const followingsCount = await followModel.countDocuments({
+      follower: userProfile.username,
+    });
+
+    Object.assign(userProfile, {
+      followersCount,
+      followingsCount,
+      isFollowing,
+    });
+
+    return successResponse(res, 200, {
+      user: userProfile,
+    });
   } catch (error) {
     next(error);
   }

@@ -6,15 +6,13 @@ import RootLayout from "../shared/components/layout/RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import ProfilePage from "./../features/users/pages/ProfilePage";
 import UploadPage from "../features/posts/pages/UploadPage";
+import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: "/:username", element: <ProfilePage /> },
-    ],
+    children: [{ index: true, element: <HomePage /> }],
   },
 
   // routes with no layout
@@ -25,8 +23,16 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
-      // { path: "/:username", element: <ProfilePage /> },
-      { path: "/:username/upload", element: <UploadPage /> },
+      {
+        path: "/:username",
+        element: (
+          <RootLayout>
+            <ProfilePage />
+          </RootLayout>
+        ),
+      },
+      { path: "/upload", element: <UploadPage /> },
     ],
   },
+  { path: "/*", element: <NotFound /> },
 ]);

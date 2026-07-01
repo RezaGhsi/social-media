@@ -1,7 +1,6 @@
 import { MdVerified } from "react-icons/md";
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
 const UserSuggestCard = ({ imageSrc, name, username, isVerified = false }) => {
-  console.log(imageSrc);
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center">
