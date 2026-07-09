@@ -33,7 +33,7 @@ const Header = () => {
           <div className="flex gap-6 items-center">
             <a
               className="create-button px-8 py-3 text-white font-Poppins-Medium rounded-3xl bg-indigo-600"
-              href="#"
+              href="/upload"
             >
               Create
             </a>

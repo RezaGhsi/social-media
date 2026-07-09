@@ -7,15 +7,18 @@ import { FaSpinner } from "react-icons/fa";
 import { PiCameraSlashBold } from "react-icons/pi";
 import { MdLockOutline } from "react-icons/md";
 
-import UserSuggestCard from "../components/UserSuggestCard";
+import UserCard from "../components/UserCard";
 import Hashtag from "../../../shared/components/Hashtag";
 import PostsFilterNav from "../components/PostsFilterNav";
 import VerificationError from "../../../shared/components/VerificationError";
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
 import PostCard from "../components/PostCard";
+import NotFound from "../../../pages/NotFound";
 
 import { useAuth } from "../../auth/hooks/useAuth";
 import { getUserProfile, followUser, unFollowUser } from "../api/userApi";
+import FollowingsModal from "../components/FollowingsModal";
+import FollowersModal from "../components/FollowersModal";
 
 const ProfilePage = () => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
@@ -24,8 +27,12 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [isFollowingsModalOpen, setIsFollowingsModalOpen] = useState(false);
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
 
   const { user } = useAuth();
+
   const { username } = useParams();
 
   useEffect(() => {
@@ -67,9 +74,12 @@ const ProfilePage = () => {
         toast.error(error.response.data.message);
       }
     };
-    console.log(isFollowing);
+    setFollowLoading(true);
     isFollowing ? unFollowRequest(username) : followRequest(username);
+    setFollowLoading(false);
   };
+
+  if (error) return <NotFound />;
 
   return (
     <div className="w-[dvw] h-auto flex  justify-center bg-gray-500/15 pt-8 px-10 ">
@@ -117,19 +127,32 @@ const ProfilePage = () => {
                     <span className="font-Poppins-Medium text-2xl">
                       {!loading && userPageInfo.followersCount}
                     </span>
-                    <span className=" text-xl">Followers</span>
+                    <button
+                      onClick={() => setIsFollowersModalOpen(true)}
+                      className=" text-xl cursor-pointer"
+                      disabled={!loading && !userPageInfo.followersCount}
+                    >
+                      Followers
+                    </button>
                   </div>
                   <div>
                     <span className="font-Poppins-Medium text-2xl">
                       {!loading && userPageInfo.followingsCount}
                     </span>
-                    <span className=" text-xl">Following</span>
+                    <button
+                      onClick={() => setIsFollowingsModalOpen(true)}
+                      className=" text-xl cursor-pointer"
+                      disabled={!loading && !userPageInfo.followingsCount}
+                    >
+                      Followings
+                    </button>
                   </div>
                 </div>
               </div>
               <div className="flex *:border-2  *:p-3 *:px-5 *:rounded-full *:hover:cursor-pointer mr-4 items-center font-Poppins-SemiBold">
                 {user.username !== userPageInfo.username ? (
                   <FollowUnfollowBtn
+                    disabled={followLoading}
                     handleFollow={handleFollow}
                     isFollowed={isFollowing}
                   />
@@ -173,19 +196,19 @@ const ProfilePage = () => {
       <aside className="flex flex-col w-[28dvw] *:mb-4 *:bg-white *:p-3 ">
         <div className="flex flex-col rounded-lg w-full">
           <h3 className="font-Poppins-Medium text-xl mb-5">People to follow</h3>
-          <UserSuggestCard
+          <UserCard
             imageSrc="images/rad_front.jpg"
             name={"Mr.Saeedi rad"}
             username={"rad_front"}
             isVerified
           />
-          <UserSuggestCard
+          <UserCard
             imageSrc="images/cristiano.png"
             name={"Mr.Saeedi rad"}
             username={"rad_front"}
             isVerified
           />
-          <UserSuggestCard
+          <UserCard
             imageSrc="images/jadi.jpg"
             name={"Mr.Saeedi rad"}
             username={"rad_front"}
@@ -214,6 +237,14 @@ const ProfilePage = () => {
           </div>
         </div>
       </aside>
+      <FollowingsModal
+        isOpen={isFollowingsModalOpen}
+        onClose={setIsFollowingsModalOpen}
+      />
+      <FollowersModal
+        isOpen={isFollowersModalOpen}
+        onClose={setIsFollowersModalOpen}
+      />
     </div>
   );
 };

@@ -4,7 +4,12 @@ const {
 const {
   verifyToken,
 } = require("./../../../shared/middlewares/auth.middleware");
-const { userAvatarUpload, getUserPage } = require("./user.controller");
+const {
+  userAvatarUpload,
+  getUserPage,
+  getFollowings,
+  getFollowers,
+} = require("./user.controller");
 const validate = require("./../../../shared/middlewares/validate.middleware");
 const { getUserProfileSchema } = require("./user.validator");
 
@@ -14,5 +19,8 @@ router.route("/uploadAvatar").put(verifyToken, uploadAvatar, userAvatarUpload);
 router
   .route("/:username")
   .get(verifyToken, validate(getUserProfileSchema, "params"), getUserPage);
+
+router.route("/:username/followings").get(getFollowings);
+router.route("/:username/followers").get(getFollowers);
 
 module.exports = router;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaRegHeart, FaRegCommentDots, FaHeart } from "react-icons/fa";
 import { MdOutlineShare } from "react-icons/md";
 
-const PostCard = ({ post, key, avatar }) => {
+const PostCard = ({ post, avatar }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   const [liked, setLiked] = useState(false);
@@ -10,7 +10,7 @@ const PostCard = ({ post, key, avatar }) => {
     liked ? setLiked(false) : setLiked(true);
   };
   return (
-    <div key={key} className="flex w-full relative rounded-lg p-3 pt-4">
+    <div className="flex w-full relative rounded-lg p-3 pt-4">
       <img
         src={`${baseURL}/${avatar}`}
         alt="Profile pic"

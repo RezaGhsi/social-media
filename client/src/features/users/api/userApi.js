@@ -8,3 +8,9 @@ export const followUser = async (username) =>
 
 export const unFollowUser = async (username) =>
   await api.delete(`/follow/${username}`);
+
+export const getUserFollowings = async (username) =>
+  await api.get(`/user/${username}/followings`);
+
+export const getUserFollowers = async (username) =>
+  await api.get(`/user/${username}/followers`);

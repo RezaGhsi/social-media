@@ -72,3 +72,42 @@ exports.userAvatarUpload = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getFollowings = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+
+    const followings = await followModel
+      .find({ follower: username })
+      .select("following")
+      .populate("followingUser", "username name avatarUrl")
+      .limit(20)
+      .lean();
+
+    const followingList = [];
+    followings.forEach((follow) => followingList.push(follow.followingUser[0]));
+
+    successResponse(res, 200, { followings: followingList });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getFollowers = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+
+    const followers = await followModel
+      .find({ following: username })
+      .select("follower")
+      .populate("followerUser", "username name avatarUrl")
+      .lean();
+
+    const followerList = [];
+    followers.forEach((follow) => followerList.push(follow.followerUser[0]));
+
+    successResponse(res, 200, { followers: followerList });
+  } catch (error) {
+    next(error);
+  }
+};
