@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth";
-import { FaSpinner } from "react-icons/fa";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isInitializing, loading } = useAuth();

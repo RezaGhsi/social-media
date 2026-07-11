@@ -79,7 +79,7 @@ const ProfilePage = () => {
     setFollowLoading(false);
   };
 
-  if (error) return <NotFound />;
+  if (error?.response.status === 404) return <NotFound />;
 
   return (
     <div className="w-[dvw] h-auto flex  justify-center bg-gray-500/15 pt-8 px-10 ">
@@ -130,7 +130,10 @@ const ProfilePage = () => {
                     <button
                       onClick={() => setIsFollowersModalOpen(true)}
                       className=" text-xl cursor-pointer"
-                      disabled={!loading && !userPageInfo.followersCount}
+                      disabled={
+                        (!loading && !userPageInfo.followersCount) ||
+                        (!isFollowing && userPageInfo.isPrivate)
+                      }
                     >
                       Followers
                     </button>
@@ -142,7 +145,10 @@ const ProfilePage = () => {
                     <button
                       onClick={() => setIsFollowingsModalOpen(true)}
                       className=" text-xl cursor-pointer"
-                      disabled={!loading && !userPageInfo.followingsCount}
+                      disabled={
+                        (!loading && !userPageInfo.followingsCount) ||
+                        (!isFollowing && userPageInfo.isPrivate)
+                      }
                     >
                       Followings
                     </button>
@@ -157,9 +163,12 @@ const ProfilePage = () => {
                     isFollowed={isFollowing}
                   />
                 ) : (
-                  <button className="border-purple-900 text-purple-800 mr-3 ">
+                  <a
+                    href={`/manage`}
+                    className="border-purple-900 text-purple-800 mr-3 "
+                  >
                     Manage
-                  </button>
+                  </a>
                 )}
               </div>
             </div>
@@ -169,7 +178,7 @@ const ProfilePage = () => {
           </section>
           <PostsFilterNav />
 
-          {error?.status === 403 && (
+          {!isFollowing && userPageInfo.isPrivate && (
             <div className="flex flex-col w-full justify-center items-center h-96 rounded-lg">
               <MdLockOutline className="text-7xl text-neutral-800 mb-4" />
               <h4 className="text-4xl font-Poppins-Bold text-neutral-800">
@@ -196,24 +205,9 @@ const ProfilePage = () => {
       <aside className="flex flex-col w-[28dvw] *:mb-4 *:bg-white *:p-3 ">
         <div className="flex flex-col rounded-lg w-full">
           <h3 className="font-Poppins-Medium text-xl mb-5">People to follow</h3>
-          <UserCard
-            imageSrc="images/rad_front.jpg"
-            name={"Mr.Saeedi rad"}
-            username={"rad_front"}
-            isVerified
-          />
-          <UserCard
-            imageSrc="images/cristiano.png"
-            name={"Mr.Saeedi rad"}
-            username={"rad_front"}
-            isVerified
-          />
-          <UserCard
-            imageSrc="images/jadi.jpg"
-            name={"Mr.Saeedi rad"}
-            username={"rad_front"}
-            isVerified
-          />
+          <UserCard name={"Mr.Saeedi rad"} username={"rad_front"} isVerified />
+          <UserCard name={"Mr.Saeedi rad"} username={"rad_front"} isVerified />
+          <UserCard name={"Mr.Saeedi rad"} username={"rad_front"} isVerified />
         </div>
         <div className="flex flex-col rounded-lg w-full">
           <h3 className="font-Poppins-Medium text-xl mb-5">Trending now</h3>

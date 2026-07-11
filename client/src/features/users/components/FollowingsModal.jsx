@@ -13,8 +13,6 @@ const FollowingsModal = ({ isOpen, onClose }) => {
 
   const isFirstRender = useRef(true);
 
-  const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
-
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -48,7 +46,7 @@ const FollowingsModal = ({ isOpen, onClose }) => {
                 <UserCard
                   name={user.name}
                   username={user.username}
-                  imageSrc={`${baseURL}/${user.avatarUrl}`}
+                  avatarUrl={user.avatarUrl}
                   key={i}
                 />
               );

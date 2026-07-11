@@ -1,7 +1,11 @@
+import { useAuth } from "../../../features/auth/hooks/useAuth";
+
 const Header = () => {
+  const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
+
+  const { user, isAuthenticated, loading } = useAuth();
   return (
     <div>
-      {" "}
       <header>
         <nav className="w-full flex justify-between p-6">
           <div>
@@ -30,24 +34,28 @@ const Header = () => {
               className="bg-transparent ml-2 outline-0 placeholder:font-Poppins-SemiBold placeholder:text-neutral-700 px-8 w-full h-full "
             />
           </div>
-          <div className="flex gap-6 items-center">
+          <div className="flex items-center">
             <a
-              className="create-button px-8 py-3 text-white font-Poppins-Medium rounded-3xl bg-indigo-600"
+              className="mr-6 px-8 py-3 text-white font-Poppins-Medium rounded-3xl bg-indigo-600"
               href="/upload"
             >
               Create
             </a>
-            <div className="w-12 h-12 overflow-hidden rounded-full">
-              <button
-                id="profileButton"
+            <div className="w-12 h-12 rounded-full">
+              <a
+                href={`/${user.username}`}
                 className="w-full h-full bg-transparent border-none"
               >
-                <img
-                  src="/images/profile-8.jpg"
-                  className="object-cover"
-                  alt="profile cover"
-                />
-              </button>
+                {!loading && isAuthenticated ? (
+                  <img
+                    src={`${baseURL}/${user.avatarUrl || "images/default-profile-pic.png"}`}
+                    className="object-cover w-full h-full rounded-full"
+                    alt="profile cover"
+                  />
+                ) : (
+                  <img />
+                )}
+              </a>
             </div>
           </div>
         </nav>

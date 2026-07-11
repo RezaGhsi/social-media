@@ -14,7 +14,7 @@ exports.getUserPage = async (req, res, next) => {
 
     const userProfile = await userModel
       .findOne({ username })
-      .populate("posts")
+      .populate({ path: "posts", options: { sort: { createdAt: -1 } } })
       .select("-role -password -refreshToken")
       .lean();
 
