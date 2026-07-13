@@ -27,7 +27,6 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followLoading, setFollowLoading] = useState(false);
   const [isFollowingsModalOpen, setIsFollowingsModalOpen] = useState(false);
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
 
@@ -50,34 +49,6 @@ const ProfilePage = () => {
     };
     getUser(username);
   }, []);
-
-  const handleFollow = () => {
-    const followRequest = async (username) => {
-      try {
-        const { data } = await followUser(username);
-        setIsFollowing(true);
-        toast.success(data.message, {
-          style: { background: "green", color: "white" },
-        });
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    };
-    const unFollowRequest = async (username) => {
-      try {
-        const { data } = await unFollowUser(username);
-        setIsFollowing(false);
-        toast.success(data.message, {
-          style: { background: "green", color: "white" },
-        });
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    };
-    setFollowLoading(true);
-    isFollowing ? unFollowRequest(username) : followRequest(username);
-    setFollowLoading(false);
-  };
 
   if (error?.response.status === 404) return <NotFound />;
 
@@ -158,9 +129,9 @@ const ProfilePage = () => {
               <div className="flex *:border-2  *:p-3 *:px-5 *:rounded-full *:hover:cursor-pointer mr-4 items-center font-Poppins-SemiBold">
                 {user.username !== userPageInfo.username ? (
                   <FollowUnfollowBtn
-                    disabled={followLoading}
-                    handleFollow={handleFollow}
-                    isFollowed={isFollowing}
+                    setIsFollowing={setIsFollowing}
+                    isFollowing={isFollowing}
+                    username={username}
                   />
                 ) : (
                   <a

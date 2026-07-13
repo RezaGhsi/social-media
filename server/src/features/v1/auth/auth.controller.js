@@ -11,6 +11,7 @@ const {
 } = require("./auth.service");
 const checkPassword = require("./../../../shared/utils/checkPassword");
 const refreshTokenGen = require("../../../shared/utils/refreshTokenGen");
+const { getFollowingsList } = require("../follow/follow.service");
 
 exports.register = async (req, res, next) => {
   try {

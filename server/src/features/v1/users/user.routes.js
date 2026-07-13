@@ -20,7 +20,7 @@ router
   .route("/:username")
   .get(verifyToken, validate(getUserProfileSchema, "params"), getUserPage);
 
-router.route("/:username/followings").get(getFollowings);
-router.route("/:username/followers").get(getFollowers);
+router.route("/:username/followings").get(verifyToken, getFollowings);
+router.route("/:username/followers").get(verifyToken, getFollowers);
 
 module.exports = router;

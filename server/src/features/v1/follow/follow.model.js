@@ -17,12 +17,14 @@ schema.virtual("followingUser", {
   ref: "User",
   localField: "following",
   foreignField: "username",
+  justOne: true,
 });
 
 schema.virtual("followerUser", {
   ref: "User",
   localField: "follower",
   foreignField: "username",
+  justOne: true,
 });
 
 const model = mongoose.model("Follow", schema);

@@ -28,6 +28,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
         setLoading(false);
       }
     };
+
     if (isOpen) getFollowers(username);
   }, [isOpen]);
 
@@ -45,6 +46,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
                   name={user.name}
                   username={user.username}
                   avatarUrl={user.avatarUrl}
+                  isFollowing={user.isFollowing}
                   key={i}
                 />
               );

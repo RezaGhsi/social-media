@@ -3,6 +3,10 @@ const followModel = require("./../follow/follow.model");
 const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { removeOldAvatar, isFollowingUser } = require("./user.service");
+const {
+  getFollowingsList,
+  getFollowersList,
+} = require("../follow/follow.service");
 
 exports.getUserPage = async (req, res, next) => {
   try {
@@ -77,17 +81,9 @@ exports.getFollowings = async (req, res, next) => {
   try {
     const { username } = req.params;
 
-    const followings = await followModel
-      .find({ follower: username })
-      .select("following")
-      .populate("followingUser", "username name avatarUrl")
-      .limit(20)
-      .lean();
+    const followings = await getFollowingsList(req.user.username, username);
 
-    const followingList = [];
-    followings.forEach((follow) => followingList.push(follow.followingUser[0]));
-
-    successResponse(res, 200, { followings: followingList });
+    successResponse(res, 200, { followings });
   } catch (error) {
     next(error);
   }
@@ -97,16 +93,9 @@ exports.getFollowers = async (req, res, next) => {
   try {
     const { username } = req.params;
 
-    const followers = await followModel
-      .find({ following: username })
-      .select("follower")
-      .populate("followerUser", "username name avatarUrl")
-      .lean();
+    const followers = await getFollowersList(req.user.username, username);
 
-    const followerList = [];
-    followers.forEach((follow) => followerList.push(follow.followerUser[0]));
-
-    successResponse(res, 200, { followers: followerList });
+    successResponse(res, 200, { followers });
   } catch (error) {
     next(error);
   }

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import { getUserFollowings } from "../api/userApi";
 import UserCard from "./UserCard";
+import { useAuth } from "./../../auth/hooks/useAuth";
 
 const FollowingsModal = ({ isOpen, onClose }) => {
   const { username } = useParams();
@@ -47,6 +48,7 @@ const FollowingsModal = ({ isOpen, onClose }) => {
                   name={user.name}
                   username={user.username}
                   avatarUrl={user.avatarUrl}
+                  isFollowing={user.isFollowing}
                   key={i}
                 />
               );

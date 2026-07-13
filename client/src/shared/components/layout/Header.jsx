@@ -42,20 +42,18 @@ const Header = () => {
               Create
             </a>
             <div className="w-12 h-12 rounded-full">
-              <a
-                href={`/${user.username}`}
-                className="w-full h-full bg-transparent border-none"
-              >
-                {!loading && isAuthenticated ? (
+              {!loading && isAuthenticated && (
+                <a
+                  href={`/${user.username}`}
+                  className="w-full h-full bg-transparent border-none"
+                >
                   <img
                     src={`${baseURL}/${user.avatarUrl || "images/default-profile-pic.png"}`}
                     className="object-cover w-full h-full rounded-full"
                     alt="profile cover"
                   />
-                ) : (
-                  <img />
-                )}
-              </a>
+                </a>
+              )}
             </div>
           </div>
         </nav>

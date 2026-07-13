@@ -8,6 +8,10 @@ exports.followUser = async (req, res, next) => {
   try {
     const { username } = req.params;
 
+    if (username === req.user.username) {
+      throw new AppError("You Can't Follow Yourself");
+    }
+
     const isUserExists = await checkUserExits(username);
 
     const isFollowing = await checkAlreadyFollowing(

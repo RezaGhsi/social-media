@@ -1,6 +1,12 @@
 import { MdVerified } from "react-icons/md";
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
-const UserCard = ({ avatarUrl, name, username, isVerified = false }) => {
+const UserCard = ({
+  avatarUrl,
+  name,
+  username,
+  isFollowing,
+  isVerified = false,
+}) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   return (
@@ -30,7 +36,7 @@ const UserCard = ({ avatarUrl, name, username, isVerified = false }) => {
           </a>
         </div>
       </div>
-      <FollowUnfollowBtn />
+      <FollowUnfollowBtn isFollowing={isFollowing} username={username} />
     </div>
   );
 };
