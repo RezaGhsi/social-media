@@ -3,16 +3,14 @@ import { useAuth } from "../../../features/auth/hooks/useAuth";
 const Header = () => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, isInitializing } = useAuth();
+
   return (
     <div>
       <header>
-        <nav className="w-full flex justify-between p-6">
+        <nav className="w-full flex items-center justify-between p-6 h-22">
           <div>
-            <a
-              className="font-Poppins-Black text-2xl text-[#0f172a]"
-              href="/index.html"
-            >
+            <a className="font-Poppins-Black text-2xl text-[#0f172a]" href="/">
               nekoSocial
             </a>
           </div>
@@ -34,28 +32,42 @@ const Header = () => {
               className="bg-transparent ml-2 outline-0 placeholder:font-Poppins-SemiBold placeholder:text-neutral-700 px-8 w-full h-full "
             />
           </div>
-          <div className="flex items-center">
-            <a
-              className="mr-6 px-8 py-3 text-white font-Poppins-Medium rounded-3xl bg-indigo-600"
-              href="/upload"
-            >
-              Create
-            </a>
-            <div className="w-12 h-12 rounded-full">
-              {!loading && isAuthenticated && (
-                <a
-                  href={`/${user.username}`}
-                  className="w-full h-full bg-transparent border-none"
-                >
-                  <img
-                    src={`${baseURL}/${user.avatarUrl || "images/default-profile-pic.png"}`}
-                    className="object-cover w-full h-full rounded-full"
-                    alt="profile cover"
-                  />
-                </a>
+          {!isInitializing ? (
+            <div>
+              {!isAuthenticated ? (
+                <div className="flex justify-end gap-4 w-50 items-center *:bg-indigo-600 text-white *:p-3 *:px-4 *:rounded-md">
+                  <a href="/login">login</a>
+                  <a href="/register">sign up</a>
+                </div>
+              ) : (
+                <div className="flex items-center w-50">
+                  <a
+                    className="mr-6 px-8 py-3 text-white font-Poppins-Medium rounded-3xl bg-indigo-600"
+                    href="/upload"
+                  >
+                    Create
+                  </a>
+                  <div className="w-12 h-12 rounded-full">
+                    <a
+                      href={`/${user.username}`}
+                      className="w-full h-full bg-transparent border-none"
+                    >
+                      <img
+                        src={`${baseURL}/${user.avatarUrl || "images/default-profile-pic.png"}`}
+                        className="object-cover w-full h-full rounded-full"
+                        alt="profile cover"
+                      />
+                    </a>
+                  </div>
+                </div>
               )}
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-end w-50 h-full gap-4 *:bg-neutral-300 *:rounded-sm transition-colors animate-pulse">
+              <div className="w-16"></div>
+              <div className="w-24"></div>
+            </div>
+          )}
         </nav>
       </header>
     </div>
