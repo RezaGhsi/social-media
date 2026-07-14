@@ -53,7 +53,7 @@ const ProfilePage = () => {
   if (error?.response.status === 404) return <NotFound />;
 
   return (
-    <div className="w-[dvw] h-auto flex  justify-center bg-gray-500/15 pt-8 px-10 ">
+    <div className="w-[dvw] h-auto flex  justify-center bg-[#E6ECF6] pt-8 px-10 scroll-smooth ">
       {loading ? (
         <FaSpinner />
       ) : (

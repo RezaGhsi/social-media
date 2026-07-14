@@ -7,6 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import ProfilePage from "./../features/users/pages/ProfilePage";
 import UploadPage from "../features/posts/pages/UploadPage";
 import NotFound from "../pages/NotFound";
+import ProfileUpdate from "../features/users/pages/ProfileUpdate";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             <ProfilePage />
           </RootLayout>
         ),
+      },
+      {
+        path: "/manage",
+        element: <ProfileUpdate />,
       },
       { path: "/upload", element: <UploadPage /> },
     ],

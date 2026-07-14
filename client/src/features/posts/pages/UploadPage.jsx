@@ -68,11 +68,11 @@ const UploadPage = () => {
   };
 
   return (
-    <div>
+    <>
       <Header />
 
-      <form onSubmit={handleSubmit}>
-        <main className="flex h-[88dvh] bg-[#6060db] w-full justify-center items-center ">
+      <form className="fixed w-dvw " onSubmit={handleSubmit}>
+        <main className="flex h-dvh bg-[#6060db] w-full justify-center items-center ">
           <section className="flex w-[95dvw] bg-white rounded-xl shadow-[12px] p-16 justify-between items-center gap-6 ">
             <div className="h-full w-[50%] ml-8 ">
               <h3 className="text-5xl text-indigo-600 font-Poppins-SemiBold ">
@@ -173,7 +173,7 @@ const UploadPage = () => {
           </section>
         </main>
       </form>
-    </div>
+    </>
   );
 };
 export default UploadPage;

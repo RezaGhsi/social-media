@@ -6,7 +6,7 @@ const Header = () => {
   const { user, isAuthenticated, isInitializing } = useAuth();
 
   return (
-    <div>
+    <>
       <header>
         <nav className="w-full flex items-center justify-between p-6 h-22">
           <div>
@@ -70,7 +70,7 @@ const Header = () => {
           )}
         </nav>
       </header>
-    </div>
+    </>
   );
 };
 
