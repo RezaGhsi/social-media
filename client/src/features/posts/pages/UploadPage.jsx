@@ -68,32 +68,29 @@ const UploadPage = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col h-dvh">
       <Header />
 
-      <form className="fixed w-dvw " onSubmit={handleSubmit}>
-        <main className="flex h-dvh bg-[#6060db] w-full justify-center items-center ">
-          <section className="flex w-[95dvw] bg-white rounded-xl shadow-[12px] p-16 justify-between items-center gap-6 ">
+      <form className="flex-1" onSubmit={handleSubmit}>
+        <main className="flex bg-[#6060db] p-10 w-full h-full justify-center items-center ">
+          <section className="flex w-[95dvw] bg-white rounded-xl shadow-[12px] p-16 py-20 justify-between items-center gap-6 ">
             <div className="h-full w-[50%] ml-8 ">
               <h3 className="text-5xl text-indigo-600 font-Poppins-SemiBold ">
                 File upload
               </h3>
 
-              <div
-                id="file-upload-box"
-                className="mt-5 w-[80%] h-120 relative bg-[#cecefd] text-indigo-800 border-2 border-dashed border-indigo-800 rounded-2xl flex flex-col justify-center items-center "
-              >
-                <span className="mt-12">
+              <div className="mt-5 w-[80%] relative bg-[#cecefd] text-indigo-800 border-2 border-dashed border-indigo-800 rounded-2xl flex flex-col justify-center items-center ">
+                <span className="mt-12 flex justify-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="w-32 h-32"
+                    className="w-[50%] h-[50%]"
                   >
                     <path d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" />
                   </svg>
                 </span>
-                <div className="upload-file-txt">
+                <div>
                   <p className="text-3xl font-Poppins-Medium mt-10">
                     {file?.name || "Upload a file"}
                   </p>
@@ -173,7 +170,7 @@ const UploadPage = () => {
           </section>
         </main>
       </form>
-    </>
+    </div>
   );
 };
 export default UploadPage;

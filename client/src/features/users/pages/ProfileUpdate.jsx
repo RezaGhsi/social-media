@@ -1,34 +1,76 @@
 import { HiOutlinePencil } from "react-icons/hi2";
 import InfoInput from "../components/InfoInput";
 import { useState } from "react";
+import { useAuth } from "../../auth/hooks/useAuth";
+import AvatarImg from "../components/AvatarImg";
+import { updateUserAvatar, updateUserInfo } from "../api/userApi";
+import { toast } from "sonner";
 ("./../components/InfoInput");
 
 const ProfileUpdate = () => {
+  const { user } = useAuth();
+
   const [form, setForm] = useState({
     name: "",
     username: "",
     email: "",
-    birthDate: "",
-    address: "",
+    birthDate: user.birthDate?.split("T")[0] || "",
+    info: "",
     city: "",
     postalCode: "",
     country: "",
   });
+  console.log(user.birthDate);
 
-  const user = {};
+  const [submitDisabled, setSubmitDisabled] = useState(false);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handlePfpChange = (e) => {
+    const avatarFormData = new FormData();
+    avatarFormData.append("avatar", e.target.files[0]);
+
+    const uploadAvatar = async (avatarFormData) => {
+      try {
+        const { data } = await updateUserAvatar(avatarFormData);
+        toast.success(data.message, {
+          style: { background: "green", color: "white" },
+        });
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    };
+    uploadAvatar(avatarFormData);
+  };
+
+  const handleSubmit = () => {
+    const updateInfo = async (info) => {
+      try {
+        Object.keys(info).forEach((key) =>
+          !info[key] ? (info[key] = undefined) : "",
+        );
+
+        const { data } = await updateUserInfo(info);
+        toast.success(data.message, {
+          style: { background: "green", color: "white" },
+        });
+      } catch (error) {
+        toast.error(error.response?.data?.message);
+      }
+    };
+    updateInfo(form);
+  };
+
   return (
-    <div className="w-dvw h-dvh flex flex-col items-center justify-center bg-[#E6ECF6] transition-color ">
-      <div class="flex justify-start w-[70dvw] mb-3 font-Poppins-SemiBold text-indigo-700 text-xl">
+    <div className="w-full min-h-dvh flex flex-col items-center justify-center bg-[#E6ECF6] transition-colors ">
+      <div className="flex justify-start w-[70dvw] mb-3 font-Poppins-SemiBold text-indigo-700 text-xl mt-10">
         <a href="/">Back to home </a>
       </div>
 
-      <section className="bg-white w-[70dvw] rounded-lg p-4 shadow-2xl shadow-black/15 ">
-        <header class="flex mt-5 ml-4 gap-6 font-Poppins-SemiBold *:pb-3 *:px-3 *:cursor-pointer">
+      <section className="bg-white w-[70dvw] m-10 mt-0 rounded-lg p-4 pb-14 shadow-2xl shadow-black/15 ">
+        <header className="flex mt-5 ml-4 gap-6 font-Poppins-SemiBold *:pb-3 *:px-3 *:cursor-pointer">
           <button className="border-b-3 text-purple-800">Edit profile</button>
           <button>Preferences</button>
           <button>Security</button>
@@ -39,13 +81,15 @@ const ProfileUpdate = () => {
         <main className="relative flex h-[75%] gap-6 ml-4">
           <section className="">
             <div className="w-36 h-36 rounded-full overflow-hidden">
-              <img
-                src="/public/images/profile-3.jpg"
-                alt="Profile"
-                className="object-cover relative"
-              />
+              <AvatarImg avatarUrl={user.avatarUrl} />
             </div>
-            <div className="absolute  bg-blue-600 w-9 h-9 rounded-full flex justify-center items-center left-27 top-27 cursor-pointer hover:bg-blue-500 active:bg-blue-700">
+            <div className="absolute bg-blue-600 w-9 h-9 rounded-full flex justify-center items-center left-27 top-27 hover:bg-blue-500 active:bg-blue-700">
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.webp,.png"
+                className="absolute opacity-0 w-full h-full rounded-full"
+                onChange={handlePfpChange}
+              />
               <HiOutlinePencil className="text-white text-xl" />
             </div>
           </section>
@@ -79,14 +123,14 @@ const ProfileUpdate = () => {
                 placeholder={user?.email || "email"}
               />
 
-              <InfoInput
+              {/* <InfoInput
                 name={"password"}
                 label={"Password"}
                 type={"password"}
                 value={form.password}
                 handleChange={handleChange}
                 placeholder={user?.password || "password"}
-              />
+              /> */}
 
               <InfoInput
                 name={"birthDate"}
@@ -103,7 +147,7 @@ const ProfileUpdate = () => {
                 type={"country"}
                 value={form.country}
                 handleChange={handleChange}
-                placeholder={user?.country || "country"}
+                placeholder={user?.address?.country || "country"}
               />
 
               <InfoInput
@@ -112,16 +156,16 @@ const ProfileUpdate = () => {
                 type={"city"}
                 value={form.city}
                 handleChange={handleChange}
-                placeholder={user?.city || "city"}
+                placeholder={user?.address?.city || "city"}
               />
 
               <InfoInput
-                name={"address"}
+                name={"info"}
                 label={"Present Address"}
                 type={"address"}
                 value={form.address}
                 handleChange={handleChange}
-                placeholder={user?.address || "address"}
+                placeholder={user?.address?.info || "address"}
               />
 
               <InfoInput
@@ -130,13 +174,15 @@ const ProfileUpdate = () => {
                 type={"text"}
                 value={form.postalCode}
                 handleChange={handleChange}
-                placeholder={user?.postalCode || "postalCode"}
+                placeholder={user?.address?.postalCode || "postalCode"}
               />
             </section>
 
-            <div class="flex justify-end mt-4 mr-28">
+            <div className="flex justify-end mr-28">
               <button
                 type="submit"
+                onClick={handleSubmit}
+                disabled={submitDisabled}
                 className="bg-blue-700 text-white px-4 py-3 rounded-lg cursor-pointer hover:bg-blue-600 active:bg-blue-900"
               >
                 Save changes

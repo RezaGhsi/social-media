@@ -6,9 +6,15 @@ const checkDir = (dir) => {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 };
 
-const ALLOWED_AVATAR_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const ALLOWED_AVATAR_MIME_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 const ALLOWED_POST_MIME_TYPES = [
   "image/jpeg",
+  "image/png",
   "image/png",
   "image/webp",
   "image/gif",

@@ -26,6 +26,9 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    birthDate: {
+      type: Date,
+    },
     biography: {
       type: String,
     },
@@ -53,6 +56,12 @@ const schema = new mongoose.Schema(
     avatarUrl: {
       type: String,
       default: "images/default-profile-pic.jpg",
+    },
+    address: {
+      country: String,
+      city: String,
+      info: String,
+      postalCode: Number,
     },
   },
   {

@@ -9,6 +9,7 @@ exports.registerSchema = z
       error: "Invalid input: expected number",
       path: "age",
     }),
+    birthDate: z.date().optional(),
     // .min(7)
     // .max(120),
     biography: z.string().min(1).max(100).optional(),

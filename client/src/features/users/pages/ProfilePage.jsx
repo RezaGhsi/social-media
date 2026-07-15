@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "sonner";
 
 import { BsGlobe2 } from "react-icons/bs";
 import { FaSpinner } from "react-icons/fa";
@@ -16,7 +15,7 @@ import PostCard from "../components/PostCard";
 import NotFound from "../../../pages/NotFound";
 
 import { useAuth } from "../../auth/hooks/useAuth";
-import { getUserProfile, followUser, unFollowUser } from "../api/userApi";
+import { getUserProfile } from "../api/userApi";
 import FollowingsModal from "../components/FollowingsModal";
 import FollowersModal from "../components/FollowersModal";
 import AvatarImg from "../components/AvatarImg";

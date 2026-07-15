@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const InfoInput = ({
   value,
   handleChange,
@@ -25,6 +23,7 @@ const InfoInput = ({
           type={type}
           placeholder={placeholder}
           onChange={handleChange}
+          autoComplete="new-password"
         />
       </div>
     </div>
