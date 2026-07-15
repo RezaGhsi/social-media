@@ -16,7 +16,7 @@ const UserCard = ({
           <img
             src={`${baseURL}/${avatarUrl || "images/default-profile-pic.png"}`}
             alt={name}
-            className="w-16 h-16 object-cover rounded-full"
+            className="min-w-16 h-16 object-cover rounded-full"
           />
         </a>
         <div className="flex flex-col ml-2 justify-between mr-2 ">

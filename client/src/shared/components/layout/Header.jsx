@@ -1,4 +1,5 @@
 import { useAuth } from "../../../features/auth/hooks/useAuth";
+import AvatarImg from "../../../features/users/components/AvatarImg";
 
 const Header = () => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
@@ -47,16 +48,12 @@ const Header = () => {
                   >
                     Create
                   </a>
-                  <div className="w-12 h-12 rounded-full">
+                  <div className="w-12 h-12 rounded-full overflow-hidden">
                     <a
                       href={`/${user.username}`}
                       className="w-full h-full bg-transparent border-none"
                     >
-                      <img
-                        src={`${baseURL}/${user.avatarUrl || "images/default-profile-pic.png"}`}
-                        className="object-cover w-full h-full rounded-full"
-                        alt="profile cover"
-                      />
+                      <AvatarImg avatarUrl={user.avatarUrl} />
                     </a>
                   </div>
                 </div>

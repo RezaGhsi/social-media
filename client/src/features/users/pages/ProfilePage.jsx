@@ -19,10 +19,9 @@ import { useAuth } from "../../auth/hooks/useAuth";
 import { getUserProfile, followUser, unFollowUser } from "../api/userApi";
 import FollowingsModal from "../components/FollowingsModal";
 import FollowersModal from "../components/FollowersModal";
+import AvatarImg from "../components/AvatarImg";
 
 const ProfilePage = () => {
-  const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
-
   const [userPageInfo, setUserPageInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -53,7 +52,7 @@ const ProfilePage = () => {
   if (error?.response.status === 404) return <NotFound />;
 
   return (
-    <div className="w-[dvw] h-auto flex  justify-center bg-[#E6ECF6] pt-8 px-10 scroll-smooth ">
+    <div className="flex flex-1  justify-center bg-[#E6ECF6] pt-8 px-10 scroll-smooth ">
       {loading ? (
         <FaSpinner />
       ) : (
@@ -67,11 +66,9 @@ const ProfilePage = () => {
               />
             </div>
 
-            <img
-              src={`${baseURL}/${userPageInfo.avatarUrl || "images/default-profile-pic.png"}`}
-              alt="Profile pic"
-              className="absolute z-20 w-38 h-38 object-cover rounded-full ml-8 -mt-19 border-2 border-white"
-            />
+            <div className="absolute z-20 w-38 h-38 rounded-full ml-8 -mt-19 border-2 border-white overflow-hidden">
+              <AvatarImg avatarUrl={userPageInfo.avatarUrl} />
+            </div>
             <div className="flex justify-between">
               <div className="pt-24 ml-8 w-[36dvw] ">
                 <h1 className="font-Poppins-ExtraBold text-2xl">
@@ -190,7 +187,7 @@ const ProfilePage = () => {
         </div>
         <div className="flex flex-col rounded-lg w-full">
           <h3 className="font-Poppins-Medium text-xl mb-5">What's happening</h3>
-          <div className="flex flex-wrap justify-between *:w-28 *:h-28 *:m-1.5 *:object-cover *:rounded-sm">
+          <div className="flex flex-wrap justify-around *:w-28 *:h-28 *:m-1.5 *:object-cover *:rounded-sm">
             <img src="images/feed-1.jpg" alt="" />
             <img src="images/feed-2.jpg" alt="" />
             <img src="images/feed-3.jpg" alt="" />
