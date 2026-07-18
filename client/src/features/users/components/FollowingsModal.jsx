@@ -37,7 +37,7 @@ const FollowingsModal = ({ isOpen, onClose }) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={() => onClose(false)} title={"Following"}>
-        <div className="bg-white rounded-b-2xl p-2 px-5">
+        <div className="rounded-b-2xl bg-white p-2 px-5">
           <hr className="mb-3 text-neutral-300" />
           {loading ? (
             <FaSpinner />

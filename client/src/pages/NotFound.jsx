@@ -1,6 +1,6 @@
 const NotFound = () => {
   return (
-    <div className="w-full h-dvh font-Poppins-ExtraBold text-6xl flex flex-col justify-center items-center">
+    <div className="font-Poppins-ExtraBold flex h-dvh w-full flex-col items-center justify-center text-6xl">
       <h1>Not Found!</h1>
       <h2>404</h2>
     </div>

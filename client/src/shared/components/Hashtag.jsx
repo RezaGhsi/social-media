@@ -2,11 +2,11 @@ import { IoIosTrendingUp } from "react-icons/io";
 
 const Hashtag = ({ name }) => {
   return (
-    <div className="flex items-center ml-3 mb-6">
+    <div className="mb-6 ml-3 flex items-center">
       <span className="mr-2 text-lg">
         <IoIosTrendingUp />
       </span>
-      <a href={`/hashtag/${name}`} className="text-xl font-Poppins-SemiBold">
+      <a href={`/hashtag/${name}`} className="font-Poppins-SemiBold text-xl">
         #{name}
       </a>
     </div>

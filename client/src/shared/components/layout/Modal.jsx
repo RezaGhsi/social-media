@@ -27,15 +27,15 @@ const Modal = ({ children, isOpen, onClose, title }) => {
 
   return createPortal(
     <div
-      className="fixed w-full h-full bg-black/80 backdrop-blur-xs flex justify-center items-center z-50"
+      className="fixed z-50 flex h-full w-full items-center justify-center bg-black/80 backdrop-blur-xs"
       id="modal-overlay"
       onClick={onClose}
     >
       <div id="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="relative flex justify-center font-Poppins-Medium items-center rounded-t-xl bg-white pt-5 *:mx-3">
+        <div className="font-Poppins-Medium relative flex items-center justify-center rounded-t-xl bg-white pt-5 *:mx-3">
           {title && <h3 className="">{title}</h3>}
           <button
-            className="absolute right-0 cursor-pointer text-xl text-neutral-700 "
+            className="absolute right-0 cursor-pointer text-xl text-neutral-700"
             onClick={onClose}
           >
             🗙

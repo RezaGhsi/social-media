@@ -68,35 +68,35 @@ const UploadPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-dvh">
+    <div className="flex h-dvh flex-col">
       <Header />
 
       <form className="flex-1" onSubmit={handleSubmit}>
-        <main className="flex bg-[#6060db] p-10 w-full h-full justify-center items-center ">
-          <section className="flex w-[95dvw] bg-white rounded-xl shadow-[12px] p-16 py-20 justify-between items-center gap-6 ">
-            <div className="h-full w-[50%] ml-8 ">
-              <h3 className="text-5xl text-indigo-600 font-Poppins-SemiBold ">
+        <main className="flex h-full w-full items-center justify-center bg-[#6060db] p-10">
+          <section className="flex w-[95dvw] items-center justify-between gap-6 rounded-xl bg-white p-16 py-20 shadow-[12px]">
+            <div className="ml-8 h-full w-[50%]">
+              <h3 className="font-Poppins-SemiBold text-5xl text-indigo-600">
                 File upload
               </h3>
 
-              <div className="mt-5 w-[80%] relative bg-[#cecefd] text-indigo-800 border-2 border-dashed border-indigo-800 rounded-2xl flex flex-col justify-center items-center ">
+              <div className="relative mt-5 flex w-[80%] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-800 bg-[#cecefd] text-indigo-800">
                 <span className="mt-12 flex justify-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="w-[50%] h-[50%]"
+                    className="h-[50%] w-[50%]"
                   >
                     <path d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" />
                   </svg>
                 </span>
                 <div>
-                  <p className="text-3xl font-Poppins-Medium mt-10">
+                  <p className="font-Poppins-Medium mt-10 text-3xl">
                     {file?.name || "Upload a file"}
                   </p>
                 </div>
                 <p
-                  className="font-Poppins-Bold text-3xl bg-indigo-800 p-4 rounded-lg text-white mt-10 mb-12 "
+                  className="font-Poppins-Bold mt-10 mb-12 rounded-lg bg-indigo-800 p-4 text-3xl text-white"
                   id="browse-files"
                 >
                   Browse file
@@ -107,17 +107,17 @@ const UploadPage = () => {
                   id="file-upload-input"
                   accept="video/*, image/*"
                   onChange={handleFileChange}
-                  className="absolute h-full w-full cursor-pointer opacity-0 "
+                  className="absolute h-full w-full cursor-pointer opacity-0"
                 />
               </div>
             </div>
 
-            <div className="post-upload-box w-[50%] h-full transition-all ">
-              <h3 className="file-upload-title text-5xl text-indigo-800 font-Poppins-SemiBold">
+            <div className="post-upload-box h-full w-[50%] transition-all">
+              <h3 className="file-upload-title font-Poppins-SemiBold text-5xl text-indigo-800">
                 Post details
               </h3>
 
-              <div className="mt-6 w-full h-40 ">
+              <div className="mt-6 h-40 w-full">
                 <label htmlFor="post-description">
                   <span className="font-Poppins-Medium">Description</span>
                   {/* <span className="text-red-600 text-lg ml-1">*</span> */}
@@ -128,7 +128,7 @@ const UploadPage = () => {
                   value={form.description}
                   onChange={handleChange}
                   placeholder="Add a description .."
-                  className="w-full mt-3 h-full border-2 border-[#7474c5] rounded-md p-4 placeholder:font-Poppins-SemiBold placeholder:text-neutral-600 "
+                  className="placeholder:font-Poppins-SemiBold mt-3 h-full w-full rounded-md border-2 border-[#7474c5] p-4 placeholder:text-neutral-600"
                 ></textarea>
               </div>
 
@@ -144,13 +144,13 @@ const UploadPage = () => {
                   value={form.hashtags}
                   onChange={handleChange}
                   placeholder="javascript, edit, trend, explore, ne..."
-                  className="border-2 mt-3 border-[#7474c5] rounded-md p-3 placeholder:font-Poppins-SemiBold placeholder:text-neutral-600"
+                  className="placeholder:font-Poppins-SemiBold mt-3 rounded-md border-2 border-[#7474c5] p-3 placeholder:text-neutral-600"
                 />
                 <div
                   id="hashtags-wrap"
-                  className="flex text-sm my-2 items-center gap-2"
+                  className="my-2 flex items-center gap-2 text-sm"
                 ></div>
-                <span className="text-sm font-Poppins-Medium">
+                <span className="font-Poppins-Medium text-sm">
                   Split the hashtags with comma ( , )
                 </span>
               </div>
@@ -161,7 +161,7 @@ const UploadPage = () => {
                 <button
                   type="submit"
                   // disabled={!user.isVerified}
-                  className="bg-indigo-800 text-white text-xl p-4 rounded-lg mt-1 cursor-pointer transition-all active:bg-indigo-600 disabled:bg-gray-600 disabled:text-neutral-300 disabled:cursor-not-allowed "
+                  className="mt-1 cursor-pointer rounded-lg bg-indigo-800 p-4 text-xl text-white transition-all active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-neutral-300"
                 >
                   {uploading ? "Uploading..." : "Upload post"}
                 </button>

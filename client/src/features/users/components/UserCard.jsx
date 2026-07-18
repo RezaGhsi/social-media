@@ -10,20 +10,20 @@ const UserCard = ({
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   return (
-    <div className="flex items-center justify-between mb-6">
+    <div className="mb-6 flex items-center justify-between">
       <div className="flex items-center">
         <a href={`/${username}`}>
           <img
             src={`${baseURL}/${avatarUrl || "images/default-profile-pic.png"}`}
             alt={name}
-            className="min-w-16 h-16 object-cover rounded-full"
+            className="h-16 min-w-16 rounded-full object-cover"
           />
         </a>
-        <div className="flex flex-col ml-2 justify-between mr-2 ">
-          <div className="flex items-center mb-1 text-xl w-[12dvw]">
+        <div className="mr-2 ml-2 flex flex-col justify-between">
+          <div className="mb-1 flex w-[12dvw] items-center text-xl">
             <a
               href={`/${username}`}
-              className="font-Poppins-Medium mr-2 truncate "
+              className="font-Poppins-Medium mr-2 truncate"
             >
               {name}
             </a>

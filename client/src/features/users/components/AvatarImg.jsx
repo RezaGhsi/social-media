@@ -5,7 +5,7 @@ const AvatarImg = ({ avatarUrl }) => {
       <img
         src={`${baseURL}/${avatarUrl || "images/default-profile-pic.png"}`}
         alt="Profile pic"
-        className="w-full h-full object-cover"
+        className="h-full w-full object-cover"
       />
     </>
   );

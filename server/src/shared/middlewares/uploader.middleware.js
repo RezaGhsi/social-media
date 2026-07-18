@@ -5,6 +5,7 @@ const handleUpload = (uploader) => (req, res, next) => {
   uploader(req, res, (err) => {
     if (!err) return next();
 
+    console.log(err);
     if (err.code === "INVALID_FILE_TYPE") {
       return res.status(400).json({ success: false, message: err.message });
     }

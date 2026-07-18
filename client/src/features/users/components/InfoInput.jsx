@@ -7,10 +7,10 @@ const InfoInput = ({
   placeholder = "",
 }) => {
   return (
-    <div className="w-[40%] mr-4">
+    <div className="mr-4 w-[40%]">
       <label
         htmlFor={name}
-        className="text-sm text-indigo-900 font-Poppins-SemiBold"
+        className="font-Poppins-SemiBold text-sm text-indigo-900"
       >
         {label}
       </label>
@@ -19,7 +19,7 @@ const InfoInput = ({
           id={name}
           name={name}
           value={value}
-          className="w-full min-w-40 h-10 outline-0 border-2 border-indigo-100 rounded-sm pl-4"
+          className="h-10 w-full min-w-40 rounded-sm border-2 border-indigo-100 pl-4"
           type={type}
           placeholder={placeholder}
           onChange={handleChange}

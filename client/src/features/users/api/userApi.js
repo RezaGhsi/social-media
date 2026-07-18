@@ -15,8 +15,17 @@ export const getUserFollowings = async (username) =>
 export const getUserFollowers = async (username) =>
   await api.get(`/user/${username}/followers`);
 
-export const updateUserAvatar = async (avatarFormData) =>
-  await api.put(`/user/upload/avatar`, avatarFormData);
+export const updateUserAvatar = async (avatarFormData, setUploadProgress) => {
+  await await api.post("/auth/refresh");
+
+  return await api.put(`/user/upload/avatar`, avatarFormData, {
+    timeout: 20000,
+    onUploadProgress: (e) => {
+      const uploadProgress = Math.floor(e.progress * 100);
+      setUploadProgress(uploadProgress);
+    },
+  });
+};
 
 export const updateUserInfo = async (info) =>
   await api.put(`/user/update/profile`, info);
