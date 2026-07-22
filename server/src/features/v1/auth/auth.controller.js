@@ -4,6 +4,7 @@ const {
   setAccessTokenCookie,
   setRefreshTokenCookie,
 } = require("../../../shared/utils/setTokenCookie");
+
 const {
   createUser,
   checkUser,
@@ -12,6 +13,9 @@ const {
 const checkPassword = require("./../../../shared/utils/checkPassword");
 const refreshTokenGen = require("../../../shared/utils/refreshTokenGen");
 const { getFollowingsList } = require("../follow/follow.service");
+const AppError = require("../../../shared/utils/AppError");
+const userModel = require("./../users/user.model");
+const bcrypt = require("bcrypt");
 
 exports.register = async (req, res, next) => {
   try {
@@ -67,6 +71,39 @@ exports.getAccessToken = async (req, res, next) => {
 exports.getMe = async (req, res, next) => {
   try {
     return successResponse(res, 200, { user: req.user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    res.clearCookie("access-token");
+    res.clearCookie("refresh-token");
+
+    return successResponse(res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.changePassword = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const { password, newPassword } = req.body;
+
+    const isCorrectPassword = await bcrypt.compare(password, req.user.password);
+    if (!isCorrectPassword) throw new AppError("Wrong Password");
+
+    const isSamePass = await bcrypt.compare(newPassword, req.user.password);
+    if (isSamePass)
+      throw new AppError("New Password Can't be the Same as Your Old Password");
+
+    const user = await userModel.findById(req.user._id);
+    user.password = newPassword;
+    user.save();
+
+    successResponse(res, 200, { message: "Password Changed Successfully" });
   } catch (error) {
     next(error);
   }

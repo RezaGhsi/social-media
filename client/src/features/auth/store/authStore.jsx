@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
         console.error(error);
         console.log("error status:", error?.response?.status);
         console.log("error message:", error?.message);
-        dispatch({ type: "AUTH_FAILURE", payload: null });
+        dispatch({ type: "AUTH_FAILURE", payload: error });
       }
     };
     checkSession();

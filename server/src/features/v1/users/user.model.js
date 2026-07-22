@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const schema = new mongoose.Schema(
   {
@@ -20,10 +20,6 @@ const schema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
       required: true,
     },
     birthDate: {
@@ -55,7 +51,7 @@ const schema = new mongoose.Schema(
     },
     avatarUrl: {
       type: String,
-      default: "images/default-profile-pic.jpg",
+      default: "images/default-profile-pic.png",
     },
     address: {
       country: String,
@@ -72,7 +68,8 @@ const schema = new mongoose.Schema(
 );
 
 schema.pre("save", function () {
-  this.password = bcrypt.hashSync(this.password);
+  if (!this.isModified("password")) return;
+  this.password = bcrypt.hashSync(this.password, 10);
 });
 
 schema.virtual("posts", {

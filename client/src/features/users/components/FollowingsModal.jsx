@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Modal from "../../../shared/components/layout/Modal";
+import Modal from "../../../shared/components/Modal";
 import { useParams } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import { getUserFollowings } from "../api/userApi";

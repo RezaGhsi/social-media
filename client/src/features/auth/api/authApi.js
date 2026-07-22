@@ -7,3 +7,8 @@ export const registerRequest = async (credentials) =>
 
 export const loginRequest = async (credentials) =>
   await api.post("/auth/login", credentials);
+
+export const logoutRequest = async () => await api.post("/auth/logout");
+
+export const changePassRequest = async (passwordForm) =>
+  await api.put("/auth/password", passwordForm);

@@ -1,8 +1,8 @@
-const bcryptjs = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const AppError = require("./AppError");
 
 const checkPassword = (password, hashedPassword) => {
-  if (!bcryptjs.compareSync(password, hashedPassword)) {
+  if (!bcrypt.compareSync(password, hashedPassword)) {
     throw new AppError("Invalid Email/Username or Password", 401);
   }
 

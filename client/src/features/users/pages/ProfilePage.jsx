@@ -69,7 +69,7 @@ const ProfilePage = () => {
               />
             </div>
 
-            <div className="absolute z-20 -mt-19 ml-8 h-38 w-38 overflow-hidden rounded-full border-2 border-white">
+            <div className="absolute z-20 -mt-19 ml-8 h-38 w-38 shrink-0 overflow-hidden rounded-full border-2 border-white">
               <AvatarImg avatarUrl={userPageInfo.avatarUrl} />
             </div>
             <div className="flex justify-between">

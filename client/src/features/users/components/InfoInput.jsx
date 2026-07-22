@@ -5,9 +5,10 @@ const InfoInput = ({
   name,
   label,
   placeholder = "",
+  className = "",
 }) => {
   return (
-    <div className="mr-4 w-[40%]">
+    <div className={`mr-4 w-[40%] ${className}`}>
       <label
         htmlFor={name}
         className="font-Poppins-SemiBold text-sm text-indigo-900"

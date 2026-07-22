@@ -16,7 +16,7 @@ exports.verifyToken = async (req, res, next) => {
 
     const verify = jwt.verify(token, accessTokenSecret);
 
-    const user = await userModel.findById(verify.id, "-password -refreshToken");
+    const user = await userModel.findById(verify.id);
     if (!user) {
       throw new AppError("Invalid Token", 401);
     }
@@ -37,10 +37,7 @@ exports.verifyRefreshToken = async (req, res, next) => {
 
     const payload = jwt.verify(token, refreshTokenSecret);
 
-    const user = await userModel.findById(
-      payload.id,
-      "-password -refreshToken",
-    );
+    const user = await userModel.findById(payload.id);
     if (!user) {
       throw new AppError("Invalid Token", 401);
     }

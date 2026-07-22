@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../store/authStore";
-import { loginRequest, registerRequest } from "../api/authApi";
+import { loginRequest, logoutRequest, registerRequest } from "../api/authApi";
 
 export const useAuth = () => {
   const { state, dispatch } = useAuthContext();
@@ -55,6 +55,23 @@ export const useAuth = () => {
     [dispatch, navigate],
   );
 
+  const logout = useCallback(async () => {
+    setLoading(true);
+    try {
+      await logoutRequest();
+      dispatch({ type: "LOGOUT" });
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Error Accrued While Logout";
+
+      setError(message);
+
+      dispatch({ type: "AUTH_FAILURE", payload: message });
+    } finally {
+      setLoading(false);
+    }
+  }, [dispatch, navigate]);
+
   return {
     user: state.user,
     isAuthenticated: state.status === "authenticated",
@@ -62,6 +79,7 @@ export const useAuth = () => {
 
     register,
     login,
+    logout,
 
     loading,
     error,
