@@ -116,7 +116,7 @@ const ProfileUpdate = () => {
   return (
     <div className="flex min-h-dvh w-full flex-col items-center bg-[#E6ECF6] transition-colors">
       <div className="font-Poppins-SemiBold mt-20 mb-3 flex w-[70dvw] justify-start text-xl text-indigo-700">
-        <a href="/">Back to home </a>
+        <a href={`/${user.username}`}>Back to Profile</a>
       </div>
 
       <section className="m-10 mt-0 mb-20 w-[70dvw] rounded-lg bg-white p-4 pb-12 shadow-2xl shadow-black/15">
@@ -152,7 +152,7 @@ const ProfileUpdate = () => {
               <div className="h-36 w-36 overflow-hidden rounded-full">
                 <AvatarImg avatarUrl={userAvatar} />
               </div>
-              <div className="absolute top-27 left-27 flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700">
+              <div className="absolute top-27 left-27 flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 transition-colors hover:bg-blue-500 active:bg-blue-700">
                 <input
                   type="file"
                   accept=".jpg,.jpeg,.webp,.png"

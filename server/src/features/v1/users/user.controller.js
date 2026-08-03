@@ -1,5 +1,6 @@
 const userModel = require("./user.model");
 const followModel = require("./../follow/follow.model");
+const likeModel = require("./../like/like.model");
 const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { removeOldAvatar, isFollowingUser } = require("./user.service");
@@ -7,34 +8,57 @@ const {
   getFollowingsList,
   getFollowersList,
 } = require("../follow/follow.service");
+const { post } = require("../like/like.routes");
 
 exports.getUserPage = async (req, res, next) => {
   try {
     const { username } = req.params;
 
-    // if (username === req.user.username) {
-    //   return successResponse(res, 200, { user: req.user });
-    // }
-
     const userProfile = await userModel
       .findOne({ username })
-      .populate({ path: "posts", options: { sort: { createdAt: -1 } } })
-      .select("-role -password -refreshToken")
+      .populate({
+        path: "posts",
+        options: { sort: { createdAt: -1 }, limit: 10 },
+      })
+      .select("-role -password -refreshToken -email")
       .lean();
 
     if (!userProfile) throw new AppError("Page not Found", 404);
 
-    const followersCount = await followModel.countDocuments({
-      following: userProfile.username,
-    });
-    const followingsCount = await followModel.countDocuments({
-      follower: userProfile.username,
+    const postIds = userProfile.posts.map((post) => post._id);
+
+    const [likesCount, userLikes] = await Promise.all([
+      likeModel.aggregate([
+        { $match: { post: { $in: postIds } } },
+        { $group: { _id: "$post", count: { $sum: 1 } } },
+      ]),
+      likeModel
+        .find({ post: { $in: postIds }, user: req.user._id })
+        .select("post")
+        .lean(),
+    ]);
+
+    const likeCountMap = new Map(
+      likesCount.map((post) => [post._id.toString(), post.count]),
+    );
+    const userLikedSet = new Set(userLikes.map((like) => like.post.toString()));
+
+    userProfile.posts.forEach((post) => {
+      Object.assign(post, {
+        likesCount: likeCountMap.get(post._id.toString()) || 0,
+        isLikedByUser: userLikedSet.has(post._id.toString()),
+      });
     });
 
-    const isFollowing = await isFollowingUser(
-      req.user.username,
-      userProfile.username,
-    );
+    const [followersCount, followingsCount, isFollowing] = await Promise.all([
+      followModel.countDocuments({
+        following: userProfile.username,
+      }),
+      followModel.countDocuments({
+        follower: userProfile.username,
+      }),
+      isFollowingUser(req.user.username, userProfile.username),
+    ]);
 
     Object.assign(userProfile, {
       followersCount,

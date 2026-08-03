@@ -42,7 +42,7 @@ const FollowUnfollowBtn = ({
       <button
         disabled={followLoading}
         onClick={handleFollow}
-        className={`font-Poppins-Medium w-28 rounded-full border-2 border-cyan-700 p-3 hover:cursor-pointer hover:bg-cyan-700 hover:text-white ${isFollowingState ? "bg-cyan-600 text-white" : "text-cyan-700"} ${className}`}
+        className={`font-Poppins-Medium w-28 rounded-full border-2 border-cyan-700 p-3 transition-colors hover:cursor-pointer hover:bg-cyan-700 hover:text-white ${isFollowingState ? "bg-cyan-600 text-white" : "text-cyan-700"} ${className}`}
       >
         {isFollowingState ? "Unfollow" : "Follow"}
       </button>

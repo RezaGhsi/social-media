@@ -70,7 +70,7 @@ export const useAuth = () => {
     } finally {
       setLoading(false);
     }
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
   return {
     user: state.user,

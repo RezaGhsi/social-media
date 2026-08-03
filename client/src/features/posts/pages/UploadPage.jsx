@@ -160,7 +160,7 @@ const UploadPage = () => {
               <div className="mt-4 flex items-center justify-end">
                 <button
                   type="submit"
-                  // disabled={!user.isVerified}
+                  // disabled={!user.isVerified || uploading}
                   className="mt-1 cursor-pointer rounded-lg bg-indigo-800 p-4 text-xl text-white transition-all active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-neutral-300"
                 >
                   {uploading ? "Uploading..." : "Upload post"}

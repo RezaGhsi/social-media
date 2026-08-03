@@ -12,7 +12,7 @@ const Btn = ({ onClick, disabled, value, color, className = "" }) => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`font-Poppins-Medium ml-4 rounded-lg px-4 py-3 text-white ${disabled ? "cursor-not-allowed bg-gray-400" : `${colorClasses[color]} cursor-pointer`} ${className}`}
+      className={`font-Poppins-Medium ml-4 rounded-lg px-4 py-3 text-white transition-colors ${disabled ? "cursor-not-allowed bg-gray-400" : `${colorClasses[color]} cursor-pointer`} ${className}`}
     >
       {value}
     </button>

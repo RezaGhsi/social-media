@@ -136,7 +136,7 @@ const ProfilePage = () => {
                 ) : (
                   <a
                     href={`/manage`}
-                    className="mr-3 border-purple-900 text-purple-800"
+                    className="mr-3 border-purple-900 text-purple-800 transition-colors hover:bg-purple-800 hover:text-white"
                   >
                     Manage
                   </a>

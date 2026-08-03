@@ -1,21 +1,37 @@
 import { useState } from "react";
 import { FaRegHeart, FaRegCommentDots, FaHeart } from "react-icons/fa";
 import { MdOutlineShare } from "react-icons/md";
+import AvatarImg from "./AvatarImg";
+import { likePost, disLikePost } from "../../posts/api/postApi";
+import ErrorToast from "../../../shared/components/ErrorToast";
 
 const PostCard = ({ post, avatar, name }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
-  const [liked, setLiked] = useState(false);
-  const handleLike = (e) => {
-    liked ? setLiked(false) : setLiked(true);
+  const [liked, setLiked] = useState(post?.isLikedByUser);
+
+  const handleLike = () => {
+    const submitLike = async (postId) => {
+      try {
+        if (liked) {
+          setLiked(false);
+          await disLikePost({ postId });
+        } else {
+          setLiked(true);
+          await likePost({ postId });
+        }
+      } catch (error) {
+        setLiked(post?.isLikedByUser || false);
+        ErrorToast(error.response.data.message);
+      }
+    };
+    submitLike(post._id);
   };
   return (
     <div className="relative flex w-full rounded-lg p-3 pt-4">
-      <img
-        src={`${baseURL}/${avatar}`}
-        alt="Profile pic"
-        className="absolute h-22 w-22 rounded-full border-2 border-white object-cover"
-      />
+      <div className="absolute h-22 w-22 overflow-hidden rounded-full border-2 border-white">
+        <AvatarImg avatarUrl={avatar} />
+      </div>
       <div className="ml-22 flex w-full flex-col p-2">
         <span className="font-Poppins-Medium mb-4 text-xl">{name}</span>
         <img
@@ -36,8 +52,7 @@ const PostCard = ({ post, avatar, name }) => {
         </div>
         <div className="font-Poppins-Medium ml-2 text-neutral-700">
           <p className="mb-3 *:text-black">
-            Liked by <a href="/rad_front">rad_front</a> and <span>2923</span>{" "}
-            others
+            Liked by <span>{post.likesCount}</span> users
           </p>
           <p className="mb-3">{post.description}</p>
           <div>
