@@ -9,6 +9,7 @@ const PostCard = ({ post, avatar, name }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   const [liked, setLiked] = useState(post?.isLikedByUser);
+  const [likesCount, setLikesCount] = useState(post?.likesCount);
 
   const handleLike = () => {
     const submitLike = async (postId) => {
@@ -16,9 +17,11 @@ const PostCard = ({ post, avatar, name }) => {
         if (liked) {
           setLiked(false);
           await disLikePost({ postId });
+          setLikesCount(likesCount - 1);
         } else {
           setLiked(true);
           await likePost({ postId });
+          setLikesCount(likesCount + 1);
         }
       } catch (error) {
         setLiked(post?.isLikedByUser || false);
@@ -41,7 +44,14 @@ const PostCard = ({ post, avatar, name }) => {
         />
         <div className="m-3 mt-5 flex text-2xl *:mr-4 *:cursor-pointer">
           <button onClick={handleLike}>
-            {liked ? <FaHeart className="text-red-600" /> : <FaRegHeart />}
+            {liked ? (
+              <div className="relative">
+                <FaHeart className="absolute animate-ping text-red-600 [animation-iteration-count:1]" />
+                <FaHeart className="text-red-600" />
+              </div>
+            ) : (
+              <FaRegHeart />
+            )}
           </button>
           <button>
             <FaRegCommentDots />
@@ -52,7 +62,7 @@ const PostCard = ({ post, avatar, name }) => {
         </div>
         <div className="font-Poppins-Medium ml-2 text-neutral-700">
           <p className="mb-3 *:text-black">
-            Liked by <span>{post.likesCount}</span> users
+            Liked by <span>{likesCount}</span> users
           </p>
           <p className="mb-3">{post.description}</p>
           <div>
