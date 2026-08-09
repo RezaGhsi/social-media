@@ -62,6 +62,8 @@ exports.getAccessToken = async (req, res, next) => {
 
     setAccessTokenCookie(res, accessToken);
 
+    req.user.password = undefined;
+
     return successResponse(res, 200, { user: req.user });
   } catch (error) {
     next(error);

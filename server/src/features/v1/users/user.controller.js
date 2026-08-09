@@ -25,6 +25,27 @@ exports.getUserPage = async (req, res, next) => {
 
     if (!userProfile) throw new AppError("Page not Found", 404);
 
+    const [followersCount, followingsCount, isFollowing] = await Promise.all([
+      followModel.countDocuments({
+        following: userProfile.username,
+      }),
+      followModel.countDocuments({
+        follower: userProfile.username,
+      }),
+      isFollowingUser(req.user.username, userProfile.username),
+    ]);
+
+    Object.assign(userProfile, {
+      followersCount,
+      followingsCount,
+      isFollowing,
+    });
+
+    if (!isFollowing && userProfile.isPrivate) {
+      userProfile.posts = undefined;
+      throw new AppError("This Account is Private", 403, { user: userProfile });
+    }
+
     const postIds = userProfile.posts.map((post) => post._id);
 
     const [likesCount, userLikes] = await Promise.all([
@@ -49,27 +70,6 @@ exports.getUserPage = async (req, res, next) => {
         isLikedByUser: userLikedSet.has(post._id.toString()),
       });
     });
-
-    const [followersCount, followingsCount, isFollowing] = await Promise.all([
-      followModel.countDocuments({
-        following: userProfile.username,
-      }),
-      followModel.countDocuments({
-        follower: userProfile.username,
-      }),
-      isFollowingUser(req.user.username, userProfile.username),
-    ]);
-
-    Object.assign(userProfile, {
-      followersCount,
-      followingsCount,
-      isFollowing,
-    });
-
-    if (!isFollowing && userProfile.isPrivate) {
-      userProfile.posts = undefined;
-      throw new AppError("This Account is Private", 403, { user: userProfile });
-    }
 
     return successResponse(res, 200, {
       user: userProfile,
