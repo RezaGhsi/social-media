@@ -77,7 +77,7 @@ const PostCard = ({ post, avatar, name }) => {
             ))}
           </div>
           <a href="#" className="text-neutral-400">
-            View all 294 comments ...
+            View all 24 comments ...
           </a>
         </div>
       </div>

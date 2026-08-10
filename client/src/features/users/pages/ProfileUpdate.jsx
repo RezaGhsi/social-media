@@ -128,13 +128,13 @@ const ProfileUpdate = () => {
           >
             Edit Profile
           </button>
-          <button
+          {/* <button
             name="Preferences"
             onClick={handelTabChange}
             className={`${activeTab === "Preferences" ? "border-b-3 text-purple-800" : ""}`}
           >
             Preferences
-          </button>
+          </button> */}
           <button
             name="Security"
             onClick={handelTabChange}
