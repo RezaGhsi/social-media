@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { FaRegHeart, FaRegCommentDots, FaHeart } from "react-icons/fa";
-import { MdOutlineShare } from "react-icons/md";
 import AvatarImg from "./AvatarImg";
-import { likePost, disLikePost } from "../../posts/api/postApi";
+import {
+  likePost,
+  disLikePost,
+  savePost,
+  unSavePost,
+} from "../../posts/api/postApi";
 import ErrorToast from "../../../shared/components/ErrorToast";
+import { LuBookmarkPlus, LuBookmarkCheck } from "react-icons/lu";
+import SuccessToast from "../../../shared/components/SuccessToast";
 
 const PostCard = ({ post, avatar, name }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   const [liked, setLiked] = useState(post?.isLikedByUser);
   const [likesCount, setLikesCount] = useState(post?.likesCount);
+  const [saved, setSaved] = useState(post?.isSavedByUser);
 
   const handleLike = () => {
     const submitLike = async (postId) => {
@@ -30,6 +37,27 @@ const PostCard = ({ post, avatar, name }) => {
     };
     submitLike(post._id);
   };
+
+  const handleSave = () => {
+    const submitSave = async (postId) => {
+      try {
+        if (saved) {
+          setSaved(false);
+          await unSavePost(postId);
+          SuccessToast("unSaved Post Successfully");
+        } else {
+          setSaved(true);
+          await savePost(postId);
+          SuccessToast("Saved Post Successfully");
+        }
+      } catch (error) {
+        setSaved(post?.isSavedByUser || false);
+        ErrorToast(error.response.data.message);
+      }
+    };
+    submitSave(post._id);
+  };
+
   return (
     <div className="relative flex w-full rounded-lg p-3 pt-4">
       <div className="absolute h-22 w-22 overflow-hidden rounded-full border-2 border-white">
@@ -42,7 +70,7 @@ const PostCard = ({ post, avatar, name }) => {
           alt="post image"
           className="w-full rounded-xl"
         />
-        <div className="m-3 mt-5 flex text-2xl *:mr-4 *:cursor-pointer">
+        <div className="m-3 mt-5 flex text-2xl text-[26px] *:mr-4 *:cursor-pointer">
           <button onClick={handleLike}>
             {liked ? (
               <div className="relative">
@@ -56,8 +84,8 @@ const PostCard = ({ post, avatar, name }) => {
           <button>
             <FaRegCommentDots />
           </button>
-          <button>
-            <MdOutlineShare />
+          <button onClick={handleSave}>
+            {saved ? <LuBookmarkCheck /> : <LuBookmarkPlus />}
           </button>
         </div>
         <div className="font-Poppins-Medium ml-2 text-neutral-700">

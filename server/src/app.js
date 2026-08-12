@@ -13,6 +13,7 @@ const userRouter = require("./features/v1/users/user.routes");
 const postRouter = require("./features/v1/posts/post.routes");
 const followRouter = require("./features/v1/follow/follow.routes");
 const likeRouter = require("./features/v1/like/like.routes");
+const saveRouter = require("./features/v1/save/save.routes");
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/v1/user", userRouter);
 app.use("/v1/post", postRouter);
 app.use("/v1/follow", followRouter);
 app.use("/v1/like", likeRouter);
+app.use("/v1/save", saveRouter);
 
 //* 404 Handler
 app.use((req, res) => {

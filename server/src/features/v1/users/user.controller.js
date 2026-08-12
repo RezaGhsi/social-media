@@ -1,6 +1,7 @@
 const userModel = require("./user.model");
 const followModel = require("./../follow/follow.model");
 const likeModel = require("./../like/like.model");
+const saveModel = require("./../save/save.model");
 const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { removeOldAvatar, isFollowingUser } = require("./user.service");
@@ -22,6 +23,22 @@ exports.getUserPage = async (req, res, next) => {
       })
       .select("-role -password -refreshToken -email")
       .lean();
+
+    // const [userProfile] = await userModel.aggregate([
+    //   { $match: { username } },
+    //   { $limit: 10 },
+    //   {
+    //     $lookup: {
+    //       from: "posts",
+    //       let: { userId: "$_id" },
+    //       pipeline: [
+    //         { $match: { $expr: { $eq: ["$$userId", "$user"] } } },
+    //         { $sort: { createdAt: -1 } },
+    //       ],
+    //       as: "posts",
+    //     },
+    //   },
+    // ]);
 
     if (!userProfile) throw new AppError("Page not Found", 404);
 
@@ -48,12 +65,18 @@ exports.getUserPage = async (req, res, next) => {
 
     const postIds = userProfile.posts.map((post) => post._id);
 
-    const [likesCount, userLikes] = await Promise.all([
+    const [likesCount, userLikes, userSaves] = await Promise.all([
       likeModel.aggregate([
         { $match: { post: { $in: postIds } } },
         { $group: { _id: "$post", count: { $sum: 1 } } },
       ]),
+
       likeModel
+        .find({ post: { $in: postIds }, user: req.user._id })
+        .select("post")
+        .lean(),
+
+      saveModel
         .find({ post: { $in: postIds }, user: req.user._id })
         .select("post")
         .lean(),
@@ -64,10 +87,13 @@ exports.getUserPage = async (req, res, next) => {
     );
     const userLikedSet = new Set(userLikes.map((like) => like.post.toString()));
 
+    const userSavedSet = new Set(userSaves.map((save) => save.post.toString()));
+
     userProfile.posts.forEach((post) => {
       Object.assign(post, {
         likesCount: likeCountMap.get(post._id.toString()) || 0,
         isLikedByUser: userLikedSet.has(post._id.toString()),
+        isSavedByUser: userSavedSet.has(post._id.toString()),
       });
     });
 
