@@ -3,43 +3,14 @@ const likeModel = require("./like.model");
 const postModel = require("./../posts/post.model");
 const AppError = require("../../../shared/utils/AppError");
 const { default: mongoose } = require("mongoose");
+const { hasAccessToPost } = require("../posts/post.service");
 
 exports.likePost = async (req, res, next) => {
   try {
     const { postId } = req.body;
+    const userId = req.user._id;
 
-    const [post] = await postModel.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(postId) } },
-      {
-        $lookup: {
-          from: "users",
-          localField: "user",
-          foreignField: "_id",
-          as: "user",
-        },
-      },
-      { $unwind: "$user" },
-      {
-        $project: {
-          "user.username": 1,
-          "user.isPrivate": 1,
-        },
-      },
-    ]);
-
-    if (!post) {
-      throw new AppError("Post Not Found", 404);
-    }
-
-    if (post.user.isPrivate) {
-      const isFollowing = await isFollowingUser(
-        req.user.username,
-        post.user.username,
-      );
-      if (!isFollowing) {
-        throw new AppError("You are not allowed to like this post", 403);
-      }
-    }
+    await hasAccessToPost(postId, userId);
 
     const isAlreadyLiked = await likeModel.exists({
       post: postId,

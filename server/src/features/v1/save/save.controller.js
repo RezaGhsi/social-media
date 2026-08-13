@@ -1,12 +1,16 @@
 const saveModel = require("./save.model");
+const postModel = require("./../posts/post.model");
 const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { default: mongoose } = require("mongoose");
+const { hasAccessToPost } = require("../posts/post.service");
 
 exports.savePost = async (req, res, next) => {
   try {
     const { postId } = req.params;
     const userId = req.user.id;
+
+    await hasAccessToPost(postId, userId);
 
     const existingSave = await saveModel.exists({ post: postId, user: userId });
     if (existingSave) {

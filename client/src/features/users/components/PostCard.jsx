@@ -8,7 +8,8 @@ import {
   unSavePost,
 } from "../../posts/api/postApi";
 import ErrorToast from "../../../shared/components/ErrorToast";
-import { LuBookmarkPlus, LuBookmarkCheck } from "react-icons/lu";
+import { LuBookmark } from "react-icons/lu";
+import { IoIosCheckmark } from "react-icons/io";
 import SuccessToast from "../../../shared/components/SuccessToast";
 
 const PostCard = ({ post, avatar, name }) => {
@@ -85,7 +86,14 @@ const PostCard = ({ post, avatar, name }) => {
             <FaRegCommentDots />
           </button>
           <button onClick={handleSave}>
-            {saved ? <LuBookmarkCheck /> : <LuBookmarkPlus />}
+            {saved ? (
+              <div className="relative flex items-baseline justify-center">
+                <IoIosCheckmark className="absolute text-2xl text-white" />
+                <LuBookmark fill="black" />
+              </div>
+            ) : (
+              <LuBookmark />
+            )}
           </button>
         </div>
         <div className="font-Poppins-Medium ml-2 text-neutral-700">
