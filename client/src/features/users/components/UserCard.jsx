@@ -1,5 +1,5 @@
-import { MdVerified } from "react-icons/md";
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
+import { BadgeCheck } from "lucide-react";
 const UserCard = ({
   avatarUrl,
   name,
@@ -28,7 +28,9 @@ const UserCard = ({
               {name}
             </a>
             <span>
-              {isVerified && <MdVerified className="text-blue-600" />}
+              {isVerified && (
+                <BadgeCheck size={26} fill="blue" className="text-white" />
+              )}
             </span>
           </div>
           <a href={`/${username}`} className="text-sm">

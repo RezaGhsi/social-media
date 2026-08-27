@@ -11,3 +11,12 @@ exports.postUploadSchema = z
     // }),
   })
   .strict();
+
+exports.deletePostSchema = z
+  .object({
+    postId: z.refine((value) => isValidObjectId(value), {
+      error: "Invalid input: expected ObjectId",
+      path: "postId",
+    }),
+  })
+  .strict();

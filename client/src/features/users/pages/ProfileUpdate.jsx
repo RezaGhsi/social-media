@@ -1,6 +1,3 @@
-import { HiOutlinePencil } from "react-icons/hi2";
-import { CiWarning } from "react-icons/ci";
-import { ImSpinner } from "react-icons/im";
 import InfoInput from "../components/InfoInput";
 import { useState } from "react";
 import { useAuth } from "../../auth/hooks/useAuth";
@@ -12,6 +9,7 @@ import LogoutBtn from "../components/LogoutBtn";
 import Btn from "../../../shared/components/Btn";
 import SuccessToast from "../../../shared/components/SuccessToast";
 import ErrorToast from "../../../shared/components/ErrorToast";
+import { Loader, Pencil, TriangleAlert } from "lucide-react";
 ("./../components/InfoInput");
 
 const ProfileUpdate = () => {
@@ -114,7 +112,7 @@ const ProfileUpdate = () => {
   };
 
   return (
-    <div className="flex min-h-dvh w-full flex-col items-center bg-[#E6ECF6] transition-colors">
+    <div className="flex min-h-dvh w-full flex-col items-center bg-[#F1F1F1] transition-colors">
       <div className="font-Poppins-SemiBold mt-20 mb-3 flex w-[70dvw] justify-start text-xl text-indigo-700">
         <a href={`/${user.username}`}>Back to Profile</a>
       </div>
@@ -159,12 +157,12 @@ const ProfileUpdate = () => {
                   className="absolute h-full w-full rounded-full opacity-0"
                   onChange={handlePfpChange}
                 />
-                <HiOutlinePencil className="text-xl text-white" />
+                <Pencil size={20} className="text-white" />
               </div>
               <div
                 className={`flex items-center justify-center gap-2 ${uploading ? "visible" : "hidden"}`}
               >
-                <ImSpinner className="animate-spin" />
+                <Loader className="animate-spin" />
                 Uploading
                 <span>{uploadProgress}%</span>
               </div>
@@ -281,7 +279,7 @@ const ProfileUpdate = () => {
             <div className="font-Poppins-SemiBold flex items-center justify-between rounded-lg border border-red-200 bg-red-100/70 p-3 px-6">
               <h4 className="flex items-center gap-2">
                 <span>
-                  <CiWarning className="text-xl text-red-500" />
+                  <TriangleAlert className="text-xl text-red-500" />
                 </span>
                 Log Out of Your Account
               </h4>

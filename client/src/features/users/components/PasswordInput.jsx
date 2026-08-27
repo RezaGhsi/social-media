@@ -1,5 +1,5 @@
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
 const PasswordInput = ({
   value,
@@ -37,7 +37,7 @@ const PasswordInput = ({
           className="absolute top-0 right-3 bottom-0 cursor-pointer py-0 text-lg text-neutral-500 outline-0 hover:text-neutral-600"
           onClick={handlePasswordVisibility}
         >
-          {isPasswordVisible ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+          {isPasswordVisible ? <EyeOff size={18} /> : <Eye size={18} />}
         </button>
       </div>
     </div>

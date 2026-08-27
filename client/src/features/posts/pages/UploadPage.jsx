@@ -73,13 +73,13 @@ const UploadPage = () => {
 
       <form className="flex-1" onSubmit={handleSubmit}>
         <main className="flex h-full w-full items-center justify-center bg-[#6060db] p-10">
-          <section className="flex w-[95dvw] items-center justify-between gap-6 rounded-xl bg-white p-16 py-20 shadow-[12px]">
+          <section className="flex w-360 items-center justify-between gap-6 rounded-xl bg-white p-16 py-20 shadow-[12px]">
             <div className="ml-8 h-full w-[50%]">
               <h3 className="font-Poppins-SemiBold text-5xl text-indigo-600">
                 File upload
               </h3>
 
-              <div className="relative mt-5 flex w-[80%] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-800 bg-[#cecefd] text-indigo-800">
+              <div className="relative mt-5 flex w-[80%] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-800 bg-[#cecefd] text-indigo-800 hover:opacity-90">
                 <span className="mt-12 flex justify-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +161,7 @@ const UploadPage = () => {
                 <button
                   type="submit"
                   // disabled={!user.isVerified || uploading}
-                  className="mt-1 cursor-pointer rounded-lg bg-indigo-800 p-4 text-xl text-white transition-all active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-neutral-300"
+                  className="mt-1 cursor-pointer rounded-lg bg-indigo-800 p-4 text-xl text-white transition-all hover:bg-indigo-700 active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-neutral-300"
                 >
                   {uploading ? "Uploading..." : "Upload post"}
                 </button>

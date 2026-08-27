@@ -2,20 +2,18 @@ import { useAuth } from "../../../features/auth/hooks/useAuth";
 import AvatarImg from "../../../features/users/components/AvatarImg";
 
 const Header = () => {
-  const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
-
   const { user, isAuthenticated, isInitializing } = useAuth();
 
   return (
     <>
-      <header>
-        <nav className="flex h-22 w-full items-center justify-between px-4 py-6">
+      <header className="flex justify-center">
+        <nav className="mx-4 flex h-22 w-full max-w-360 items-center justify-between py-6">
           <div>
             <a className="font-Poppins-Black text-2xl text-[#0f172a]" href="/">
               nekoSocial
             </a>
           </div>
-          <div className="search-box relative flex h-11 w-85 items-center rounded-2xl bg-[#f1f1f1]">
+          <div className="search-box relative flex h-11 w-85 items-center rounded-2xl bg-[#F1F1F1]">
             <span className="search-icon absolute ml-4 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +28,7 @@ const Header = () => {
             <input
               placeholder="Search in Neko Social .."
               type="text"
-              className="placeholder:font-Poppins-SemiBold ml-2 h-full w-full bg-transparent px-8 outline-0 placeholder:text-neutral-700"
+              className="placeholder:font-Poppins-SemiBold ml-2 h-full w-full bg-transparent px-8 outline-0 placeholder:text-neutral-500"
             />
           </div>
           {!isInitializing ? (
@@ -43,7 +41,7 @@ const Header = () => {
               ) : (
                 <div className="flex w-50 items-center">
                   <a
-                    className="font-Poppins-Medium mr-3 rounded-3xl bg-indigo-600 px-8 py-3 text-white"
+                    className="font-Poppins-Medium mr-5 rounded-3xl bg-indigo-600 px-8 py-3 text-white hover:bg-indigo-500 active:bg-indigo-400"
                     href="/upload"
                   >
                     Create

@@ -1,23 +1,31 @@
 import { useState } from "react";
-import { FaRegHeart, FaRegCommentDots, FaHeart } from "react-icons/fa";
-import AvatarImg from "./AvatarImg";
+import {
+  EllipsisVertical,
+  Bookmark,
+  Heart,
+  MessageCircleMore,
+  Trash2,
+  Check,
+} from "lucide-react";
+import AvatarImg from "../../users/components/AvatarImg";
 import {
   likePost,
   disLikePost,
   savePost,
   unSavePost,
-} from "../../posts/api/postApi";
+  deletePost,
+} from "../api/postApi";
 import ErrorToast from "../../../shared/components/ErrorToast";
-import { LuBookmark } from "react-icons/lu";
-import { IoIosCheckmark } from "react-icons/io";
 import SuccessToast from "../../../shared/components/SuccessToast";
+import PostOptionsMenu from "./PostOptionsMenu";
 
-const PostCard = ({ post, avatar, name }) => {
+const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   const [liked, setLiked] = useState(post?.isLikedByUser);
   const [likesCount, setLikesCount] = useState(post?.likesCount);
   const [saved, setSaved] = useState(post?.isSavedByUser);
+  const [removeButtonVisible, setRemoveButtonVisible] = useState(false);
 
   const handleLike = () => {
     const submitLike = async (postId) => {
@@ -59,40 +67,78 @@ const PostCard = ({ post, avatar, name }) => {
     submitSave(post._id);
   };
 
+  const handleRemovePost = () => {
+    const submitDeletePost = async (postId) => {
+      try {
+        const { data } = await deletePost(postId);
+        SuccessToast(data.message);
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (error) {
+        ErrorToast(error.response.data.message);
+      }
+    };
+    submitDeletePost(post._id);
+  };
+
   return (
-    <div className="relative flex w-full rounded-lg p-3 pt-4">
-      <div className="absolute h-22 w-22 overflow-hidden rounded-full border-2 border-white">
-        <AvatarImg avatarUrl={avatar} />
+    <div
+      className={`relative flex w-full flex-col rounded-lg p-5 pt-4 ${className}`}
+    >
+      <div className="mt-2 mb-2 flex justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-18 w-18 overflow-hidden rounded-full border-2 border-white">
+            <AvatarImg avatarUrl={user.avatarUrl} />
+          </div>
+          <div className="flex flex-col">
+            <a
+              href={`/${user.username}`}
+              className="font-Poppins-Medium mb-1 text-xl"
+            >
+              {user.name}
+            </a>
+            <a href={`/${user.username}`} className="text-sm">
+              @{user.username}
+            </a>
+          </div>
+        </div>
+
+        {isOwnPage && <PostOptionsMenu handleRemovePost={handleRemovePost} />}
       </div>
-      <div className="ml-22 flex w-full flex-col p-2">
-        <span className="font-Poppins-Medium mb-4 text-xl">{name}</span>
+      <div className="flex w-full flex-col p-2 px-4">
         <img
           src={`${baseURL}/${post?.mediaUrl}`}
           alt="post image"
           className="w-full rounded-xl"
         />
-        <div className="m-3 mt-5 flex text-2xl text-[26px] *:mr-4 *:cursor-pointer">
+        <div className="m-3 mt-5 flex gap-3 text-2xl text-[26px] *:cursor-pointer">
           <button onClick={handleLike}>
             {liked ? (
               <div className="relative">
-                <FaHeart className="absolute animate-ping text-red-600 [animation-iteration-count:1]" />
-                <FaHeart className="text-red-600" />
+                <Heart
+                  size={30}
+                  fill="red"
+                  className="absolute animate-ping text-red-600 [animation-iteration-count:1]"
+                />
+                <Heart size={30} fill="red" className="text-red-600" />
               </div>
             ) : (
-              <FaRegHeart />
+              <Heart size={30} />
             )}
           </button>
           <button>
-            <FaRegCommentDots />
+            <MessageCircleMore size={30} />
           </button>
           <button onClick={handleSave}>
             {saved ? (
-              <div className="relative flex items-baseline justify-center">
-                <IoIosCheckmark className="absolute text-2xl text-white" />
-                <LuBookmark fill="black" />
+              <div className="relative">
+                <Check
+                  size={16}
+                  className="absolute inset-0 place-self-center text-white"
+                />
+                <Bookmark size={30} fill="black" />
               </div>
             ) : (
-              <LuBookmark />
+              <Bookmark size={30} />
             )}
           </button>
         </div>
@@ -102,7 +148,7 @@ const PostCard = ({ post, avatar, name }) => {
           </p>
           <p className="mb-3">{post.description}</p>
           <div>
-            {post.hashtags.map((hashtag, i) => (
+            {post.hashtags?.map((hashtag, i) => (
               <a
                 key={i}
                 href={`hashtag/${hashtag}`}

@@ -8,6 +8,7 @@ import ProfilePage from "./../features/users/pages/ProfilePage";
 import UploadPage from "../features/posts/pages/UploadPage";
 import NotFound from "../pages/NotFound";
 import ProfileUpdate from "../features/users/pages/ProfileUpdate";
+import SavedPosts from "../features/users/pages/SavedPosts";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
         element: <ProfileUpdate />,
       },
       { path: "/upload", element: <UploadPage /> },
+      {
+        path: "/saved-posts",
+        element: <SavedPosts />,
+      },
     ],
   },
   { path: "/*", element: <NotFound /> },
