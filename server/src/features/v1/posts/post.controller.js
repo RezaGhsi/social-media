@@ -1,3 +1,6 @@
+const path = require("path");
+const fs = require("fs");
+
 const postModel = require("./post.model");
 const likeModel = require("./../like/like.model");
 const saveModel = require("./../save/save.model");
@@ -32,17 +35,39 @@ exports.uploadOne = async (req, res, next) => {
 exports.deleteOne = async (req, res, next) => {
   try {
     const { postId } = req.params;
+    const userId = req.user._id.toString();
 
-    const [deletedPost] = await Promise.all([
-      await postModel.findByIdAndDelete(postId),
-      await likeModel.deleteMany({ post: postId }),
-      await saveModel.deleteMany({ post: postId }),
-      // and delete comments
-    ]);
-
-    if (!deletedPost) {
+    const post = await postModel.findById(postId).select("user mediaUrl");
+    if (!post) {
       throw new AppError("Post Not Found", 404);
     }
+
+    if (post.user.toString() !== userId) {
+      throw new AppError("You Can't Delete this Post", 403);
+    }
+
+    const mediaPath = path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "public",
+      post.mediaUrl,
+    );
+
+    await Promise.all([
+      fs.rm(mediaPath, (err) => {
+        if (err) {
+          throw err;
+        }
+      }),
+
+      postModel.findByIdAndDelete(postId),
+      likeModel.deleteMany({ post: postId }),
+      saveModel.deleteMany({ post: postId }),
+      // and delete comments
+    ]);
 
     successResponse(res, 200, { message: "Post Deleted Successfully" });
   } catch (error) {

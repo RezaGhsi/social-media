@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  EllipsisVertical,
-  Bookmark,
-  Heart,
-  MessageCircleMore,
-  Trash2,
-  Check,
-} from "lucide-react";
+import { Bookmark, Heart, MessageCircleMore, Check } from "lucide-react";
 import AvatarImg from "../../users/components/AvatarImg";
 import {
   likePost,
@@ -25,7 +18,6 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
   const [liked, setLiked] = useState(post?.isLikedByUser);
   const [likesCount, setLikesCount] = useState(post?.likesCount);
   const [saved, setSaved] = useState(post?.isSavedByUser);
-  const [removeButtonVisible, setRemoveButtonVisible] = useState(false);
 
   const handleLike = () => {
     const submitLike = async (postId) => {
@@ -72,7 +64,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
       try {
         const { data } = await deletePost(postId);
         SuccessToast(data.message);
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => window.location.reload(), 500);
       } catch (error) {
         ErrorToast(error.response.data.message);
       }
