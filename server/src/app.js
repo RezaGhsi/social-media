@@ -19,7 +19,9 @@ const app = express();
 
 //* Security
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
-app.use(corsMiddleware);
+if (process.env.NODE_ENV !== "production") {
+  app.use(corsMiddleware);
+}
 // app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 //* Parser
@@ -34,15 +36,15 @@ app.use(morgan("dev"));
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 //* Routes
-app.use("/v1/auth", authRouter);
-app.use("/v1/user", userRouter);
-app.use("/v1/post", postRouter);
-app.use("/v1/follow", followRouter);
-app.use("/v1/like", likeRouter);
-app.use("/v1/save", saveRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/post", postRouter);
+app.use("/api/v1/follow", followRouter);
+app.use("/api/v1/like", likeRouter);
+app.use("/api/v1/save", saveRouter);
 
 //* 404 Handler
-app.use((req, res) => {
+app.use("/api/*notfound", (req, res) => {
   return res.status(404).json({
     success: false,
     message: "Path Not Found! Please Check Path/Method",
@@ -51,5 +53,14 @@ app.use((req, res) => {
 
 //* Error Handler
 app.use(errorHandler);
+
+//* Production Static Serve for Frontend
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../../client/dist")));
+
+  app.get("/*frontend", (req, res) => {
+    res.sendFile(path.join(__dirname, "../../client/dist", "index.html"));
+  });
+}
 
 module.exports = app;

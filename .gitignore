@@ -2,3 +2,6 @@
 ejs
 *uploads
 *.env
+dist
+.env
+server/.env

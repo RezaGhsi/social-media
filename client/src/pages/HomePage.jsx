@@ -16,28 +16,28 @@ const HomePage = () => {
         <section className="flex-3">
           <div className="mb-10 flex gap-4">
             <StoryCard
-              storyUrl="/public/images/story-1.jpg"
-              avatarUrl="/public/images/profile-13.jpg"
+              storyUrl="/images/story-1.jpg"
+              avatarUrl="/images/profile-13.jpg"
               name="Elisabet Johnson"
             />
             <StoryCard
-              storyUrl="/public/images/story-2.jpg"
-              avatarUrl="/public/images/profile-13.jpg"
+              storyUrl="/images/story-2.jpg"
+              avatarUrl="/images/profile-13.jpg"
               name="Elisabet Johnson"
             />
             <StoryCard
-              storyUrl="/public/images/story-3.jpg"
-              avatarUrl="/public/images/profile-14.jpg"
+              storyUrl="/images/story-3.jpg"
+              avatarUrl="/images/profile-14.jpg"
               name="Elisabet Johnson"
             />
             <StoryCard
-              storyUrl="/public/images/story-4.jpg"
-              avatarUrl="/public/images/profile-15.jpg"
+              storyUrl="/images/story-4.jpg"
+              avatarUrl="/images/profile-15.jpg"
               name="Elisabet Johnson"
             />
             <StoryCard
-              storyUrl="/public/images/story-5.jpg"
-              avatarUrl="/public/images/profile-16.jpg"
+              storyUrl="/images/story-5.jpg"
+              avatarUrl="/images/profile-16.jpg"
               name="Elisabet Johnson"
             />
           </div>
@@ -51,7 +51,7 @@ const HomePage = () => {
                 >
                   <div>
                     <img
-                      src="/public/images/profile-1.jpg"
+                      src="/images/profile-1.jpg"
                       alt="Profile card"
                       className="w-8 rounded-full"
                     />
@@ -69,7 +69,7 @@ const HomePage = () => {
 
               <main className="tweet-body">
                 <img
-                  src="/public/images/feed-1.jpg"
+                  src="/images/feed-1.jpg"
                   className="tweet-image object-cover"
                   alt=""
                 />
@@ -180,21 +180,21 @@ const HomePage = () => {
                   <div className="liked-by-wrapper relative block">
                     <span>
                       <img
-                        src="./public/images/profile-5.jpg"
+                        src="./images/profile-5.jpg"
                         className="likedBy"
                         alt=""
                       />
                     </span>
                     <span>
                       <img
-                        src="./public/images/profile-6.jpg"
+                        src="./images/profile-6.jpg"
                         className="likedBy left-3 z-10"
                         alt=""
                       />
                     </span>
                     <span> </span>
                     <img
-                      src="./public/images/profile-7.jpg"
+                      src="./images/profile-7.jpg"
                       className="likedBy left-6 z-20"
                       alt=""
                     />
@@ -237,7 +237,7 @@ const HomePage = () => {
                 >
                   <div>
                     <img
-                      src="/public/images/profile-2.jpg"
+                      src="/images/profile-2.jpg"
                       alt="Profile card"
                       className="w-8 rounded-full"
                     />
@@ -254,7 +254,7 @@ const HomePage = () => {
               </header>
               <main className="tweet-body">
                 <img
-                  src="/public/images/feed-2.jpg"
+                  src="/images/feed-2.jpg"
                   className="tweet-image object-cover"
                   alt=""
                 />
@@ -315,21 +315,21 @@ const HomePage = () => {
                   <div className="liked-by-wrapper relative block">
                     <span>
                       <img
-                        src="./public/images/profile-5.jpg"
+                        src="./images/profile-5.jpg"
                         className="likedBy"
                         alt=""
                       />
                     </span>
                     <span>
                       <img
-                        src="./public/images/profile-6.jpg"
+                        src="./images/profile-6.jpg"
                         className="likedBy left-3 z-10"
                         alt=""
                       />
                     </span>
                     <span>
                       <img
-                        src="./public/images/profile-7.jpg"
+                        src="./images/profile-7.jpg"
                         className="likedBy left-6 z-20"
                         alt=""
                       />
@@ -370,7 +370,7 @@ const HomePage = () => {
                 >
                   <div>
                     <img
-                      src="/public/images/profile-3.jpg"
+                      src="/images/profile-3.jpg"
                       alt="Profile card"
                       className="w-8 rounded-full"
                     />
@@ -387,7 +387,7 @@ const HomePage = () => {
               </header>
               <main className="tweet-body">
                 <img
-                  src="/public/images/feed-3.jpg"
+                  src="/images/feed-3.jpg"
                   className="tweet-image object-cover"
                   alt=""
                 />
@@ -549,7 +549,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-10.jpg"
+                    src="/images/feed-10.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -570,7 +570,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-9.jpg"
+                    src="/images/feed-9.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -591,7 +591,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-4.jpg"
+                    src="/images/feed-4.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -612,7 +612,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-2.jpg"
+                    src="/images/feed-2.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -663,7 +663,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-10.jpg"
+                    src="/images/feed-10.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -684,7 +684,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-9.jpg"
+                    src="/images/feed-9.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -705,7 +705,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-4.jpg"
+                    src="/images/feed-4.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -726,7 +726,7 @@ const HomePage = () => {
               <article className="popular-post">
                 <div className="">
                   <img
-                    src="/public/images/feed-2.jpg"
+                    src="/images/feed-2.jpg"
                     className="popular-post_icon"
                     alt=""
                   />
@@ -753,7 +753,7 @@ const HomePage = () => {
                 <div className="mb-3 flex items-center gap-3">
                   <div className="h-10 w-10 overflow-hidden rounded-full">
                     <img
-                      src="/public/images/profile-1.jpg"
+                      src="/images/profile-1.jpg"
                       className="h-full w-full object-cover"
                       alt=""
                     />
@@ -775,7 +775,7 @@ const HomePage = () => {
                 <div className="mb-3 flex items-center gap-3">
                   <div className="h-10 w-10 overflow-hidden rounded-full">
                     <img
-                      src="/public/images/profile-4.jpg"
+                      src="/images/profile-4.jpg"
                       className="h-full w-full object-cover"
                       alt=""
                     />
@@ -797,7 +797,7 @@ const HomePage = () => {
                 <div className="mb-3 flex items-center gap-3">
                   <div className="h-10 w-10 overflow-hidden rounded-full">
                     <img
-                      src="/public/images/profile-14.jpg"
+                      src="/images/profile-14.jpg"
                       className="h-full w-full object-cover"
                       alt=""
                     />
