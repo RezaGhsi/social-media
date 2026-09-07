@@ -1,7 +1,16 @@
 import api from "./../../../lib/axiosInstance";
 
-export const upload = async (formData) =>
-  await api.post("/post/upload", formData);
+export const upload = async (formData, setUploadProgress) => {
+  await await api.post("/auth/refresh");
+
+  return await api.post("/post/upload", formData, {
+    timeout: 3000000,
+    onUploadProgress: (e) => {
+      const uploadProgress = Math.floor(e.progress * 100);
+      setUploadProgress(uploadProgress);
+    },
+  });
+};
 
 export const likePost = async (postId) => await api.post("/like", postId);
 

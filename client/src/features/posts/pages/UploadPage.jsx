@@ -11,6 +11,7 @@ const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [form, setForm] = useState({ description: "", hashtags: "" });
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -41,7 +42,7 @@ const UploadPage = () => {
 
     try {
       setUploading(true);
-      await upload(formData);
+      await upload(formData, setUploadProgress);
       toast.success("Post Uploaded Successfully 😃", {
         style: {
           background: "green",
@@ -163,7 +164,9 @@ const UploadPage = () => {
                   // disabled={!user.isVerified || uploading}
                   className="mt-1 cursor-pointer rounded-lg bg-indigo-800 p-4 text-xl text-white transition-all hover:bg-indigo-700 active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-neutral-300"
                 >
-                  {uploading ? "Uploading..." : "Upload post"}
+                  {uploading
+                    ? `Uploading... ${uploadProgress}%`
+                    : "Upload post"}
                 </button>
               </div>
             </div>
