@@ -5,7 +5,7 @@ import MessagesFilter from "../shared/components/MessagesFilter";
 import StoryCard from "../shared/components/StoryCard";
 import { getHomePagePosts } from "../features/posts/api/postApi";
 import PostCard from "../features/posts/components/PostCard";
-import { PenBox, Search, Star } from "lucide-react";
+import { CameraOff, PenBox, Search, Star } from "lucide-react";
 import PopularPostCard from "../shared/components/PopularPostCard";
 import RequestCard from "../shared/components/RequestCard";
 
@@ -59,10 +59,24 @@ const HomePage = () => {
             />
           </div> */}
 
-          <section id="feeds" className="*:mb-4 *:rounded-lg *:bg-white *:p-2">
-            {!loadingPosts &&
-              posts.map((post) => <PostCard post={post} user={post.user} />)}
-          </section>
+          {!loadingPosts && (
+            <section
+              id="feeds"
+              className="*:mb-4 *:rounded-lg *:bg-white *:p-2"
+            >
+              {posts.length > 0 ? (
+                posts.map((post) => <PostCard post={post} user={post.user} />)
+              ) : (
+                <div className="flex h-120 w-full flex-col items-center justify-center rounded-lg">
+                  <CameraOff className="size-24 text-neutral-800" />
+                  <h4 className="font-Poppins-Bold p-3 text-center text-4xl text-neutral-800">
+                    No Posts Available.
+                    <br /> Follow some users to see their posts.
+                  </h4>
+                </div>
+              )}
+            </section>
+          )}
         </section>
 
         <aside id="right-sidebar" className="max-w-110">
