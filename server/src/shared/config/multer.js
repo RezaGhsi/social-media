@@ -52,7 +52,7 @@ const createStorage = (dest) => {
   return multer.diskStorage({
     destination: (req, file, cb) => {
       checkDir(dest);
-      cb(null, path.join(__dirname, "..", "..", "..", "public", dest));
+      cb(null, dest);
     },
 
     filename: (req, file, cb) => {
@@ -64,13 +64,17 @@ const createStorage = (dest) => {
 };
 
 exports.uploadAvatar = multer({
-  storage: createStorage("uploads/profiles"),
+  storage: createStorage(
+    path.join(__dirname, "..", "..", "..", "public", "uploads", "profiles"),
+  ),
   fileFilter: avatarFilter,
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single("avatar");
 
 exports.uploadPost = multer({
-  storage: createStorage("uploads/posts"),
+  storage: createStorage(
+    path.join(__dirname, "..", "..", "..", "public", "uploads", "posts"),
+  ),
   fileFilter: postFilter,
   limits: { fileSize: 50 * 1024 * 1024 },
 }).single("media");
