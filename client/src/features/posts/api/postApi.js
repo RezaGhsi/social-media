@@ -15,3 +15,5 @@ export const unSavePost = async (postId) => await api.delete(`/save/${postId}`);
 export const getSavedPosts = async () => await api.get(`/save`);
 
 export const deletePost = async (postId) => await api.delete(`/post/${postId}`);
+
+export const getHomePagePosts = async () => await api.get(`/post`);

@@ -1,7 +1,7 @@
 const StoryCard = ({ storyUrl, avatarUrl, name }) => {
   return (
     <div>
-      <article className="relative h-55 w-32 overflow-hidden rounded-lg">
+      <article className="relative overflow-hidden rounded-lg">
         <div className="relative h-full w-full">
           <img
             src={storyUrl}

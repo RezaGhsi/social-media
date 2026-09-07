@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const postModel = require("./post.model");
 const likeModel = require("./../like/like.model");
+const saveModel = require("./../save/save.model");
 const { isFollowingUser } = require("../users/user.service");
 const AppError = require("../../../shared/utils/AppError");
 
@@ -47,4 +48,40 @@ exports.hasAccessToPost = async (postId, userId) => {
       throw new AppError("You don't have access to this post", 403);
     }
   }
+};
+
+exports.setPostsDetails = async (userId, posts) => {
+  const postIds = posts.map((post) => post._id);
+
+  const [likesCount, userLikes, userSaves] = await Promise.all([
+    likeModel.aggregate([
+      { $match: { post: { $in: postIds } } },
+      { $group: { _id: "$post", count: { $sum: 1 } } },
+    ]),
+
+    likeModel
+      .find({ post: { $in: postIds }, user: userId })
+      .select("post")
+      .lean(),
+
+    saveModel
+      .find({ post: { $in: postIds }, user: userId })
+      .select("post")
+      .lean(),
+  ]);
+
+  const likeCountMap = new Map(
+    likesCount.map((post) => [post._id.toString(), post.count]),
+  );
+  const userLikedSet = new Set(userLikes.map((like) => like.post.toString()));
+
+  const userSavedSet = new Set(userSaves.map((save) => save.post.toString()));
+
+  posts.forEach((post) => {
+    Object.assign(post, {
+      likesCount: likeCountMap.get(post._id.toString()) || 0,
+      isLikedByUser: userLikedSet.has(post._id.toString()),
+      isSavedByUser: userSavedSet.has(post._id.toString()),
+    });
+  });
 };

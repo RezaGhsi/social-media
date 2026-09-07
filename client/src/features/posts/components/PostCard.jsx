@@ -74,11 +74,11 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
   return (
     <div
-      className={`relative flex w-full flex-col rounded-lg p-5 pt-4 ${className}`}
+      className={`relative flex w-full flex-col rounded-lg p-2 ${className}`}
     >
       <div className="mt-2 mb-2 flex justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-18 w-18 overflow-hidden rounded-full border-2 border-white">
+          <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-white">
             <AvatarImg avatarUrl={user.avatarUrl} />
           </div>
           <div className="flex flex-col">
@@ -96,7 +96,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
         {isOwnPage && <PostOptionsMenu handleRemovePost={handleRemovePost} />}
       </div>
-      <div className="flex w-full flex-col p-2 px-4">
+      <div className="flex w-full flex-col p-1">
         <img
           src={`${baseURL}/${post?.mediaUrl}`}
           alt="post image"

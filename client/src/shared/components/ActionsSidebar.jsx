@@ -2,38 +2,40 @@ import { useAuth } from "../../features/auth/hooks/useAuth";
 import AvatarImg from "../../features/users/components/AvatarImg";
 
 const ActionsSidebar = () => {
-  const { user, isInitializing } = useAuth();
+  const { user, isInitializing, isAuthenticated } = useAuth();
 
   return (
     <>
-      <aside className="sticky top-4 flex h-160 flex-[1.5] flex-col">
-        <article className="rounded-lg bg-white p-3 px-4">
-          {isInitializing ? (
-            <div className="flex items-center">
-              <div className="mr-4 h-14 w-14 animate-pulse overflow-hidden rounded-full bg-neutral-200"></div>
-              <div className="*:h-3.5 *:animate-pulse *:rounded-lg *:bg-neutral-200">
-                <div className="mb-2 w-30"></div>
-                <div className="w-20"></div>
+      <aside className="sticky top-4 flex h-160 w-70 flex-col gap-4">
+        {!isInitializing && isAuthenticated && (
+          <article className="rounded-lg bg-white p-3 px-4">
+            {isInitializing ? (
+              <div className="flex items-center">
+                <div className="mr-4 h-14 w-14 animate-pulse overflow-hidden rounded-full bg-neutral-200"></div>
+                <div className="*:h-3.5 *:animate-pulse *:rounded-lg *:bg-neutral-200">
+                  <div className="mb-2 w-30"></div>
+                  <div className="w-20"></div>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="flex items-center">
-              <div className="mr-4 h-14 w-14 overflow-hidden rounded-full">
-                <AvatarImg avatarUrl={user?.avatarUrl} />
+            ) : (
+              <div className="flex items-center">
+                <div className="mr-4 h-14 w-14 overflow-hidden rounded-full">
+                  <AvatarImg avatarUrl={user?.avatarUrl} />
+                </div>
+                <div>
+                  <p className="user-profile-name font-Poppins-Bold mb-1 text-sm text-gray-900">
+                    {user?.name}
+                  </p>
+                  <p className="font-Poppins-Light text-xs text-gray-500">
+                    @{user?.username}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="user-profile-name font-Poppins-Bold mb-1 text-sm text-gray-900">
-                  {user?.name}
-                </p>
-                <p className="font-Poppins-Light text-xs text-gray-500">
-                  @{user?.username}
-                </p>
-              </div>
-            </div>
-          )}
-        </article>
+            )}
+          </article>
+        )}
 
-        <section className="my-4 overflow-hidden rounded-lg bg-white *:*:mr-2 *:flex *:px-6 *:py-4 *:transition-colors *:hover:bg-[#f1f1f1]">
+        <section className="overflow-hidden rounded-lg bg-white *:*:mr-2 *:flex *:px-6 *:py-4 *:transition-colors *:hover:bg-[#f1f1f1]">
           <a href="/">
             <div className="flex-center">
               <svg

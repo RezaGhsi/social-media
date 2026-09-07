@@ -11,12 +11,6 @@ import ProfileUpdate from "../features/users/pages/ProfileUpdate";
 import SavedPosts from "../features/users/pages/SavedPosts";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [{ index: true, element: <HomePage /> }],
-  },
-
   // routes with no layout
   { path: "/register", element: <RegisterPage /> },
   { path: "/login", element: <LoginPage /> },
@@ -25,6 +19,14 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
+      {
+        path: "/",
+        element: (
+          <RootLayout>
+            <HomePage />
+          </RootLayout>
+        ),
+      },
       {
         path: "/:username",
         element: (

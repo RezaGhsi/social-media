@@ -138,7 +138,7 @@ const RegisterForm = () => {
           type="submit"
           className="h-10 w-[70%] cursor-pointer rounded-sm bg-indigo-700 text-white active:bg-indigo-500"
         >
-          {loading ? "Signing You up ..." : "Continue"}
+          {loading ? "Logging you in ..." : "Continue"}
         </button>
       </footer>
     </form>
