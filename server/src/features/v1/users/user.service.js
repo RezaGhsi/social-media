@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 
 const followModel = require("./../follow/follow.model");
-const { profile } = require("console");
 
 exports.removeOldAvatar = (oldAvatarUrl) => {
   if (oldAvatarUrl.startsWith("images")) return;

@@ -13,7 +13,7 @@ const PostsFilterNav = () => {
 
   return (
     <>
-      <nav className="*:font-Poppins-SemiBold flex w-full justify-between *:flex *:w-full *:justify-center *:border-b-4 *:py-3 *:transition-all *:hover:cursor-pointer">
+      <nav className="*:font-Poppins-SemiBold flex w-full justify-between bg-white *:flex *:w-full *:justify-center *:border-b-4 *:py-3 *:transition-all *:hover:cursor-pointer">
         <button
           href="#"
           onClick={handleFeedChange}

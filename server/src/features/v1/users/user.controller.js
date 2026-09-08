@@ -9,7 +9,6 @@ const {
   getFollowingsList,
   getFollowersList,
 } = require("../follow/follow.service");
-const { post } = require("../like/like.routes");
 
 exports.getUserPage = async (req, res, next) => {
   try {

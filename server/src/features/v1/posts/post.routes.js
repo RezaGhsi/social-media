@@ -3,7 +3,12 @@ const {
   uploadPost,
 } = require("../../../shared/middlewares/uploader.middleware");
 const validate = require("../../../shared/middlewares/validate.middleware");
-const { uploadOne, deleteOne, getHomePagePosts } = require("./post.controller");
+const {
+  uploadOne,
+  deleteOne,
+  getHomePagePosts,
+  getUserPosts,
+} = require("./post.controller");
 const { postUploadSchema, deletePostSchema } = require("./post.validator");
 
 const router = require("express").Router();
@@ -17,5 +22,7 @@ router
   .delete(verifyToken, validate(deletePostSchema, "params"), deleteOne);
 
 router.route("/").get(verifyToken, getHomePagePosts);
+
+router.route("/user/:username").get(verifyToken, getUserPosts);
 
 module.exports = router;

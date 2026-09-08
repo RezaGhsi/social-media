@@ -1,10 +1,9 @@
-import React from "react";
 import { LoginForm } from "..";
 
 const LoginPage = () => {
   return (
-    <div className="flex h-[100dvh] w-[100dvw] justify-between">
-      <section className="flex h-[100%] w-[50%] items-center justify-center">
+    <div className="flex h-dvh w-dvw justify-between">
+      <section className="flex h-full w-[50%] items-center justify-center">
         <LoginForm />
       </section>
 

@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 
 const postModel = require("./post.model");
+const userModel = require("./../users/user.model");
 const likeModel = require("./../like/like.model");
 const saveModel = require("./../save/save.model");
 const followModel = require("./../follow/follow.model");
@@ -9,6 +10,7 @@ const followModel = require("./../follow/follow.model");
 const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { setPostsDetails } = require("./post.service");
+const { isValidObjectId } = require("mongoose");
 
 exports.uploadOne = async (req, res, next) => {
   try {
@@ -112,9 +114,48 @@ exports.getHomePagePosts = async (req, res, next) => {
       .lean();
 
     await setPostsDetails(userId, posts);
-    console.log(posts);
 
     successResponse(res, 200, { posts });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUserPosts = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const { cursor } = req.query;
+    const userId = req.user._id;
+
+    if (cursor && !isValidObjectId(cursor))
+      throw new AppError("Validation Error", 400, {
+        field: "cursor",
+        message: "Invalid input: expected ObjectId",
+      });
+
+    const user = await userModel.findOne({ username }).select("_id");
+    if (!user) throw new AppError("User Not Found", 404);
+
+    const limit = 5; // parseInt(req.query.limit) || 5
+
+    const query = { user: user._id };
+    if (cursor) {
+      query._id = { $lt: cursor };
+    }
+
+    const posts = await postModel
+      .find(query)
+      .sort({ _id: -1 })
+      .limit(limit + 1)
+      .lean();
+
+    const hasMore = posts.length > limit;
+    const results = hasMore ? posts.slice(0, limit) : posts;
+    const nextCursor = hasMore ? posts[limit - 1]._id : null;
+
+    await setPostsDetails(userId, results);
+
+    successResponse(res, 200, { posts: results, nextCursor, hasMore });
   } catch (error) {
     next(error);
   }

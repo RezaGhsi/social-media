@@ -10,6 +10,10 @@ const validate =
           data = req.params;
           break;
 
+        case "query":
+          data = req.query;
+          break;
+
         default:
           data = req.body;
           break;

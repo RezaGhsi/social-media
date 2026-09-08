@@ -26,3 +26,6 @@ export const getSavedPosts = async () => await api.get(`/save`);
 export const deletePost = async (postId) => await api.delete(`/post/${postId}`);
 
 export const getHomePagePosts = async () => await api.get(`/post`);
+
+export const getUserPosts = async (username, cursor) =>
+  await api.get(`/post/user/${username}`, { params: { cursor } });

@@ -15,11 +15,15 @@ import FollowingsModal from "../components/FollowingsModal";
 import FollowersModal from "../components/FollowersModal";
 import AvatarImg from "../components/AvatarImg";
 import { CameraOff, Globe, Loader, LockKeyhole } from "lucide-react";
+import { useCallback } from "react";
+import useUserPosts from "../hooks/useUserPosts";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import ErrorToast from "../../../shared/components/ErrorToast";
 
 const ProfilePage = () => {
   const [userPageInfo, setUserPageInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadingUserInfo, setLoadingUserInfo] = useState(true);
+  const [pageError, setPageError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowingsModalOpen, setIsFollowingsModalOpen] = useState(false);
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
@@ -29,35 +33,59 @@ const ProfilePage = () => {
 
   const { username } = useParams();
 
+  const {
+    data,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    isLoading,
+    isError,
+    error,
+  } = useUserPosts(username);
+
+  const fetchUserInfo = useCallback(async () => {
+    try {
+      const { data } = await getUserProfile(username);
+      setUserPageInfo(data.user);
+      setIsFollowing(data.user.isFollowing);
+      setIsOwnPage(user.username === data.user.username);
+    } catch (error) {
+      setPageError(error);
+    } finally {
+      setLoadingUserInfo(false);
+    }
+  }, [username, user.username]);
+
+  const sentinelRef = useInfiniteScroll(
+    () => {
+      if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+    },
+    { enabled: hasNextPage },
+  );
+
+  const posts = data?.pages.flatMap((p) => p.posts) ?? [];
+
   useEffect(() => {
-    const getUser = async (username) => {
-      try {
-        const { data } = await getUserProfile(username);
-        setUserPageInfo(data.user);
-        setIsFollowing(data.user.isFollowing);
-        setIsOwnPage(user.username === data.user.username);
-      } catch (error) {
-        setError(error);
-        setUserPageInfo(error.response.data.user);
-      } finally {
-        setLoading(false);
-      }
+    const firstFetch = async () => {
+      await fetchUserInfo();
     };
-    getUser(username);
+    firstFetch();
   }, []);
 
-  if (error?.response.status === 404) return <NotFound />;
+  if (isError) ErrorToast("an Error Accrued when Loading Posts");
+
+  if (pageError?.response.status === 404) return <NotFound />;
 
   return (
     <div className="flex justify-center bg-[#F1F1F1]">
       <div className="mx-10 flex max-w-360 justify-center scroll-smooth pt-8">
-        {loading ? (
+        {loadingUserInfo ? (
           <div className="mr-4 flex w-[69dvw] justify-center">
             <Loader className="mt-16 size-20 animate-spin" />
           </div>
         ) : (
-          <main className="mr-4 flex w-[69dvw] flex-col items-center rounded-lg *:mb-4 *:bg-white">
-            <section className="w-full rounded-t-lg">
+          <main className="mr-4 flex w-[69dvw] flex-col items-center rounded-lg *:mb-4">
+            <section className="w-full rounded-t-lg bg-white">
               <div className="relative h-[30dvh] w-full overflow-hidden rounded-t-lg">
                 <img
                   src="images/feed-6.jpg"
@@ -93,13 +121,13 @@ const ProfilePage = () => {
                   <div className="mb-6 flex *:mr-3 **:pr-1">
                     <div>
                       <span className="font-Poppins-Medium text-2xl">
-                        {!loading && userPageInfo.followersCount}
+                        {!loadingUserInfo && userPageInfo.followersCount}
                       </span>
                       <button
                         onClick={() => setIsFollowersModalOpen(true)}
                         className="cursor-pointer text-xl"
                         disabled={
-                          (!loading && !userPageInfo.followersCount) ||
+                          (!loadingUserInfo && !userPageInfo.followersCount) ||
                           (!isFollowing && userPageInfo.isPrivate)
                         }
                       >
@@ -108,13 +136,13 @@ const ProfilePage = () => {
                     </div>
                     <div>
                       <span className="font-Poppins-Medium text-2xl">
-                        {!loading && userPageInfo.followingsCount}
+                        {!loadingUserInfo && userPageInfo.followingsCount}
                       </span>
                       <button
                         onClick={() => setIsFollowingsModalOpen(true)}
                         className="cursor-pointer text-xl"
                         disabled={
-                          (!loading && !userPageInfo.followingsCount) ||
+                          (!loadingUserInfo && !userPageInfo.followingsCount) ||
                           (!isFollowing && userPageInfo.isPrivate)
                         }
                       >
@@ -140,7 +168,7 @@ const ProfilePage = () => {
                   )}
                 </div>
               </div>
-              {!loading && isOwnPage && !userPageInfo.isVerified && (
+              {!loadingUserInfo && isOwnPage && !userPageInfo.isVerified && (
                 <VerificationError className="mx-6" />
               )}
             </section>
@@ -155,7 +183,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {!loading && userPageInfo?.posts?.length < 1 ? (
+            {!isLoading && userPageInfo?.posts?.length < 1 ? (
               <div className="flex h-96 w-full flex-col items-center justify-center rounded-lg">
                 <CameraOff className="size-24 text-neutral-800" />
                 <h4 className="font-Poppins-Bold text-4xl text-neutral-800">
@@ -163,15 +191,31 @@ const ProfilePage = () => {
                 </h4>
               </div>
             ) : (
-              !loading &&
-              userPageInfo.posts?.map((post, i) => (
-                <PostCard
-                  isOwnPage={isOwnPage}
-                  user={userPageInfo}
-                  key={i}
-                  post={post}
-                />
-              ))
+              <div className="flex w-full flex-col gap-4 bg-[#F1F1F1]">
+                {posts?.map((post) => (
+                  <PostCard
+                    isOwnPage={isOwnPage}
+                    user={userPageInfo}
+                    key={post._id}
+                    post={post}
+                  />
+                ))}
+                {hasNextPage && (
+                  <div
+                    className="bg[#f1f1f1] flex w-full items-center justify-center"
+                    ref={sentinelRef}
+                  >
+                    {isFetchingNextPage ? (
+                      <div className="font-Poppins-SemiBold flex h-40 items-center gap-3">
+                        Loading posts
+                        <Loader className="size-10 animate-spin" />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </main>
         )}

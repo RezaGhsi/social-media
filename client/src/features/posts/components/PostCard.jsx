@@ -74,7 +74,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
   return (
     <div
-      className={`relative flex w-full flex-col rounded-lg p-2 ${className}`}
+      className={`relative flex w-full flex-col rounded-lg bg-white p-2 ${className}`}
     >
       <div className="mt-2 mb-2 flex justify-between">
         <div className="flex items-center gap-2">
@@ -101,6 +101,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
           src={`${baseURL}/${post?.mediaUrl}`}
           alt="post image"
           className="w-full rounded-xl"
+          loading="lazy"
         />
         <div className="m-3 mt-5 flex gap-3 text-2xl text-[26px] *:cursor-pointer">
           <button onClick={handleLike}>
