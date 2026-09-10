@@ -19,11 +19,10 @@ exports.removeOldAvatar = (oldAvatarUrl) => {
 
 exports.isFollowingUser = async (username, profileUsername) => {
   if (username === profileUsername) return true;
-  const follow = await followModel.findOne({
+  const follow = await followModel.exists({
     follower: username,
     following: profileUsername,
   });
 
-  if (!follow) return false;
-  return true;
+  return !!follow;
 };

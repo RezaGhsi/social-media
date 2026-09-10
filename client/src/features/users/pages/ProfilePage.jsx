@@ -72,7 +72,9 @@ const ProfilePage = () => {
     firstFetch();
   }, []);
 
-  if (isError) ErrorToast("an Error Accrued when Loading Posts");
+  if (isError) {
+    if (error.status !== 403) ErrorToast("an Error Accrued when Loading Posts");
+  }
 
   if (pageError?.response.status === 404) return <NotFound />;
 
@@ -85,7 +87,7 @@ const ProfilePage = () => {
           </div>
         ) : (
           <main className="mr-4 flex w-[69dvw] flex-col items-center rounded-lg *:mb-4">
-            <section className="w-full rounded-t-lg bg-white">
+            <section className="w-full rounded-lg bg-white">
               <div className="relative h-[30dvh] w-full overflow-hidden rounded-t-lg">
                 <img
                   src="images/feed-6.jpg"
@@ -172,10 +174,10 @@ const ProfilePage = () => {
                 <VerificationError className="mx-6" />
               )}
             </section>
-            <PostsFilterNav />
+            {/* <PostsFilterNav /> */}
 
             {!isFollowing && userPageInfo.isPrivate && (
-              <div className="flex h-96 w-full flex-col items-center justify-center rounded-lg">
+              <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white">
                 <LockKeyhole className="mb-4 size-24 text-neutral-800" />
                 <h4 className="font-Poppins-Bold text-4xl text-neutral-800">
                   This Page is Private
@@ -184,7 +186,7 @@ const ProfilePage = () => {
             )}
 
             {!isLoading && userPageInfo?.posts?.length < 1 ? (
-              <div className="flex h-96 w-full flex-col items-center justify-center rounded-lg">
+              <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white">
                 <CameraOff className="size-24 text-neutral-800" />
                 <h4 className="font-Poppins-Bold text-4xl text-neutral-800">
                   No Posts Yet

@@ -11,6 +11,7 @@ const AppError = require("../../../shared/utils/AppError");
 const successResponse = require("../../../shared/utils/response");
 const { setPostsDetails } = require("./post.service");
 const { isValidObjectId } = require("mongoose");
+const { isFollowingUser } = require("../users/user.service");
 
 exports.uploadOne = async (req, res, next) => {
   try {
@@ -133,8 +134,12 @@ exports.getUserPosts = async (req, res, next) => {
         message: "Invalid input: expected ObjectId",
       });
 
-    const user = await userModel.findOne({ username }).select("_id");
+    const user = await userModel.findOne({ username }).select("_id isPrivate");
     if (!user) throw new AppError("User Not Found", 404);
+
+    const isFollowing = await isFollowingUser(req.user.username, username);
+    if (user.isPrivate && !isFollowing)
+      throw new AppError("This Account is Private", 403);
 
     const limit = 5; // parseInt(req.query.limit) || 5
 

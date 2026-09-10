@@ -16,10 +16,6 @@ exports.getUserPage = async (req, res, next) => {
 
     const userProfile = await userModel
       .findOne({ username })
-      .populate({
-        path: "posts",
-        options: { sort: { createdAt: -1 }, limit: 10 },
-      })
       .select("-role -password -refreshToken -email")
       .lean();
 
@@ -55,45 +51,6 @@ exports.getUserPage = async (req, res, next) => {
       followersCount,
       followingsCount,
       isFollowing,
-    });
-
-    if (!isFollowing && userProfile.isPrivate) {
-      userProfile.posts = undefined;
-      throw new AppError("This Account is Private", 403, { user: userProfile });
-    }
-
-    const postIds = userProfile.posts.map((post) => post._id);
-
-    const [likesCount, userLikes, userSaves] = await Promise.all([
-      likeModel.aggregate([
-        { $match: { post: { $in: postIds } } },
-        { $group: { _id: "$post", count: { $sum: 1 } } },
-      ]),
-
-      likeModel
-        .find({ post: { $in: postIds }, user: req.user._id })
-        .select("post")
-        .lean(),
-
-      saveModel
-        .find({ post: { $in: postIds }, user: req.user._id })
-        .select("post")
-        .lean(),
-    ]);
-
-    const likeCountMap = new Map(
-      likesCount.map((post) => [post._id.toString(), post.count]),
-    );
-    const userLikedSet = new Set(userLikes.map((like) => like.post.toString()));
-
-    const userSavedSet = new Set(userSaves.map((save) => save.post.toString()));
-
-    userProfile.posts.forEach((post) => {
-      Object.assign(post, {
-        likesCount: likeCountMap.get(post._id.toString()) || 0,
-        isLikedByUser: userLikedSet.has(post._id.toString()),
-        isSavedByUser: userSavedSet.has(post._id.toString()),
-      });
     });
 
     return successResponse(res, 200, {

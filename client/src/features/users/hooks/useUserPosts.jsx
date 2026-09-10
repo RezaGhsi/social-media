@@ -5,8 +5,17 @@ const useUserPosts = (username) => {
   return useInfiniteQuery({
     queryKey: ["posts", "profile"],
     queryFn: async ({ pageParam }) => {
-      const { data } = await getUserPosts(username, pageParam);
-      return data;
+      try {
+        const { data } = await getUserPosts(username, pageParam);
+        return data;
+      } catch (error) {
+        if (error.response?.status === 403) {
+          const privateError = new Error("This Account is Private");
+          privateError.status = 403;
+          throw privateError;
+        }
+        throw error;
+      }
     },
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
