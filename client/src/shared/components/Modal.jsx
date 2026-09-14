@@ -31,8 +31,12 @@ const Modal = ({ children, isOpen, onClose, title }) => {
       id="modal-overlay"
       onClick={onClose}
     >
-      <div id="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="font-Poppins-Medium relative flex items-center justify-center rounded-t-xl bg-white pt-5 *:mx-3">
+      <div
+        id="modal-content"
+        className="flex max-h-[90vh] max-w-300 flex-col rounded-xl bg-white"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="font-Poppins-Medium relative flex shrink-0 items-center justify-center rounded-t-xl bg-white py-5 *:mx-3">
           {title && <h3 className="">{title}</h3>}
           <button
             className="absolute right-0 cursor-pointer text-xl text-neutral-700"
@@ -41,7 +45,9 @@ const Modal = ({ children, isOpen, onClose, title }) => {
             🗙
           </button>
         </div>
-        {children}
+        <div className="scrollbar-thin overflow-y-auto scroll-smooth">
+          {children}
+        </div>
       </div>
     </div>,
     document.getElementById("modal-root"),

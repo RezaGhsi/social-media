@@ -11,6 +11,7 @@ import {
 import ErrorToast from "../../../shared/components/ErrorToast";
 import SuccessToast from "../../../shared/components/SuccessToast";
 import PostOptionsMenu from "./PostOptionsMenu";
+import CommentModal from "../../comments/components/CommentModal";
 
 const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
@@ -18,6 +19,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
   const [liked, setLiked] = useState(post?.isLikedByUser);
   const [likesCount, setLikesCount] = useState(post?.likesCount);
   const [saved, setSaved] = useState(post?.isSavedByUser);
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
   const handleLike = () => {
     const submitLike = async (postId) => {
@@ -37,6 +39,10 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
       }
     };
     submitLike(post._id);
+  };
+
+  const closeCommentsModal = () => {
+    setIsCommentsOpen(false);
   };
 
   const handleSave = () => {
@@ -118,8 +124,13 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
               <Heart size={30} />
             )}
           </button>
-          <button>
+          <button onClick={() => setIsCommentsOpen(!isCommentsOpen)}>
             <MessageCircleMore size={30} />
+            <CommentModal
+              postId={post._id}
+              isOpen={isCommentsOpen}
+              onClose={closeCommentsModal}
+            />
           </button>
           <button onClick={handleSave}>
             {saved ? (
@@ -151,8 +162,11 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
               </a>
             ))}
           </div>
-          <a href="#" className="text-neutral-400">
-            View all 24 comments ...
+          <a
+            onClick={() => setIsCommentsOpen(!isCommentsOpen)}
+            className="cursor-pointer text-neutral-400"
+          >
+            View all {post.commentsCount} comments ...
           </a>
         </div>
       </div>

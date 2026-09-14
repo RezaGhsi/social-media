@@ -17,7 +17,7 @@ import AvatarImg from "../components/AvatarImg";
 import { CameraOff, Globe, Loader, LockKeyhole } from "lucide-react";
 import { useCallback } from "react";
 import useUserPosts from "../hooks/useUserPosts";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../../../shared/hooks/useInfiniteScroll";
 import ErrorToast from "../../../shared/components/ErrorToast";
 
 const ProfilePage = () => {
@@ -79,8 +79,8 @@ const ProfilePage = () => {
   if (pageError?.response.status === 404) return <NotFound />;
 
   return (
-    <div className="flex justify-center bg-[#F1F1F1]">
-      <div className="mx-10 flex max-w-360 justify-center scroll-smooth pt-8">
+    <div className="flex justify-center scroll-smooth bg-[#F1F1F1]">
+      <div className="mx-10 flex max-w-360 justify-center pt-8">
         {loadingUserInfo ? (
           <div className="mr-4 flex w-[69dvw] justify-center">
             <Loader className="mt-16 size-20 animate-spin" />
@@ -185,7 +185,7 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {!isLoading && userPageInfo?.posts?.length < 1 ? (
+            {!isLoading && posts?.length < 1 ? (
               <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white">
                 <CameraOff className="size-24 text-neutral-800" />
                 <h4 className="font-Poppins-Bold text-4xl text-neutral-800">

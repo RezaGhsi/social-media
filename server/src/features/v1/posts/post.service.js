@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const postModel = require("./post.model");
 const likeModel = require("./../like/like.model");
 const saveModel = require("./../save/save.model");
+const commentModel = require("./../comment/comment.model");
+
 const { isFollowingUser } = require("../users/user.service");
 const AppError = require("../../../shared/utils/AppError");
 
@@ -53,7 +55,7 @@ exports.hasAccessToPost = async (postId, userId) => {
 exports.setPostsDetails = async (userId, posts) => {
   const postIds = posts.map((post) => post._id);
 
-  const [likesCount, userLikes, userSaves] = await Promise.all([
+  const [likesCount, userLikes, userSaves, commentsCount] = await Promise.all([
     likeModel.aggregate([
       { $match: { post: { $in: postIds } } },
       { $group: { _id: "$post", count: { $sum: 1 } } },
@@ -68,6 +70,11 @@ exports.setPostsDetails = async (userId, posts) => {
       .find({ post: { $in: postIds }, user: userId })
       .select("post")
       .lean(),
+
+    commentModel.aggregate([
+      { $match: { post: { $in: postIds } } },
+      { $group: { _id: "$post", count: { $sum: 1 } } },
+    ]),
   ]);
 
   const likeCountMap = new Map(
@@ -77,11 +84,16 @@ exports.setPostsDetails = async (userId, posts) => {
 
   const userSavedSet = new Set(userSaves.map((save) => save.post.toString()));
 
+  const commentCountMap = new Map(
+    commentsCount.map((post) => [post._id.toString(), post.count]),
+  );
+
   posts.forEach((post) => {
     Object.assign(post, {
       likesCount: likeCountMap.get(post._id.toString()) || 0,
       isLikedByUser: userLikedSet.has(post._id.toString()),
       isSavedByUser: userSavedSet.has(post._id.toString()),
+      commentsCount: commentCountMap.get(post._id.toString()) || 0,
     });
   });
 };

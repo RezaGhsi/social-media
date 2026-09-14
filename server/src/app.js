@@ -14,6 +14,7 @@ const postRouter = require("./features/v1/posts/post.routes");
 const followRouter = require("./features/v1/follow/follow.routes");
 const likeRouter = require("./features/v1/like/like.routes");
 const saveRouter = require("./features/v1/save/save.routes");
+const commentRouter = require("./features/v1/comment/comment.routes");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/api/v1/post", postRouter);
 app.use("/api/v1/follow", followRouter);
 app.use("/api/v1/like", likeRouter);
 app.use("/api/v1/save", saveRouter);
+app.use("/api/v1/comment", commentRouter);
 
 //* 404 Handler
 app.use("/api/*notfound", (req, res) => {
