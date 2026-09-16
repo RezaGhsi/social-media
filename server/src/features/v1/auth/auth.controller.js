@@ -64,7 +64,7 @@ exports.getAccessToken = async (req, res, next) => {
 
     req.user.password = undefined;
 
-    return successResponse(res, 200, { user: req.user });
+    return successResponse(res, 200);
   } catch (error) {
     next(error);
   }
@@ -72,6 +72,8 @@ exports.getAccessToken = async (req, res, next) => {
 
 exports.getMe = async (req, res, next) => {
   try {
+    req.user.password = undefined;
+    req.user.refreshToken = undefined;
     return successResponse(res, 200, { user: req.user });
   } catch (error) {
     next(error);
@@ -91,7 +93,6 @@ exports.logout = async (req, res, next) => {
 
 exports.changePassword = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { password, newPassword } = req.body;
 
     const isCorrectPassword = await bcrypt.compare(password, req.user.password);
@@ -103,7 +104,11 @@ exports.changePassword = async (req, res, next) => {
 
     const user = await userModel.findById(req.user._id);
     user.password = newPassword;
+    user.refreshToken = refreshTokenGen(user._id);
     user.save();
+
+    res.clearCookie("access-token");
+    res.clearCookie("refresh-token");
 
     successResponse(res, 200, { message: "Password Changed Successfully" });
   } catch (error) {

@@ -31,7 +31,7 @@ const PasswordForm = () => {
       try {
         const { data } = await changePassRequest(passwordForm);
         successToast(data.message);
-        // setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => window.location.reload(), 1000);
       } catch (error) {
         ErrorToast(error.response.data.message);
       } finally {
