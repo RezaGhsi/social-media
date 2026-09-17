@@ -1,5 +1,6 @@
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
 import { BadgeCheck } from "lucide-react";
+import { useAuth } from "../../auth/hooks/useAuth";
 const UserCard = ({
   avatarUrl,
   name,
@@ -8,9 +9,10 @@ const UserCard = ({
   isVerified = false,
 }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
+  const { user } = useAuth();
 
   return (
-    <div className="mb-6 flex items-center justify-between">
+    <div className="mb-6 flex w-110 items-center justify-between">
       <div className="flex items-center">
         <a href={`/${username}`}>
           <img
@@ -38,7 +40,9 @@ const UserCard = ({
           </a>
         </div>
       </div>
-      <FollowUnfollowBtn isFollowing={isFollowing} username={username} />
+      {user.username !== username && (
+        <FollowUnfollowBtn isFollowing={isFollowing} username={username} />
+      )}
     </div>
   );
 };

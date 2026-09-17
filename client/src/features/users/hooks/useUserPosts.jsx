@@ -3,7 +3,7 @@ import { getUserPosts } from "../../posts/api/postApi";
 
 const useUserPosts = (username) => {
   return useInfiniteQuery({
-    queryKey: ["posts", username, "profile"],
+    queryKey: ["posts", "profile", username],
     queryFn: async ({ pageParam }) => {
       try {
         const { data } = await getUserPosts(username, pageParam);

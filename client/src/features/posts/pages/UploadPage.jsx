@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "./../../auth/hooks/useAuth";
 import { upload } from "./../api/postApi";
 import { toast } from "sonner";
 import Header from "../../../shared/components/layout/Header";
 import VerificationError from "../../../shared/components/VerificationError";
 
 const UploadPage = () => {
-  const { user } = useAuth();
-
   const [file, setFile] = useState(null);
   const [form, setForm] = useState({ description: "", hashtags: "" });
   const [uploading, setUploading] = useState(false);

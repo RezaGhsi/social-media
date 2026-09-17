@@ -84,6 +84,13 @@ exports.deleteOne = async (req, res, next) => {
 exports.getHomePagePosts = async (req, res, next) => {
   try {
     const userId = req.user._id;
+    const { cursor } = req.query;
+
+    if (cursor && !isValidObjectId(cursor))
+      throw new AppError("Validation Error", 400, {
+        field: "cursor",
+        message: "Invalid input: expected ObjectId",
+      });
 
     const result = await followModel.aggregate([
       { $match: { follower: req.user.username } },
@@ -107,16 +114,26 @@ exports.getHomePagePosts = async (req, res, next) => {
 
     const followings = result.length ? result[0].followings : [];
 
+    const limit = 10;
+
+    const query = { user: { $in: followings } };
+    if (cursor) {
+      query._id = { $lt: cursor };
+    }
+
     const posts = await postModel
-      .find({ user: { $in: followings } })
+      .find(query)
       .sort({ _id: -1 })
-      .limit(10)
+      .limit(limit + 1)
       .populate({ path: "user", select: "avatarUrl name username" })
       .lean();
 
+    const hasMore = posts.length > limit;
+    const nextCursor = hasMore ? posts.pop()._id : null;
+
     await setPostsDetails(userId, posts);
 
-    successResponse(res, 200, { posts });
+    successResponse(res, 200, { posts, hasMore, nextCursor });
   } catch (error) {
     next(error);
   }

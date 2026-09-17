@@ -170,7 +170,7 @@ const ProfilePage = () => {
                 </h4>
               </div>
             ) : (
-              <section>
+              <section className="h-full w-full">
                 {!isLoading && posts?.length < 1 ? (
                   <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white">
                     <CameraOff className="size-24 text-neutral-800" />

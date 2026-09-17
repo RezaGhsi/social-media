@@ -5,26 +5,47 @@ import MessagesFilter from "../shared/components/MessagesFilter";
 import StoryCard from "../shared/components/StoryCard";
 import { getHomePagePosts } from "../features/posts/api/postApi";
 import PostCard from "../features/posts/components/PostCard";
-import { CameraOff, PenBox, Search, Star } from "lucide-react";
+import { CameraOff, Loader, PenBox, Search, Star } from "lucide-react";
 import PopularPostCard from "../shared/components/PopularPostCard";
 import RequestCard from "../shared/components/RequestCard";
+import useHomeFeed from "../shared/hooks/useHomeFeed";
+import useInfiniteScroll from "../shared/hooks/useInfiniteScroll";
 
 const HomePage = () => {
-  const [loadingPosts, setLoadingPosts] = useState(true);
-  const [posts, setPosts] = useState(null);
-  useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const { data } = await getHomePagePosts();
-        setPosts(data.posts);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoadingPosts(false);
-      }
-    };
-    getPosts();
-  }, []);
+  // const [loadingPosts, setLoadingPosts] = useState(true);
+  // const [posts, setPosts] = useState(null);
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     try {
+  //       const { data } = await getHomePagePosts();
+  //       setPosts(data.posts);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoadingPosts(false);
+  //     }
+  //   };
+  //   getPosts();
+  // }, []);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useHomeFeed();
+
+  const posts = data?.pages.flatMap((p) => p.posts) ?? [];
+
+  const sentinelRef = useInfiniteScroll(
+    () => {
+      if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+    },
+    { enabled: hasNextPage },
+  );
   return (
     <div className="flex flex-col items-center bg-[#F1F1F1]">
       <main className="mx-4 my-8 flex justify-between gap-4">
@@ -59,13 +80,20 @@ const HomePage = () => {
             />
           </div> */}
 
-          {!loadingPosts && (
+          {isLoading ? (
+            <div className="font-Poppins-SemiBold flex h-40 w-170 items-center justify-center gap-3">
+              Loading posts
+              <Loader className="size-10 animate-spin" />
+            </div>
+          ) : (
             <section
               id="feeds"
               className="*:mb-4 *:rounded-lg *:bg-white *:p-2"
             >
               {posts.length > 0 ? (
-                posts.map((post) => <PostCard post={post} user={post.user} />)
+                posts.map((post) => (
+                  <PostCard key={post._id} post={post} user={post.user} />
+                ))
               ) : (
                 <div className="flex h-120 w-full flex-col items-center justify-center rounded-lg">
                   <CameraOff className="size-24 text-neutral-800" />
@@ -73,6 +101,21 @@ const HomePage = () => {
                     No Posts Available.
                     <br /> Follow some users to see their posts.
                   </h4>
+                </div>
+              )}
+              {hasNextPage && (
+                <div
+                  className="bg[#f1f1f1] flex w-full items-center justify-center"
+                  ref={sentinelRef}
+                >
+                  {isFetchingNextPage ? (
+                    <div className="font-Poppins-SemiBold flex h-40 items-center gap-3">
+                      Loading posts
+                      <Loader className="size-10 animate-spin" />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               )}
             </section>
