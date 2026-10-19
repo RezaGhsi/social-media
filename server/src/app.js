@@ -3,11 +3,14 @@ const cors = require("cors");
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const corsMiddleware = require("./shared/middlewares/cors.middleware");
 const helmet = require("helmet");
+const swaggerUi = require("swagger-ui-express");
+
+const corsMiddleware = require("./shared/middlewares/cors.middleware");
 const errorHandler = require("./shared/middlewares/errorHandler");
 
 //* Routes Import
+const swaggerSpec = require("./docs/swaggerLoader");
 const authRouter = require("./features/v1/auth/auth.routes");
 const userRouter = require("./features/v1/users/user.routes");
 const postRouter = require("./features/v1/posts/post.routes");
@@ -37,6 +40,7 @@ app.use(morgan("dev"));
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 //* Routes
+app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);

@@ -48,6 +48,7 @@ const Modal = ({ children, isOpen, onClose, title }) => {
         <div className="scrollbar-thin overflow-y-auto scroll-smooth">
           {children}
         </div>
+        <div className="w-full rounded-b-lg py-1.5"></div>
       </div>
     </div>,
     document.getElementById("modal-root"),

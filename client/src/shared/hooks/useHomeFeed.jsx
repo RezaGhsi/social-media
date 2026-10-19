@@ -10,7 +10,7 @@ const useHomeFeed = () => {
     },
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-    staleTime: 2 * 60 * 1000,
+    staleTime: 0,
   });
 };
 export default useHomeFeed;

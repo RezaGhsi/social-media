@@ -80,7 +80,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
   return (
     <div
-      className={`relative flex w-full flex-col rounded-lg bg-white p-2 ${className}`}
+      className={`relative flex w-full min-w-120 flex-col rounded-lg bg-white p-2 ${className}`}
     >
       <div className="mt-2 mb-2 flex justify-between">
         <div className="flex items-center gap-2">

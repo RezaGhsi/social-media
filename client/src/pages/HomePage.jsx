@@ -88,7 +88,7 @@ const HomePage = () => {
           ) : (
             <section
               id="feeds"
-              className="*:mb-4 *:rounded-lg *:bg-white *:p-2"
+              className="min-w-120 *:mb-4 *:rounded-lg *:bg-white *:p-2"
             >
               {posts.length > 0 ? (
                 posts.map((post) => (

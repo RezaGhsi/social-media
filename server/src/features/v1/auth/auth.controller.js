@@ -1,3 +1,6 @@
+const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+
 const accessTokenGen = require("../../../shared/utils/accessTokenGen");
 const successResponse = require("../../../shared/utils/response");
 const {
@@ -15,7 +18,6 @@ const refreshTokenGen = require("../../../shared/utils/refreshTokenGen");
 const { getFollowingsList } = require("../follow/follow.service");
 const AppError = require("../../../shared/utils/AppError");
 const userModel = require("./../users/user.model");
-const bcrypt = require("bcrypt");
 
 exports.register = async (req, res, next) => {
   try {
@@ -111,6 +113,23 @@ exports.changePassword = async (req, res, next) => {
     res.clearCookie("refresh-token");
 
     successResponse(res, 200, { message: "Password Changed Successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.verifyAccount = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    // to do
   } catch (error) {
     next(error);
   }
