@@ -24,7 +24,6 @@ const CustomInput = ({
           type={type}
           placeholder={placeholder}
           onChange={handleChange}
-          autoComplete="new-password"
         />
       </div>
     </div>

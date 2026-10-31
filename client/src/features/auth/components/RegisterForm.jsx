@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
+import CustomInput from "../../../shared/components/CustomInput";
+import PasswordInput from "../../../shared/components/PasswordInput";
+import { Check, X } from "lucide-react";
 
 const RegisterForm = () => {
   const { register, loading, error, clearError, user } = useAuth();
@@ -14,6 +17,8 @@ const RegisterForm = () => {
   });
 
   const [localError, setLocalError] = useState("");
+
+  const [strongPassword, setStrongPassword] = useState({ char8: false, containsWord: false, containsNumber: false, containsSymbol: false })
 
   useEffect(() => {
     if (user) {
@@ -31,6 +36,27 @@ const RegisterForm = () => {
     setLocalError("");
 
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+    if (e.target.name === "password" && /[A-Za-z]/.test(e.target.value)) {
+      setStrongPassword((prev) => ({ ...prev, containsWord: true }));
+    }
+    else { setStrongPassword((prev) => ({ ...prev, containsWord: false })) }
+
+    if (e.target.name === "password" && e.target.value.length > 7) {
+      setStrongPassword((prev) => ({ ...prev, char8: true }));
+    }
+    else { setStrongPassword((prev) => ({ ...prev, char8: false })) }
+
+    if (e.target.name === "password" && /\d/.test(e.target.value)) {
+      setStrongPassword((prev) => ({ ...prev, containsNumber: true }));
+    }
+    else { setStrongPassword((prev) => ({ ...prev, containsNumber: false })) }
+
+    if (e.target.name === "password" && /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(e.target.value)) {
+      setStrongPassword((prev) => ({ ...prev, containsSymbol: true }));
+    }
+    else { setStrongPassword((prev) => ({ ...prev, containsSymbol: false })) }
+
   };
 
   const handleSubmit = (e) => {
@@ -53,187 +79,63 @@ const RegisterForm = () => {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-[31.3dvw] rounded-[6px] p-[12px]"
-    >
-      <header>
-        <h2 className="font-Poppins-SemiBold mb-3 text-3xl">
-          Get started now 🌌
-        </h2>
-        <div className="mt-1 flex items-center gap-1 text-sm text-gray-800">
-          <span>Have an account?</span>
-          <a href="/login" className="font-Poppins-SemiBold text-indigo-700">
-            Login
-          </a>
-        </div>
+    <section className="flex flex-col mt-12 md:mt-0 gap-7 md:max-w-80 lg:max-w-113.5 transition-colors ">
+      <div className="flex flex-col gap-1.5 ">
+        <h5 className="text-[#8060C5] text-xs font-Poppins-Medium ">YOUR NEXT LITTLE ADVENTURE</h5>
+        <h2 className="text-4xl font-Poppins-SemiBold">Find your kind of people.</h2>
+        <p className="text-neutral-500">Make room for everyday stories. Start with yours.</p>
 
+        {displayError && (
+          <h3 className="font-Poppins-SemiBold text-2xl max-w-100 text-red-600">
+            {displayError}
+          </h3>
+        )}
+
+      </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5 ">
+        <CustomInput value={form.name} label={"Full name"} name={"name"} placeholder="Enter your Full Name" handleChange={handleChange} />
         <div>
-          {displayError && (
-            <h3 className="font-Poppins-SemiBold mt-6 mb-[-20px] text-2xl text-red-600">
-              {displayError}
-            </h3>
-          )}
+          <CustomInput value={form.username} label={"Username"} name={"username"} placeholder="Enter a Username" handleChange={handleChange} />
+          <p className="text-xs text-neutral-500 mt-2">Your unique corner of nekoSocial. You can change it later.</p>
         </div>
-      </header>
+        <CustomInput value={form.email} type="email" label={"Email address"} name={"email"} placeholder="Enter your Email address" handleChange={handleChange} />
 
-      <main className="mt-8">
-        <div className="relative">
-          <label htmlFor="name" className="font-Poppins-Medium">
-            Full name
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="name"
-              type="text"
-              className="placeholder:font-Poppins-SemiBold mt-[8px] mb-4 h-[40px] w-[70%] rounded-[6px] bg-[#00000012] pr-[24px] pl-[42px] text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Full Name..."
-              required
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-            />
 
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-              </svg>
-            </span>
+        <PasswordInput value={form.password} label={"Password"} name={"password"} placeholder="Enter a Strong Password" handleChange={handleChange} />
+        <div className="flex flex-col gap-1">
+          <div className="flex gap-1 justify-between *:w-full *:h-0.75 *:rounded-full *:transition-colors">
+            <span className={`${strongPassword.containsWord ? "bg-purple-700" : "bg-gray-500"}`}></span>
+            <span className={`${strongPassword.containsNumber ? "bg-purple-700" : "bg-gray-500"}`}></span>
+            <span className={`${strongPassword.containsSymbol ? "bg-purple-700" : "bg-gray-500"}`}></span>
+            <span className={`${strongPassword.char8 ? "bg-purple-700" : "bg-gray-500"}`}></span>
           </div>
+          <div className="flex gap-1.5 items-center">
+            {strongPassword.char8 && strongPassword.containsNumber && strongPassword.containsSymbol ?
+              <Check strokeWidth={3} size={18} className="text-green-800" /> :
+              <X strokeWidth={3} size={18} className="text-red-800" />
+            }
+            <p className="text-xs text-neutral-500">Strong password · 8+ characters, a number and a symbol</p>
+          </div>
+
         </div>
 
-        <div className="auth-input-card">
-          <label htmlFor="username" className="font-Poppins-Medium">
-            Username
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="username"
-              type="text"
-              className="placeholder:font-Poppins-SemiBold mt-[8px] mb-4 h-[40px] w-[70%] rounded-[6px] bg-[#00000012] pr-[24px] pl-[42px] text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Username..."
-              required
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-            />
+        <PasswordInput value={form.confirmPassword} label={"Confirm password"} name={"confirmPassword"} placeholder="Enter your Password Again" handleChange={handleChange} />
 
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-              </svg>
-            </span>
-          </div>
-        </div>
+        <p className="text-xs text-neutral-500">By creating an account, you agree to our Terms of Service and Privacy Policy. Be kind. Be yourself.</p>
 
-        <div className="auth-input-card">
-          <label htmlFor="email" className="font-Poppins-Medium">
-            Email address
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="email"
-              type="email"
-              className="placeholder:font-Poppins-SemiBold mt-[8px] mb-4 h-[40px] w-[70%] rounded-[6px] bg-[#00000012] pr-[24px] pl-[42px] text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Email Address..."
-              required
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-            />
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-              </svg>
-            </span>
-          </div>
-        </div>
-
-        <div className="auth-input-card">
-          <label htmlFor="password" className="font-Poppins-Medium">
-            Password
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="password"
-              type="password"
-              className="placeholder:font-Poppins-SemiBold mt-[8px] mb-4 h-[40px] w-[70%] rounded-[6px] bg-[#00000012] pr-[24px] pl-[42px] text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Password..."
-              required
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-            />
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" />
-              </svg>
-            </span>
-          </div>
-        </div>
-        <div className="auth-input-card">
-          <label htmlFor="confirm-password" className="font-Poppins-Medium">
-            Confirm Password
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="confirm-password"
-              type="password"
-              className="placeholder:font-Poppins-SemiBold mt-[8px] mb-4 h-[40px] w-[70%] rounded-[6px] bg-[#00000012] pr-[24px] pl-[42px] text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Password Again..."
-              required
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-            />
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </main>
-      <footer className="mt-4">
         <button
           disabled={loading}
           type="submit"
-          className="h-10 w-[70%] cursor-pointer rounded-sm bg-indigo-700 text-white active:bg-indigo-500"
+          className={`h-11.5 px-5 w-full disabled:cursor-not-allowed cursor-pointer rounded-2xl bg-[#8060C5] text-white active:bg-purple-800 disabled:bg-purple-950/40`}
         >
-          {loading ? "Signing You up ..." : "Continue"}
+          {loading ? "Creating your account ..." : "Create account"}
         </button>
-      </footer>
-    </form>
+      </form>
+      <div className="flex justify-center text-sm gap-1">
+        <p className="text-neutral-500">Already part of the community?</p>
+        <a href="/login" className="font-Poppins-Medium text-[#8060C5] ">Log in</a>
+      </div>
+    </section>
   );
 };
 

@@ -5,13 +5,13 @@ import { useLocation } from "react-router-dom";
 import CustomInput from "../../../shared/components/CustomInput";
 import PasswordInput from "../../../shared/components/PasswordInput";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const { login, loading, error, clearError, user } = useAuth();
   const [form, setForm] = useState({
     identifier: "",
     password: "",
   });
-  const [keepSignedIn, setKeepSignedIn] = useState(false)
+  const [keepSignedIn, setKeepSignedIn] = useState(true)
 
   const isValidForm = form.identifier === "" || form.password === "" || form.identifier.length < 5 || form.password.length < 8
 
@@ -71,7 +71,7 @@ const RegisterForm = () => {
 
         <div className="mt-4 flex justify-between items-center text-sm">
           <div className="flex gap-1">
-            <input type="checkbox" name="keepSignedIn" id="keepSignedIn" onChange={() => setKeepSignedIn(!keepSignedIn)} value={keepSignedIn} className="cursor-pointer w-4" />
+            <input type="checkbox" defaultChecked name="keepSignedIn" id="keepSignedIn" onChange={() => setKeepSignedIn(!keepSignedIn)} value={keepSignedIn} className="cursor-pointer w-4" />
             <label className="cursor-pointer " htmlFor="keepSignedIn">Keep me signed in</label>
           </div>
 
@@ -94,4 +94,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
