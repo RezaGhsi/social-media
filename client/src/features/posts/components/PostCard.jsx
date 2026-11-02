@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bookmark, Heart, MessageCircleMore, Check } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, BookmarkCheck } from "lucide-react";
 import AvatarImg from "../../users/components/AvatarImg";
 import {
   likePost,
@@ -12,12 +12,16 @@ import ErrorToast from "../../../shared/components/ErrorToast";
 import SuccessToast from "../../../shared/components/SuccessToast";
 import PostOptionsMenu from "./PostOptionsMenu";
 import CommentModal from "../../comments/components/CommentModal";
+import { useAuth } from "../../auth/hooks/useAuth";
 
 const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
+  const { user: selfUser } = useAuth();
+
   const [liked, setLiked] = useState(post?.isLikedByUser);
   const [likesCount, setLikesCount] = useState(post?.likesCount);
+  const [commentsCount, setCommentsCount] = useState(post?.commentsCount);
   const [saved, setSaved] = useState(post?.isSavedByUser);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
@@ -80,21 +84,21 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
   return (
     <div
-      className={`relative flex w-full min-w-120 flex-col rounded-lg bg-white p-2 ${className}`}
+      className={`relative flex max-w-155 flex-col rounded-2xl bg-white ${className}`}
     >
-      <div className="mt-2 mb-2 flex justify-between">
-        <div className="flex items-center gap-2">
+      <div className="flex p-5 justify-between border-2 border-neutral-200 border-b-0 rounded-t-2xl">
+        <div className="flex items-center gap-2.5">
           <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-white">
             <AvatarImg avatarUrl={user.avatarUrl} />
           </div>
           <div className="flex flex-col">
             <a
               href={`/${user.username}`}
-              className="font-Poppins-Medium mb-1 text-xl"
+              className="font-Poppins-Medium text-xl"
             >
               {user.name}
             </a>
-            <a href={`/${user.username}`} className="text-sm">
+            <a href={`/${user.username}`} className="text-sm text-neutral-500">
               @{user.username}
             </a>
           </div>
@@ -102,72 +106,74 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
         {isOwnPage && <PostOptionsMenu handleRemovePost={handleRemovePost} />}
       </div>
-      <div className="flex w-full flex-col p-1">
+      <div className="flex w-full flex-col ">
         <img
           src={`${baseURL}/${post?.mediaUrl}`}
           alt="post image"
-          className="w-full rounded-xl"
+          className="w-full"
           loading="lazy"
         />
-        <div className="m-3 mt-5 flex gap-3 text-2xl text-[26px] *:cursor-pointer">
-          <button onClick={handleLike}>
-            {liked ? (
-              <div className="relative">
-                <Heart
-                  size={30}
-                  fill="red"
-                  className="absolute animate-ping text-red-600 [animation-iteration-count:1]"
+
+        <div className="border-2 border-neutral-200 p-5 flex flex-col gap-3 border-t-0 rounded-b-2xl">
+
+          <div className="flex justify-between text-2xl text-[26px]">
+            <div className="flex items-center gap-4">
+              <button onClick={handleLike} className="cursor-pointer flex gap-1.5">
+                {liked ? (
+                  <div className="relative">
+                    <Heart
+                      size={24}
+                      fill="red"
+                      className="absolute animate-ping text-red-600 [animation-iteration-count:1]"
+                    />
+                    <Heart size={24} fill="red" className="text-red-600" />
+                  </div>
+                ) : (
+                  <Heart size={24} className="text-violet-600" />
+                )}
+                <span className="text-lg font-Poppins-Medium">{likesCount}</span>
+              </button>
+              <button onClick={() => setIsCommentsOpen(!isCommentsOpen)} className="cursor-pointer flex gap-1.5">
+                <MessageCircle size={24} />
+                <CommentModal
+                  postId={post._id}
+                  isOpen={isCommentsOpen}
+                  onClose={closeCommentsModal}
                 />
-                <Heart size={30} fill="red" className="text-red-600" />
-              </div>
-            ) : (
-              <Heart size={30} />
-            )}
-          </button>
-          <button onClick={() => setIsCommentsOpen(!isCommentsOpen)}>
-            <MessageCircleMore size={30} />
-            <CommentModal
-              postId={post._id}
-              isOpen={isCommentsOpen}
-              onClose={closeCommentsModal}
-            />
-          </button>
-          <button onClick={handleSave}>
-            {saved ? (
-              <div className="relative">
-                <Check
-                  size={16}
-                  className="absolute inset-0 place-self-center text-white"
-                />
-                <Bookmark size={30} fill="black" />
-              </div>
-            ) : (
-              <Bookmark size={30} />
-            )}
-          </button>
-        </div>
-        <div className="font-Poppins-Medium ml-2 text-neutral-700">
-          <p className="mb-3 *:text-black">
-            Liked by <span>{likesCount}</span> users
-          </p>
-          <p className="mb-3">{post.description}</p>
-          <div>
-            {post.hashtags?.map((hashtag, i) => (
-              <a
-                key={i}
-                href={`hashtag/${hashtag}`}
-                className="mr-1 text-blue-500"
-              >
-                #{hashtag}
-              </a>
-            ))}
+                <span className="text-lg text-neutral-500">{commentsCount}</span>
+              </button>
+            </div>
+            <button onClick={handleSave} className="cursor-pointer">
+              {saved ? (
+                <div className="relative">
+
+                  <BookmarkCheck size={24} />
+                </div>
+              ) : (
+                <Bookmark size={24} />
+              )}
+            </button>
           </div>
-          <a
+          <div className="">
+            <p className="mb-3">{post.description}</p>
+            <div>
+              {post.hashtags?.map((hashtag, i) => (
+                <a
+                  key={i}
+                  href={`hashtag/${hashtag}`}
+                  className="mr-1 text-blue-500 text-sm"
+                >
+                  #{hashtag}
+                </a>
+              ))}
+            </div>
+          </div>
+          <p
             onClick={() => setIsCommentsOpen(!isCommentsOpen)}
-            className="cursor-pointer text-neutral-400"
+            className="cursor-pointer text-neutral-400 text-sm"
           >
-            View all {post.commentsCount} comments ...
-          </a>
+            View all {commentsCount} comments...
+          </p>
         </div>
       </div>
     </div>

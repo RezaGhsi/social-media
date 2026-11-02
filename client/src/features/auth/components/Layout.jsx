@@ -3,7 +3,7 @@ import CatSvg from "/icons/Vector.svg"
 const Layout = ({ children }) => {
   return (
     <>
-      <header className="w-full h-26 md:px-12 px-6 max-w-[1600px] flex items-center justify-between">
+      <header className="w-full h-26 md:px-12 px-6 max-w-7xl flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img src={CatSvg} alt="nekoSocial logo" className="p-3 w-13 h-13 bg-[#F0EAFB] rounded-2xl" />
           <h2 className="font-Poppins-SemiBold text-3xl">nekoSocial</h2>

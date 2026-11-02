@@ -1,11 +1,15 @@
-import React from "react";
-
 const Footer = () => {
   return (
-    <div className="font-Poppins-Bold flex h-18 items-center justify-center bg-[#F1F1F1]">
-      <h4>Developed by Reza Ghasemi</h4>
-    </div>
-  );
+    <footer className="md:flex hidden justify-between w-full text-neutral-500 text-xs px-12 py-5">
+      <p>© 2026 nekoSocial</p>
+      <h5 className="text-black font-Poppins-SemiBold">Developed by Reza Ghasemi</h5>
+      <div className="flex gap-1">
+        <a href="">Privacy </a>.
+        <a href="">Terms </a>.
+        <a href="">Help</a>
+      </div>
+    </footer>)
+
 };
 
 export default Footer;
