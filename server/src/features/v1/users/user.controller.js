@@ -1,5 +1,6 @@
 const userModel = require("./user.model");
 const followModel = require("./../follow/follow.model");
+const postModel = require("./../posts/post.model");
 const likeModel = require("./../like/like.model");
 const saveModel = require("./../save/save.model");
 const AppError = require("../../../shared/utils/AppError");
@@ -37,19 +38,22 @@ exports.getUserPage = async (req, res, next) => {
 
     if (!userProfile) throw new AppError("Page not Found", 404);
 
-    const [followersCount, followingsCount, isFollowing] = await Promise.all([
-      followModel.countDocuments({
-        following: userProfile.username,
-      }),
-      followModel.countDocuments({
-        follower: userProfile.username,
-      }),
-      isFollowingUser(req.user.username, userProfile.username),
-    ]);
+    const [followersCount, followingsCount, postsCount, isFollowing] =
+      await Promise.all([
+        followModel.countDocuments({
+          following: userProfile.username,
+        }),
+        followModel.countDocuments({
+          follower: userProfile.username,
+        }),
+        postModel.countDocuments({ user: userProfile._id }),
+        isFollowingUser(req.user.username, userProfile.username),
+      ]);
 
     Object.assign(userProfile, {
       followersCount,
       followingsCount,
+      postsCount,
       isFollowing,
     });
 

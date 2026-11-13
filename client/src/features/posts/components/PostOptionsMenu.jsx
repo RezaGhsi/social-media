@@ -19,7 +19,7 @@ const PostOptionsMenu = ({ handleRemovePost }) => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-xl transition-colors hover:bg-[#f1f1f1]"
+        className="flex h-10 w-10 cursor-pointer active:bg-[#f1f1f1] items-center justify-center rounded-full text-xl transition-colors hover:bg-[#f1f1f1]"
       >
         <Ellipsis className="text-neutral-500" />
       </button>

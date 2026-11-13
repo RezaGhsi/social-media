@@ -2,12 +2,12 @@ import { Bookmark, Compass, House, Plus, Settings2, UserRound } from "lucide-rea
 import { useAuth } from "../../features/auth/hooks/useAuth";
 import AvatarImg from "../../features/users/components/AvatarImg";
 
-const ActionsSidebar = ({ activeTab = "home" }) => {
+const ActionsSidebar = ({ activeTab = "home", className = "" }) => {
   const { user, isInitializing, isAuthenticated } = useAuth();
 
   return (
     <>
-      <aside className="sticky top-4 ml-8 md:flex h-160 hidden w-50 flex-col gap-6">
+      <aside className={`sticky top-4 md:flex h-160 transition-colors hidden w-50 max-w-full shrink flex-col gap-6 ${className}`}>
         {!isInitializing && isAuthenticated && (
           <article className="rounded-lg">
             {isInitializing ? (
@@ -36,7 +36,7 @@ const ActionsSidebar = ({ activeTab = "home" }) => {
           </article>
         )}
 
-        <section className="overflow-hidden flex flex-col gap-2 *:cursor-pointer rounded-lg h-68 w-full *:h-12 *:w-full *:rounded-xl *:flex *:gap-3.5 *:p-3.5 *:transition-colors *:hover:bg-violet-200/40 *:font-Poppins-Medium">
+        <section className="overflow-hidden flex flex-col gap-2 *:cursor-pointer rounded-lg h-68 w-full *:h-12 *:w-full *:rounded-xl *:flex *:gap-3.5 *:p-3.5 *:transition-colors *:active:bg-violet-900/20 *:hover:bg-violet-200/40 *:font-Poppins-Medium">
           <a href="/" className={`${activeTab === "home" ? "text-violet-700 bg-violet-200/40" : ""}`}>
             <House />
             <h2>Home</h2>
@@ -52,19 +52,19 @@ const ActionsSidebar = ({ activeTab = "home" }) => {
             <span>Saved</span>
           </a>
 
-          <a className={`${activeTab === "profile" ? "text-violet-700 bg-violet-200/40" : ""}`}>
+          <a href={`/${user.username}`} className={`${activeTab === "profile" ? "text-violet-700 bg-violet-200/40" : ""}`}>
             <UserRound />
             <h2>Profile</h2>
           </a>
 
-          <a className={`${activeTab === "settings" ? "text-violet-700 bg-violet-200/40" : ""}`}>
+          <a href="/manage" className={`${activeTab === "settings" ? "text-violet-700 bg-violet-200/40" : ""}`}>
             <Settings2 />
             <h2>Settings</h2>
           </a>
         </section>
 
         <a
-          href="upload"
+          href="/upload"
           className="flex w-full gap-2 h-12 items-center cursor-pointer justify-center rounded-xl bg-violet-900/75 text-white transition-colors hover:bg-violet-900/70 active:bg-violet-900/90"
         >
           <Plus size={20} strokeWidth={2.5} />

@@ -13,11 +13,13 @@ import { useAuth } from "../../auth/hooks/useAuth";
 import FollowingsModal from "../components/FollowingsModal";
 import FollowersModal from "../components/FollowersModal";
 import AvatarImg from "../components/AvatarImg";
-import { CameraOff, Globe, Loader, LockKeyhole } from "lucide-react";
+import { CameraOff, Globe, Link, Loader, LockKeyhole, Settings2 } from "lucide-react";
 import useUserPosts from "../hooks/useUserPosts";
 import useInfiniteScroll from "../../../shared/hooks/useInfiniteScroll";
 import ErrorToast from "../../../shared/components/ErrorToast";
 import { useUser } from "../hooks/useUser";
+import ActionsSidebar from "../../../shared/components/ActionsSidebar";
+import MobileNav from "../../../shared/components/MobileNav";
 
 const ProfilePage = () => {
   const [isFollowingsModalOpen, setIsFollowingsModalOpen] = useState(false);
@@ -64,184 +66,173 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex justify-center scroll-smooth bg-[#F1F1F1]">
-      <div className="mx-10 flex max-w-360 justify-center pt-8">
-        {isLoadingUserInfo ? (
-          <div className="mr-4 flex w-[69dvw] justify-center">
-            <Loader className="mt-16 size-20 animate-spin" />
-          </div>
-        ) : (
-          <main className="mr-4 flex w-[69dvw] flex-col items-center rounded-lg *:mb-4">
-            <section className="w-full rounded-lg bg-white">
-              <div className="relative h-[30dvh] w-full overflow-hidden rounded-t-lg">
-                <img
-                  src="images/feed-6.jpg"
-                  alt="Banner Image"
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
+    <div className="flex flex-col flex-1 h-full items-center w-full shrink scroll-smooth bg-[#F7F7FA]">
+      <main className="flex w-7xl flex-1 max-w-full shrink justify-between gap-8 pt-6 md:pt-8 px-4 md:px-8 2xl:px-0">
 
-              <div className="absolute z-20 -mt-19 ml-8 h-38 w-38 shrink-0 overflow-hidden rounded-full border-2 border-white">
-                <AvatarImg avatarUrl={userPageInfo.avatarUrl} />
-              </div>
-              <div className="flex justify-between">
-                <div className="ml-8 w-[36dvw] pt-24">
-                  <h1 className="font-Poppins-ExtraBold text-2xl">
-                    {userPageInfo.name}
-                  </h1>
-                  <span className="font-Poppins-Medium">
-                    @{userPageInfo.username}
-                  </span>
-                  <p className="font-Poppins-Medium mt-6 mb-6 text-xl">
-                    {userPageInfo.biography || ""}
-                  </p>
-                  <span className="mb-6 flex items-center text-neutral-700">
-                    {user.website && <Globe />}
-                    <a
-                      href="https://sabzlearn.ir"
-                      target="blank"
-                      className="font-Poppins-Medium ml-2 text-lg text-purple-800"
-                    >
-                      {user?.website}
-                    </a>
-                  </span>
-                  <div className="mb-6 flex *:mr-3 **:pr-1">
-                    <div>
-                      <span className="font-Poppins-Medium text-2xl">
-                        {!isLoadingUserInfo && userPageInfo.followersCount}
-                      </span>
-                      <button
-                        onClick={() => setIsFollowersModalOpen(true)}
-                        className="cursor-pointer text-xl"
-                        disabled={
-                          (!isLoadingUserInfo &&
-                            !userPageInfo.followersCount) ||
-                          (!isFollowing && userPageInfo.isPrivate)
-                        }
-                      >
-                        Followers
-                      </button>
-                    </div>
-                    <div>
-                      <span className="font-Poppins-Medium text-2xl">
-                        {!isLoadingUserInfo && userPageInfo.followingsCount}
-                      </span>
-                      <button
-                        onClick={() => setIsFollowingsModalOpen(true)}
-                        className="cursor-pointer text-xl"
-                        disabled={
-                          (!isLoadingUserInfo &&
-                            !userPageInfo.followingsCount) ||
-                          (!isFollowing && userPageInfo.isPrivate)
-                        }
-                      >
-                        Followings
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="font-Poppins-SemiBold mr-4 flex items-center *:rounded-full *:border-2 *:p-3 *:px-5 *:hover:cursor-pointer">
-                  {!isOwnPage ? (
-                    <FollowUnfollowBtn
-                      isFollowing={isFollowing}
-                      username={username}
-                    />
-                  ) : (
-                    <a
-                      href={`/manage`}
-                      className="mr-3 border-purple-900 text-purple-800 transition-colors hover:bg-purple-800 hover:text-white"
-                    >
-                      Manage
-                    </a>
-                  )}
-                </div>
-              </div>
-              {!isLoadingUserInfo && isOwnPage && !userPageInfo.isVerified && (
-                <VerificationError className="mx-6" />
-              )}
-            </section>
-            {/* <PostsFilterNav /> */}
+        <ActionsSidebar activeTab={isOwnPage ? "profile" : "explore"} />
 
-            {!isFollowing && userPageInfo.isPrivate ? (
-              <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white">
-                <LockKeyhole className="mb-4 size-24 text-neutral-800" />
-                <h4 className="font-Poppins-Bold text-4xl text-neutral-800">
-                  This Page is Private
-                </h4>
-              </div>
-            ) : (
-              <section className="h-full w-full">
-                {!isLoading && posts?.length < 1 ? (
-                  <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white">
-                    <CameraOff className="size-24 text-neutral-800" />
-                    <h4 className="font-Poppins-Bold text-4xl text-neutral-800">
-                      No Posts Yet
-                    </h4>
-                  </div>
-                ) : (
-                  <div className="flex w-full flex-col gap-4 bg-[#F1F1F1]">
-                    {posts?.map((post) => (
-                      <PostCard
-                        isOwnPage={isOwnPage}
-                        user={userPageInfo}
-                        key={post._id}
-                        post={post}
-                      />
-                    ))}
-                    {hasNextPage && (
-                      <div
-                        className="bg[#f1f1f1] flex w-full items-center justify-center"
-                        ref={sentinelRef}
-                      >
-                        {isFetchingNextPage ? (
-                          <div className="font-Poppins-SemiBold flex h-40 items-center gap-3">
-                            Loading posts
-                            <Loader className="size-10 animate-spin" />
-                          </div>
+        <div className="flex flex-col flex-1">
+          {isLoadingUserInfo ? (
+            <div className="flex w-full justify-center">
+              <Loader className="mt-16 size-20 animate-spin" />
+            </div>
+          ) : (
+            <div className="flex flex-1 flex-col items-center *:mb-4">
+              <section className="w-full rounded-2xl bg-white">
+                <div className="md:h-65 h-40 w-full overflow-hidden rounded-t-2xl">
+                  <img
+                    src="/images/Photo.png"
+                    alt="Banner Image"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                <div className="absolute z-20 -mt-12 ml-6 h-25 w-25 overflow-hidden rounded-full border-5 border-white">
+                  <AvatarImg avatarUrl={userPageInfo.avatarUrl} />
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-5 md:p-7 md:pt-17 p-5 pt-17 w-full">
+                    <div className="flex justify-between w-full gap-5">
+                      <div>
+                        <h1 className="font-Poppins-SemiBold mb-0.5 text-xl sm:text-2xl md:text-3xl">
+                          {userPageInfo.name}
+                        </h1>
+                        <span className="text-neutral-500">
+                          @{userPageInfo.username}
+                        </span>
+                      </div>
+                      <div className="font-Poppins-SemiBold flex items-center *:rounded-xl *:h-13 *:px-3 md:*:px-4 *:hover:cursor-pointer">
+                        {!isOwnPage ? (
+                          <FollowUnfollowBtn
+                            isFollowing={isFollowing}
+                            username={username}
+                          />
                         ) : (
-                          ""
+                          <a
+                            href={`/manage`}
+                            className="text-violet-900/75 active:bg-violet-900/25 gap-1 items-center flex bg-violet-200/40 transition-colors hover:bg-violet-200/70"
+                          >
+                            <Settings2 />
+                            Manage
+                          </a>
                         )}
                       </div>
-                    )}
+                    </div>
+                    <p>
+                      {userPageInfo.biography || ""}
+                    </p>
+                    {user?.website && <span className="flex items-center text-violet-900/70">
+                      <Link className="size-4" />
+                      <a
+                        href="https://sabzlearn.ir"
+                        target="blank"
+                        className="font-Poppins-Medium ml-2 text-sm"
+                      >
+                        {user?.website}
+                      </a>
+                    </span>}
+                    <hr className="text-neutral-200" />
+                    <div className="flex justify-between md:justify-start md:gap-11 **:pr-1">
+                      <div>
+                        <span className="font-Poppins-Medium mr-1.5 text-2xl">
+                          {!isLoadingUserInfo && userPageInfo.postsCount}
+                        </span>
+                        <span
+                          className="cursor-pointer text-neutral-500 text-sm"
+                        >
+                          Posts
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-Poppins-Medium mr-1.5 text-2xl">
+                          {!isLoadingUserInfo && userPageInfo.followersCount}
+                        </span>
+                        <button
+                          onClick={() => setIsFollowersModalOpen(true)}
+                          className="cursor-pointer text-neutral-500 text-sm"
+                          disabled={
+                            (!isLoadingUserInfo &&
+                              !userPageInfo.followersCount) ||
+                            (!isFollowing && userPageInfo.isPrivate)
+                          }
+                        >
+                          Followers
+                        </button>
+                      </div>
+                      <div>
+                        <span className="font-Poppins-Medium mr-1.5 text-2xl">
+                          {!isLoadingUserInfo && userPageInfo.followingsCount}
+                        </span>
+                        <button
+                          onClick={() => setIsFollowingsModalOpen(true)}
+                          className="cursor-pointer text-neutral-500 text-sm"
+                          disabled={
+                            (!isLoadingUserInfo &&
+                              !userPageInfo.followingsCount) ||
+                            (!isFollowing && userPageInfo.isPrivate)
+                          }
+                        >
+                          Followings
+                        </button>
+                      </div>
+                    </div>
                   </div>
+                </div>
+                {!isLoadingUserInfo && isOwnPage && !userPageInfo.isVerified && (
+                  <VerificationError className="mx-6" />
                 )}
               </section>
-            )}
-          </main>
-        )}
-        <aside className="flex w-[28dvw] flex-col *:mb-4 *:bg-white *:p-3">
-          <div className="flex w-full flex-col rounded-lg">
-            <h3 className="font-Poppins-Medium mb-5 text-xl">
-              People to follow
-            </h3>
-            <UserCard name={"Reza Ghasemi"} username={"ReZaGhs"} isVerified />
-            <UserCard name={"Reza Ghasemi"} username={"ReZaGhs"} isVerified />
-            <UserCard name={"Reza Ghasemi"} username={"ReZaGhs"} isVerified />
-          </div>
-          <div className="flex w-full flex-col rounded-lg">
-            <h3 className="font-Poppins-Medium mb-5 text-xl">Trending now</h3>
-            <Hashtag name={"Developer👨‍💻"} />
-            <Hashtag name={"Video_Games"} />
-            <Hashtag name={"radiogeek"} />
-            <Hashtag name={"master_freelance"} />
-            <Hashtag name={"reactjs"} />
-          </div>
-          <div className="flex w-full flex-col rounded-lg">
-            <h3 className="font-Poppins-Medium mb-5 text-xl">
-              What's happening
-            </h3>
-            <div className="flex flex-wrap justify-around *:m-1.5 *:h-28 *:w-28 *:rounded-sm *:object-cover">
-              <img src="images/feed-1.jpg" alt="" />
-              <img src="images/feed-2.jpg" alt="" />
-              <img src="images/feed-3.jpg" alt="" />
-              <img src="images/feed-4.jpg" alt="" />
-              <img src="images/feed-5.jpg" alt="" />
-              <img src="images/feed-6.jpg" alt="" />
-              <img src="images/feed-7.jpg" alt="" />
-              <img src="images/feed-8.jpg" alt="" />
+
+              {!isFollowing && userPageInfo.isPrivate ? (
+                <div className="flex w-full h-full flex-col items-center justify-center rounded-lg bg-white">
+                  <LockKeyhole className="mb-4 size-20 text-neutral-800" />
+                  <h4 className="font-Poppins-SemiBold text-3xl text-neutral-800">
+                    This Page is Private
+                  </h4>
+                </div>
+              ) : (
+                <section className="flex w-full h-full flex-col">
+                  {!isLoading && posts?.length < 1 ? (
+                    <div className="flex w-full h-full flex-col items-center justify-center rounded-lg bg-white">
+                      <CameraOff className="size-20 text-neutral-800" />
+                      <h4 className="font-Poppins-SemiBold text-3xl text-neutral-800">
+                        No Posts Yet
+                      </h4>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                      {posts?.map((post) => (
+                        <PostCard
+                          isOwnPage={isOwnPage}
+                          user={userPageInfo}
+                          key={post._id}
+                          post={post}
+                          mini
+                        />
+                      ))}
+                      {hasNextPage && (
+                        <div
+                          className="bg[#f1f1f1] flex w-full items-center justify-center"
+                          ref={sentinelRef}
+                        >
+                          {isFetchingNextPage ? (
+                            <div className="font-Poppins-SemiBold flex h-40 items-center gap-3">
+                              Loading posts
+                              <Loader className="size-10 animate-spin" />
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </section>
+              )}
             </div>
-          </div>
-        </aside>
+          )}
+        </div>
+
         <FollowingsModal
           isOpen={isFollowingsModalOpen}
           onClose={setIsFollowingsModalOpen}
@@ -250,7 +241,8 @@ const ProfilePage = () => {
           isOpen={isFollowersModalOpen}
           onClose={setIsFollowersModalOpen}
         />
-      </div>
+      </main>
+      <MobileNav activeTab={isOwnPage ? "profile" : "explore"} />
     </div>
   );
 };

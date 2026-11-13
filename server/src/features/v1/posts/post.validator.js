@@ -3,7 +3,7 @@ const z = require("zod");
 
 exports.postUploadSchema = z
   .object({
-    description: z.string().max(2200).trim().optional(),
+    description: z.string().max(800).trim().optional(),
     hashtags: z.string().max(200).trim().optional(),
     // user: z.refine((value) => isValidObjectId(value), {
     //   error: "User Id is Not Valid",

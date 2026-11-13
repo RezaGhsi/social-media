@@ -39,20 +39,20 @@ const HomePage = ({ feed = "following" }) => {
     { enabled: hasNextPage },
   );
   return (
-    <div className="flex pt-8 flex-col items-center bg-[#F7F7FA]">
-      <main className="flex gap-8 justify-between">
+    <div className="flex pt-8 flex-1 flex-col scroll-smooth items-center bg-[#F7F7FA]">
+      <main className="flex gap-8 px-1 md:px-8 2xl:px-0 justify-between">
         <ActionsSidebar />
 
         <section className="">
 
           {isLoading ? (
-            <div className="font-Poppins-SemiBold flex h-40 w-170 items-center justify-center gap-3">
-              Loading posts
+            <div className="font-Poppins-SemiBold flex flex-col h-40 w-170 items-center justify-center gap-3">
               <Loader className="size-10 animate-spin" />
+              Loading posts
             </div>
           ) : (
             <section
-              className="max-w-155 md:flex-1 mb-6 lg:mx-0 mx-4 flex flex-col gap-6"
+              className="max-w-155 md:flex-1 mb-6 scroll-smooth lg:mx-0 mx-4 flex flex-col gap-6"
             >
               <div className="flex flex-col gap-1.5">
                 <h3 className="text-4xl font-Poppins-Medium">A little inspiration</h3>
@@ -105,7 +105,7 @@ const HomePage = ({ feed = "following" }) => {
           <MobileNav />
         </section>
 
-        <aside className="hidden lg:block mr-8">
+        <aside className="hidden lg:block">
           <section className="rounded-2xl max-w-86 flex flex-col gap-3 bg-violet-200/40 p-6 shadow">
             <h6 className="text-xs text-violet-700 font-Poppins-SemiBold">THE EVERY DAY EDIT</h6>
             <h5 className="text-2xl font-Poppins-Medium">Ordinary days. Extraordinary little things.</h5>

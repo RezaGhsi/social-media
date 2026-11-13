@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -42,7 +43,7 @@ const Modal = ({ children, isOpen, onClose, title }) => {
             className="absolute right-0 cursor-pointer text-xl text-neutral-700"
             onClick={onClose}
           >
-            🗙
+            <X />
           </button>
         </div>
         <div className="scrollbar-thin overflow-y-auto scroll-smooth">

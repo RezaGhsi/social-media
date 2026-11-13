@@ -1,21 +1,33 @@
 import { useState } from "react";
 import { upload } from "../api/postApi";
 import { toast } from "sonner";
-import Header from "../../../shared/components/layout/Header";
+import ActionsSidebar from './../../../shared/components/ActionsSidebar'
 import VerificationError from "../../../shared/components/VerificationError";
+import AvatarImg from "../../users/components/AvatarImg";
+import { useAuth } from "../../auth";
+import { ArrowUpRight, Image, Upload } from "lucide-react";
+import MobileNav from "../../../shared/components/MobileNav";
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [form, setForm] = useState({ description: "", hashtags: "" });
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [preview, setPreview] = useState(null);
+
+  const { user, isInitializing } = useAuth();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selected = e.target.files[0];
+    if (!selected || !selected.type.startsWith("image/")) return;
+    setFile(selected);
+
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(URL.createObjectURL(selected));
   };
 
   const handleSubmit = async (e) => {
@@ -49,6 +61,7 @@ const UploadPage = () => {
         },
       });
       setForm({ description: "", hashtags: "" });
+      setPreview(null);
       setFile(null);
     } catch (error) {
       console.log(error);
@@ -65,111 +78,138 @@ const UploadPage = () => {
     }
   };
 
+  console.log(file);
+
   return (
-    <div className="flex h-dvh flex-col">
-      <Header />
+    <div className="flex bg-[#F7F7FA] items-center flex-col">
+      <main className="flex gap-8 justify-center w-7xl max-w-full shrink md:p-8 px-4">
 
-      <form className="flex-1" onSubmit={handleSubmit}>
-        <main className="flex h-full w-full items-center justify-center bg-[#6060db] p-10">
-          <section className="flex w-360 items-center justify-between gap-6 rounded-xl bg-white p-16 py-20 shadow-[12px]">
-            <div className="ml-8 h-full w-[50%]">
-              <h3 className="font-Poppins-SemiBold text-5xl text-indigo-600">
-                File upload
-              </h3>
+        <ActionsSidebar activeTab="none" />
 
-              <div className="relative mt-5 flex w-[80%] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-800 bg-[#cecefd] text-indigo-800 hover:opacity-90">
-                <span className="mt-12 flex justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-[50%] w-[50%]"
-                  >
-                    <path d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="font-Poppins-Medium mt-10 text-3xl">
-                    {file?.name || "Upload a file"}
-                  </p>
+        <div className="flex flex-col gap-6 max-w-full shrink flex-1">
+          <div className="flex flex-col gap-1.5">
+            <h3 className="text-sm text-violet-900/70 font-Poppins-SemiBold">CREATE POST</h3>
+            <h2 className="text-3xl font-Poppins-SemiBold">Share a little moment.</h2>
+            <p className="text-neutral-500">Big adventures or the everyday. There’s room for it all.</p>
+          </div>
+          <section className="bg-white flex flex-col gap-7 rounded-3xl md:p-7 p-5">
+            <header className="flex w-full items-center gap-3">
+              {isInitializing ?
+                <div className="w-10 h-10 rounded-full bg-neutral-300 animate-pulse"></div>
+                :
+                <div className="w-10 h-10 rounded-full overflow-hidden">
+                  <AvatarImg avatarUrl={user?.avatarUrl} />
                 </div>
-                <p
-                  className="font-Poppins-Bold mt-10 mb-12 rounded-lg bg-indigo-800 p-4 text-3xl text-white"
-                  id="browse-files"
-                >
-                  Browse file
-                </p>
+              }
+              {isInitializing ?
+                <div className="flex flex-col gap-2 *:bg-neutral-300 *:rounded-full *:animate-pulse *:h-2.5">
+                  <span className="w-20"></span>
+                  <span className="w-15"></span>
+                </div>
+                :
+                <div className="flex flex-col">
+                  <span className="font-Poppins-SemiBold">{user?.name}</span>
+                  <span className="text-neutral-500 text-sm">@{user?.username}</span>
+                </div>
+              }
+            </header>
 
-                <input
-                  type="file"
-                  id="file-upload-input"
-                  accept="video/*, image/*"
-                  onChange={handleFileChange}
-                  className="absolute h-full w-full cursor-pointer opacity-0"
-                />
-              </div>
-            </div>
+            <form className="lg:flex-row lg:justify-between gap-7 justify-start lg:items-start items-center flex flex-col" preventDefault >
+              <section className="max-w-full flex-1 gap-3.5 shrink flex flex-col">
+                <span className="font-Poppins-SemiBold">Your photo</span>
+                {preview ?
+                  <img src={preview} className="rounded-2xl flex max-w-full w-117.5 max-h-full object-cover md:h-100 h-75 shrink" />
+                  :
+                  <label htmlFor="file-upload" className="flex flex-col gap-4 border-2 border-neutral-200 text-2xl w-full rounded-2xl hover:bg-violet-800/8 active:bg-violet-800/15 cursor-pointer transition-colors text-violet-900/75 font-Poppins-Medium  md:h-100 h-75 justify-center items-center"><Upload size={90} />Choose a photo</label>
+                }
 
-            <div className="post-upload-box h-full w-[50%] transition-all">
-              <h3 className="file-upload-title font-Poppins-SemiBold text-5xl text-indigo-800">
-                Post details
-              </h3>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Image className="text-violet-900/75" />
+                    <div className="flex flex-col">
+                      <span className="font-Poppins-Medium text-sm truncate max-w-50 block">
+                        {file ? file.name : "No file selected"}
+                      </span>
+                      {preview && <span className="text-xs text-neutral-500">{file ? (file.size / 1024 / 1024).toFixed(2) : ""} MB</span>}
+                    </div>
+                    <input
+                      type="file"
+                      id="file-upload"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </div>
+                  <label htmlFor="file-upload" className={`cursor-pointer text-violet-900/75 font-Poppins-SemiBold text-xs ${preview ? "" : "hidden"}`}>
+                    Change
+                  </label>
+                </div>
 
-              <div className="mt-6 h-40 w-full">
-                <label htmlFor="post-description">
-                  <span className="font-Poppins-Medium">Description</span>
-                  {/* <span className="text-red-600 text-lg ml-1">*</span> */}
-                </label>
-                <textarea
-                  name="description"
-                  id="post-description"
-                  value={form.description}
-                  onChange={handleChange}
-                  placeholder="Add a description .."
-                  className="placeholder:font-Poppins-SemiBold mt-3 h-full w-full rounded-md border-2 border-[#7474c5] p-4 placeholder:text-neutral-600"
-                ></textarea>
-              </div>
+                <label htmlFor="file-upload" className="flex w-full rounded-xl gap-2 hover:bg-violet-800/15 active:bg-violet-800/25 cursor-pointer transition-colors text-violet-900/75 font-Poppins-Medium bg-violet-700/8 h-11.5 justify-center items-center"><Upload size={20} />{preview ? "Choose another photo" : "Choose a photo"}</label>
+                <p className="text-xs text-neutral-400">JPG, PNG or WEBP · Up to 10 MB. One photo, a thousand little details.</p>
 
-              <div className="mt-17 flex flex-col">
-                <label htmlFor="post-hashtags">
-                  <span className="font-Poppins-Medium">Hashtags</span>
-                  {/* <span className="text-red-600 text-lg ml-1">*</span> */}
-                </label>
-                <input
-                  type="text"
-                  id="post-hashtags"
-                  name="hashtags"
-                  value={form.hashtags}
-                  onChange={handleChange}
-                  placeholder="javascript, edit, trend, explore, ne..."
-                  className="placeholder:font-Poppins-SemiBold mt-3 rounded-md border-2 border-[#7474c5] p-3 placeholder:text-neutral-600"
-                />
-                <div
-                  id="hashtags-wrap"
-                  className="my-2 flex items-center gap-2 text-sm"
-                ></div>
-                <span className="font-Poppins-Medium text-sm">
-                  Split the hashtags with comma ( , )
-                </span>
-              </div>
+              </section>
 
-              {/* {!user?.isVerified && <VerificationError />} */}
+              <section className="w-full flex-1 mt-0 lg:mt-10 shrink gap-6 flex flex-col">
+                <div className="flex w-full flex-col font-Poppins-Medium gap-1">
+                  <label htmlFor="post-description">
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    id="post-description"
+                    value={form.description}
+                    onChange={handleChange}
+                    maxLength={800}
+                    placeholder="Add a description .."
+                    className="w-full border-2 border-neutral-200 font-Poppins-Regular rounded-xl p-3.5 h-26 text-sm resize-none outline-none focus:border-violet-800/30 "
+                  />
+                  <span className="text-xs text-neutral-500 font-Poppins-Regular">{form.description.length} / 800 characters</span>
+                </div>
 
-              <div className="mt-4 flex items-center justify-end">
+
+                <div className="flex flex-col font-Poppins-Medium gap-1">
+                  <label htmlFor="post-hashtags">
+                    Hashtags
+                  </label>
+                  <input
+                    type="text"
+                    name="hashtags"
+                    id="post-hashtags"
+                    value={form.hashtags}
+                    onChange={handleChange}
+                    maxLength={200}
+                    placeholder="javascript, edit, trend, explore, ne..."
+                    className="w-full border-2 border-neutral-200 rounded-xl p-3 text-sm resize-none outline-none focus:border-violet-800/30 "
+                  />
+                  <span className="text-xs text-neutral-500 font-Poppins-Regular">Add a # before each tag so your people can find it.</span>
+                </div>
+
+                {/* {!user?.isVerified && <VerificationError />} */}
+
+              </section>
+            </form>
+            <div className="">
+              <hr className="text-neutral-300" />
+              <div className="mt-6 flex gap-3 lg:flex-row flex-col items-center justify-between">
+                <p className="text-xs text-neutral-400">A little kindness goes a long way. Share thoughtfully.</p>
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   // disabled={!user.isVerified || uploading}
-                  className="mt-1 cursor-pointer rounded-lg bg-indigo-800 p-4 text-xl text-white transition-all hover:bg-indigo-700 active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-neutral-300"
+                  className="flex gap-2 px-5 h-12 items-center cursor-pointer justify-center rounded-xl bg-violet-900/75 text-white transition-colors hover:bg-violet-900/70 active:bg-violet-900/90 lg:w-auto w-full"
                 >
                   {uploading
                     ? `Uploading... ${uploadProgress}%`
-                    : "Upload post"}
+                    : <span className="flex gap-2 items-center"><ArrowUpRight size={20} />Publish post</span>
+                  }
                 </button>
               </div>
             </div>
           </section>
-        </main>
-      </form>
+        </div>
+
+      </main>
+      <MobileNav activeTab="create" />
     </div>
   );
 };

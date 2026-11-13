@@ -14,7 +14,7 @@ import PostOptionsMenu from "./PostOptionsMenu";
 import CommentModal from "../../comments/components/CommentModal";
 import { useAuth } from "../../auth/hooks/useAuth";
 
-const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
+const PostCard = ({ post, user, isOwnPage = false, mini = false, className = "" }) => {
   const baseURL = import.meta.env.VITE_STATIC_BASE_URL;
 
   const { user: selfUser } = useAuth();
@@ -86,19 +86,19 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
     <div
       className={`relative flex max-w-155 flex-col rounded-2xl bg-white ${className}`}
     >
-      <div className="flex p-5 justify-between border-2 border-neutral-200 border-b-0 rounded-t-2xl">
+      <div className={`flex justify-between border-2 border-neutral-200 border-b-0 rounded-t-2xl ${mini ? "p-3" : "p-5"}`}>
         <div className="flex items-center gap-2.5">
-          <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-white">
+          <div className="h-14 w-14 overflow-hidden rounded-full border-2 border-white">
             <AvatarImg avatarUrl={user.avatarUrl} />
           </div>
           <div className="flex flex-col">
             <a
               href={`/${user.username}`}
-              className="font-Poppins-Medium text-xl"
+              className={`font-Poppins-Medium ${mini ? "text-lg" : "text-xl"}`}
             >
               {user.name}
             </a>
-            <a href={`/${user.username}`} className="text-sm text-neutral-500">
+            <a href={`/${user.username}`} className="text-xs text-neutral-500">
               @{user.username}
             </a>
           </div>
@@ -106,11 +106,11 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
 
         {isOwnPage && <PostOptionsMenu handleRemovePost={handleRemovePost} />}
       </div>
-      <div className="flex w-full flex-col ">
+      <div className="flex w-full overflow-hidden flex-col ">
         <img
           src={`${baseURL}/${post?.mediaUrl}`}
           alt="post image"
-          className="w-full"
+          className={`w-full object-cover ${mini ? "" : ""}`}
           loading="lazy"
         />
 
@@ -155,7 +155,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
             </button>
           </div>
           <div className="">
-            <p className="mb-3">{post.description}</p>
+            <p className={`mb-3 ${mini ? "line-clamp-2" : ""}`}>{post.description}</p>
             <div>
               {post.hashtags?.map((hashtag, i) => (
                 <a
@@ -170,7 +170,7 @@ const PostCard = ({ post, user, isOwnPage = false, className = "" }) => {
           </div>
           <p
             onClick={() => setIsCommentsOpen(!isCommentsOpen)}
-            className="cursor-pointer text-neutral-400 text-sm"
+            className={`cursor-pointer text-neutral-400 text-sm ${mini ? "hidden" : "visible"}`}
           >
             View all {commentsCount} comments...
           </p>

@@ -8,7 +8,7 @@ const Header = () => {
 
   return (
     <header className="flex justify-center">
-      <nav className="flex h-22 w-full max-w-7xl items-center justify-between px-8">
+      <nav className="flex h-22 w-full max-w-7xl items-center justify-between px-4 md:px-8">
         <a href="/" className="flex items-center gap-3">
           <img src={CatSvg} alt="nekoSocial logo" className="p-3 w-13 h-13 bg-[#F0EAFB] rounded-2xl" />
           <h2 className="font-Poppins-SemiBold text-3xl">nekoSocial</h2>

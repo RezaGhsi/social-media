@@ -45,6 +45,6 @@
   --font-Poppins-Black: "Poppins-Black", sans-serif;
 }
 
-#root {
+body {
   font-family: "Poppins-Regular";
 }

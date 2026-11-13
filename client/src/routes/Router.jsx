@@ -39,7 +39,12 @@ export const router = createBrowserRouter([
         path: "/manage",
         element: <ProfileUpdate />,
       },
-      { path: "/upload", element: <UploadPage /> },
+      {
+        path: "/upload", element:
+          <RootLayout>
+            <UploadPage />
+          </RootLayout>
+      },
       {
         path: "/saved-posts",
         element: <SavedPosts />,
