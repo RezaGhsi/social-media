@@ -6,6 +6,7 @@ const CustomInput = ({
   label,
   placeholder = "",
   className = "",
+  autoComplete = "new-password"
 }) => {
   return (
     <div className={`w-full ${className}`}>
@@ -20,10 +21,11 @@ const CustomInput = ({
           id={name}
           name={name}
           value={value}
-          className="h-12 outline-purple-200 w-full min-w-40 border bg-white border-neutral-300 rounded-2xl p-3.5"
+          className="h-12 outline-purple-200 w-full min-w-40 border bg-white border-neutral-300 rounded-xl p-3.5"
           type={type}
           placeholder={placeholder}
           onChange={handleChange}
+          autoComplete={autoComplete}
         />
       </div>
     </div>

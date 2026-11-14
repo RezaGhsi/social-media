@@ -124,7 +124,7 @@ const ProfilePage = () => {
                     {user?.website && <span className="flex items-center text-violet-900/70">
                       <Link className="size-4" />
                       <a
-                        href="https://sabzlearn.ir"
+                        href={`https://${user?.website}`}
                         target="blank"
                         className="font-Poppins-Medium ml-2 text-sm"
                       >

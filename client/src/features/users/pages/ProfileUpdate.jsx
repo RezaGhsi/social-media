@@ -9,7 +9,9 @@ import LogoutBtn from "../components/LogoutBtn";
 import Btn from "../../../shared/components/Btn";
 import SuccessToast from "../../../shared/components/SuccessToast";
 import ErrorToast from "../../../shared/components/ErrorToast";
-import { Loader, Pencil, TriangleAlert } from "lucide-react";
+import { Camera, Loader, Pencil, TriangleAlert, User2 } from "lucide-react";
+import ActionsSidebar from "../../../shared/components/ActionsSidebar";
+import CustomInput from "../../../shared/components/CustomInput";
 ("./../components/InfoInput");
 
 const ProfileUpdate = () => {
@@ -21,10 +23,8 @@ const ProfileUpdate = () => {
     username: user?.username,
     email: user?.email,
     birthDate: user.birthDate?.split("T")[0] || "",
-    info: user?.address?.info,
-    city: user?.address?.city,
-    postalCode: user?.address?.postalCode,
-    country: user?.address?.country,
+    country: user?.country,
+    website: user?.website,
   });
 
   const [userAvatar, setUserAvatar] = useState(user.avatarUrl);
@@ -32,7 +32,7 @@ const ProfileUpdate = () => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState("Edit Profile");
+  const [activeTab, setActiveTab] = useState("Account info");
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -48,10 +48,8 @@ const ProfileUpdate = () => {
     user?.username !== form.username ||
     user?.email !== form.email ||
     user?.birthDate?.split("T")[0] !== form.birthDate ||
-    user?.address?.info !== form.info ||
-    user?.address?.city !== form.city ||
-    user?.address?.postalCode != form.postalCode ||
-    user?.address?.country !== form.country;
+    user?.website !== form.website ||
+    user?.country !== form.country;
 
   const handlePfpChange = (e) => {
     const avatarFormData = new FormData();
@@ -112,182 +110,185 @@ const ProfileUpdate = () => {
   };
 
   return (
-    <div className="flex min-h-dvh w-full flex-col items-center bg-[#F1F1F1] transition-colors">
-      <div className="font-Poppins-SemiBold mt-20 mb-3 flex w-[70dvw] justify-start text-xl text-indigo-700">
-        <a href={`/${user.username}`}>Back to Profile</a>
-      </div>
+    <div className="flex bg-[#F7F7FA] items-center flex-col">
+      <main className="flex gap-8 justify-center w-7xl max-w-full shrink md:p-8 px-4">
 
-      <section className="m-10 mt-0 mb-20 w-[70dvw] rounded-lg bg-white p-4 pb-12 shadow-2xl shadow-black/15">
-        <header className="font-Poppins-SemiBold mt-5 ml-4 flex gap-6 *:cursor-pointer *:px-3 *:pb-3">
-          <button
-            name="Edit Profile"
-            onClick={handelTabChange}
-            className={`${activeTab === "Edit Profile" ? "border-b-3 text-purple-800" : ""}`}
-          >
-            Edit Profile
-          </button>
-          {/* <button
-            name="Preferences"
-            onClick={handelTabChange}
-            className={`${activeTab === "Preferences" ? "border-b-3 text-purple-800" : ""}`}
-          >
-            Preferences
-          </button> */}
-          <button
-            name="Security"
-            onClick={handelTabChange}
-            className={`${activeTab === "Security" ? "border-b-3 text-purple-800" : ""}`}
-          >
-            Security
-          </button>
-        </header>
+        <ActionsSidebar />
 
-        <hr className="mx-10 mb-10 text-neutral-200" />
 
-        {activeTab === "Edit Profile" && (
-          <main className="relative ml-4 flex gap-6">
-            <section className="">
-              <div className="h-36 w-36 overflow-hidden rounded-full">
-                <AvatarImg avatarUrl={userAvatar} />
-              </div>
-              <div className="absolute top-27 left-27 flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 transition-colors hover:bg-blue-500 active:bg-blue-700">
-                <input
-                  type="file"
-                  accept=".jpg,.jpeg,.webp,.png"
-                  className="absolute h-full w-full rounded-full opacity-0"
-                  onChange={handlePfpChange}
-                />
-                <Pencil size={20} className="text-white" />
-              </div>
-              <div
-                className={`flex items-center justify-center gap-2 ${uploading ? "visible" : "hidden"}`}
-              >
-                <Loader className="animate-spin" />
-                Uploading
-                <span>{uploadProgress}%</span>
-              </div>
-            </section>
+        <div className="flex flex-col gap-6 max-w-full mt-4 md:mt-0 shrink flex-1">
+          <div className="flex flex-col gap-1.5">
+            <h2 className="text-sm text-violet-900/70 font-Poppins-SemiBold">Edit account</h2>
+            <h2 className="text-3xl font-Poppins-SemiBold">Make it feel like you.</h2>
+            <p className="text-neutral-500">A few details to help your people find you.</p>
+          </div>
+          <header className="flex gap-8 *:cursor-pointer *:transition-colors">
+            <button
+              name="Account info"
+              onClick={handelTabChange}
+              className={`${activeTab === "Account info" ? "font-Poppins-SemiBold text-violet-900/70" : "text-neutral-500"}`}
+            >
+              Account info
+            </button>
+            <button
+              name="Security"
+              onClick={handelTabChange}
+              className={`${activeTab === "Security" ? "font-Poppins-SemiBold text-violet-900/70" : "text-neutral-500"}`}
+            >
+              Security
+            </button>
 
-            <section className="pb-8">
-              <section className="flex h-full w-full flex-wrap *:mb-5 md:flex-col md:flex-nowrap lg:flex-row lg:flex-wrap">
-                <InfoInput
-                  name={"name"}
-                  label={"Full Name"}
-                  type={"text"}
-                  value={form.name}
-                  handleChange={handleChange}
-                  placeholder={"full name"}
-                />
+          </header>
 
-                <InfoInput
-                  name={"bio"}
-                  label={"Biography"}
-                  type={"text-area"}
-                  value={form.bio}
-                  handleChange={handleChange}
-                  placeholder={"bio"}
-                />
+          {activeTab === "Account info" && (
+            <section className="bg-white flex flex-col gap-7 rounded-3xl md:p-7 p-5">
 
-                <InfoInput
-                  name={"username"}
-                  label={"Username"}
-                  type={"text"}
-                  value={form.username}
-                  handleChange={handleChange}
-                  placeholder={"username"}
-                />
+              <h3 className="text-xl font-Poppins-Medium flex gap-2.5 items-center"><span className="text-violet-900/70"><User2 size={22} /></span>Account information</h3>
 
-                <InfoInput
-                  name={"email"}
-                  label={"Email Address"}
-                  type={"email"}
-                  value={form.email}
-                  handleChange={handleChange}
-                  placeholder={"email"}
-                />
+              <form preventDefault className="lg:justify-between gap-7 w-full justify-start lg:items-start items-center flex flex-col">
+                <section className="w-full gap-6 flex flex-col items-center lg:flex-row">
+                  <div className="flex flex-col lg:w-55 w-full p-5 text-sm font-Poppins-Medium gap-3.5 bg-violet-900/8 rounded-xl items-center ">
+                    <span>Profile photo</span>
 
-                {/* <InfoInput
-                name={"password"}
-                label={"Password"}
-                type={"password"}
-                value={form.password}
-                handleChange={handleChange}
-                placeholder={user?.password || "password"}
-              /> */}
+                    <div className="w-20 h-20 rounded-full overflow-hidden">
+                      <AvatarImg avatarUrl={userAvatar} />
+                    </div>
 
-                <InfoInput
-                  name={"birthDate"}
-                  label={"Date of Birth"}
-                  type={"date"}
-                  value={form.birthDate}
-                  handleChange={handleChange}
-                  placeholder={"birth date"}
-                />
+                    <label htmlFor="pfp-photo" className="flex cursor-pointer transition-colors px-5 justify-center items-center h-11.5 gap-2 bg-violet-900/10 rounded-xl text-violet-800/80 active:bg-violet-900/20">
+                      {!uploading && <span><Camera /></span>}
+                      {uploading ? <span className="flex gap-2 items-center"><Loader size={20} className="animate-spin" /> Uploading {uploadProgress}%</span> : "Change photo"}
+                      <input
+                        type="file"
+                        name="pfp-photo"
+                        id="pfp-photo"
+                        onChange={handlePfpChange}
+                        accept=".jpg,.jpeg,.webp,.png"
+                        hidden
+                      />
+                    </label>
 
-                <InfoInput
-                  name={"country"}
-                  label={"Country"}
-                  type={"country"}
-                  value={form.country}
-                  handleChange={handleChange}
-                  placeholder={"country"}
-                />
+                    <span className="text-xs text-neutral-400 font-Poppins-Regular">JPG or PNG · Up to 5 MB</span>
+                  </div>
 
-                <InfoInput
-                  name={"city"}
-                  label={"City"}
-                  type={"city"}
-                  value={form.city}
-                  handleChange={handleChange}
-                  placeholder={"city"}
-                />
+                  <div className="flex flex-col w-full lg:flex-1 lg:shrink gap-3.5 font-Poppins-Medium text-sm">
+                    <span>Banner photo</span>
+                    <div className="rounded-2xl overflow-hidden w-full h-35 md:h-44.5"><img src="/images/Photo.png" alt="Banner photo" className="object-cover h-full w-full" /></div>
+                    <div className="flex justify-between">
+                      <span className="text-xs text-neutral-400 font-Poppins-Regular">Recommended: 1600 × 600</span>
+                      <label htmlFor="banner-photo" className="text-violet-800/80 cursor-pointer transition-colors active:text-violet-800/60"><input type="file" name="banner-photo" id="banner-photo" hidden />Change banner</label>
+                    </div>
+                  </div>
+                </section>
 
-                <InfoInput
-                  name={"info"}
-                  label={"Present Address"}
-                  type={"address"}
-                  value={form.info}
-                  handleChange={handleChange}
-                  placeholder={"address"}
-                />
+                <section className="max-w-full w-full flex flex-col gap-7 flex-1 shrink">
+                  <div className="grid md:grid-cols-2 w-full gap-y-7 gap-x-5">
+                    <CustomInput
+                      name={"name"}
+                      label={"Full Name"}
+                      type={"text"}
+                      value={form.name}
+                      handleChange={handleChange}
+                      placeholder={"full name"}
+                    />
 
-                <InfoInput
-                  name={"postalCode"}
-                  label={"Postal Code"}
-                  type={"text"}
-                  value={form.postalCode}
-                  handleChange={handleChange}
-                  placeholder={"postalCode"}
-                />
-              </section>
+                    <CustomInput
+                      name={"username"}
+                      label={"Username"}
+                      type={"text"}
+                      value={form.username}
+                      handleChange={handleChange}
+                      placeholder={"username"}
+                    />
 
-              <div className="mr-28 flex justify-end">
-                <Btn
+
+                    <CustomInput
+                      name={"email"}
+                      label={"Email Address"}
+                      type={"email"}
+                      value={form.email}
+                      handleChange={handleChange}
+                      placeholder={"email"}
+                    />
+
+                    <div className="flex flex-col gap-2">
+                      <CustomInput
+                        name={"birthDate"}
+                        label={"Date of Birth"}
+                        type={"date"}
+                        value={form.birthDate}
+                        handleChange={handleChange}
+                        placeholder={"birth date"}
+                      />
+                      <span className="text-xs text-neutral-500">Your birthday stays private.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <textarea
+                      name={"bio"}
+                      label={"Biography"}
+                      type={"textarea"}
+                      value={form.bio}
+                      onChange={handleChange}
+                      placeholder={"bio"}
+                      className="h-26 resize-none outline-purple-200 w-full min-w-40 border bg-white border-neutral-300 rounded-xl p-3.5"
+                    />
+                    <span className="text-xs text-neutral-500">{form.bio.length} / 160 characters</span>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 w-full gap-y-7 gap-x-5">
+
+                    <CustomInput
+                      name={"website"}
+                      label={"Website address"}
+                      type={"url"}
+                      value={form.website}
+                      handleChange={handleChange}
+                      placeholder={"your website address"}
+                    />
+
+                    <CustomInput
+                      name={"country"}
+                      label={"Country"}
+                      type={"country"}
+                      value={form.country}
+                      handleChange={handleChange}
+                      placeholder={"country"}
+                    />
+                  </div>
+
+
+                </section>
+              </form>
+
+              <div className="flex flex-col lg:flex-row gap-7 justify-between items-center">
+                <p className="text-xs text-neutral-500">Your name, bio and website appear on your profile.</p>
+                <button
                   onClick={handleSubmit}
                   disabled={submitDisabled || !isValuesChanged}
-                  color={"blue"}
-                  value={"Save Changes"}
-                />
+                  className="flex w-full lg:w-auto px-5 h-12 items-center cursor-pointer justify-center rounded-xl bg-violet-900/75 text-white transition-colors hover:bg-violet-900/70 active:bg-violet-900/90 disabled:bg-gray-500 disabled:cursor-not-allowed"
+                >Save Changes</button>
+              </div>
+
+            </section>
+          )}
+          {activeTab === "Security" && (
+            <section className="flex flex-col gap-7 rounded-3xl">
+              <PasswordForm />
+              <div className="bg-white flex lg:flex-row flex-col justify-between gap-7 rounded-3xl md:p-7 p-5">
+                <h4 className="flex flex-col text-xl font-Poppins-Medium gap-2">
+                  See you soon?
+                  <span className="text-xs font-Poppins-Regular text-neutral-500">
+                    You’re signed in as @{user?.username}. Logging out only ends this session.
+                  </span>
+                </h4>
+                <LogoutBtn />
               </div>
             </section>
-          </main>
-        )}
-        {activeTab === "Security" && (
-          <main className="ml-4 flex h-full flex-col gap-6">
-            <PasswordForm />
+          )}
+        </div>
+      </main>
 
-            <div className="font-Poppins-SemiBold flex items-center justify-between rounded-lg border border-red-200 bg-red-100/70 p-3 px-6">
-              <h4 className="flex items-center gap-2">
-                <span>
-                  <TriangleAlert className="text-xl text-red-500" />
-                </span>
-                Log Out of Your Account
-              </h4>
-              <LogoutBtn />
-            </div>
-          </main>
-        )}
-      </section>
     </div>
   );
 };

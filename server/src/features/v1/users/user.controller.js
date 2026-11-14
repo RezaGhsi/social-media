@@ -115,16 +115,7 @@ exports.updateUserInfo = async (req, res, next) => {
   try {
     if (Object.keys(req.body).length < 1) throw new AppError("Invalid Input");
 
-    const { country, info, city, postalCode, ...restOfBody } = req.body;
-
-    const addressFields = { country, info, city, postalCode };
-    const updateFields = { ...restOfBody };
-
-    for (const [key, value] of Object.entries(addressFields)) {
-      if (value !== undefined) {
-        updateFields[`address.${key}`] = value;
-      }
-    }
+    const updateFields = req.body;
 
     const user = await userModel.findByIdAndUpdate(
       req.user._id,

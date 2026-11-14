@@ -86,7 +86,7 @@ const UploadPage = () => {
 
         <ActionsSidebar activeTab="none" />
 
-        <div className="flex flex-col gap-6 max-w-full shrink flex-1">
+        <div className="flex flex-col gap-6 max-w-full mt-4 md:mt-0 shrink flex-1">
           <div className="flex flex-col gap-1.5">
             <h3 className="text-sm text-violet-900/70 font-Poppins-SemiBold">CREATE POST</h3>
             <h2 className="text-3xl font-Poppins-SemiBold">Share a little moment.</h2>
@@ -146,7 +146,7 @@ const UploadPage = () => {
                 </div>
 
                 <label htmlFor="file-upload" className="flex w-full rounded-xl gap-2 hover:bg-violet-800/15 active:bg-violet-800/25 cursor-pointer transition-colors text-violet-900/75 font-Poppins-Medium bg-violet-700/8 h-11.5 justify-center items-center"><Upload size={20} />{preview ? "Choose another photo" : "Choose a photo"}</label>
-                <p className="text-xs text-neutral-400">JPG, PNG or WEBP · Up to 10 MB. One photo, a thousand little details.</p>
+                <p className="text-xs text-neutral-400">JPG, PNG or WEBP · Up to 20 MB. One photo, a thousand little details.</p>
 
               </section>
 
@@ -179,7 +179,7 @@ const UploadPage = () => {
                     value={form.hashtags}
                     onChange={handleChange}
                     maxLength={200}
-                    placeholder="javascript, edit, trend, explore, ne..."
+                    placeholder="nature, edit, trend, explore, ne..."
                     className="w-full border-2 border-neutral-200 rounded-xl p-3 text-sm resize-none outline-none focus:border-violet-800/30 "
                   />
                   <span className="text-xs text-neutral-500 font-Poppins-Regular">Add a # before each tag so your people can find it.</span>

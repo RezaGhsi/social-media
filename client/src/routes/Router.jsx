@@ -37,7 +37,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "/manage",
-        element: <ProfileUpdate />,
+        element:
+          <RootLayout>
+            <ProfileUpdate />
+          </RootLayout>,
       },
       {
         path: "/upload", element:

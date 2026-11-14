@@ -17,7 +17,7 @@ const Header = () => {
           <Search className="text-neutral-500" />
           <input
             placeholder="Search people, posts, and #hashtags"
-            type="text"
+            type="search"
             className="text-sm ml-2 h-full w-full bg-transparent outline-0 placeholder:text-neutral-500"
           />
         </div>

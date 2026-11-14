@@ -5,7 +5,7 @@ const MobileNav = ({ activeTab = "home" }) => {
   const { user } = useAuth();
 
   return (
-    <nav className="flex sticky bottom-0 w-full *:flex-col md:hidden *:flex *:gap-1 font-Poppins-Medium *:justify-center *:*:nth-2:text-xs *:items-center bg-white h-16 px-6 mt-6 justify-around *:p-2 ">
+    <nav className="flex sticky z-50 bottom-0 w-full *:flex-col md:hidden *:flex *:gap-1 font-Poppins-Medium *:justify-center *:*:nth-2:text-xs *:items-center bg-white h-16 px-6 mt-6 justify-around *:p-2 ">
       <a href="/" className={`${activeTab === "home" ? "text-violet-800/75" : "text-neutral-500"}`}>
         <House />
         <h2>Home</h2>

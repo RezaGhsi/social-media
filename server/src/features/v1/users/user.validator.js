@@ -16,8 +16,6 @@ exports.profileUpdateSchema = z
     biography: z.string().min(1).max(100).optional(),
     // password: z.string().min(8).max(32).optional(),
     country: z.string().min(3).max(20).optional(),
-    city: z.string().min(3).max(20).optional(),
-    info: z.string().min(3).max(50).optional(),
-    postalCode: z.refine((value) => Number(value)).optional(),
+    website: z.string().min(4).max(30).optional(),
   })
   .strict();

@@ -17,8 +17,8 @@ const ALLOWED_POST_MIME_TYPES = [
   "image/png",
   "image/png",
   "image/webp",
-  "image/gif",
-  "video/mp4",
+  // "image/gif",
+  // "video/mp4",
   "video/webm",
 ];
 
@@ -76,5 +76,5 @@ exports.uploadPost = multer({
     path.join(__dirname, "..", "..", "..", "public", "uploads", "posts"),
   ),
   fileFilter: postFilter,
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 20 * 1024 * 1024 },
 }).single("media");
