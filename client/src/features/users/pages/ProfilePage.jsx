@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import UserCard from "../components/UserCard";
-import Hashtag from "../../../shared/components/Hashtag";
-import PostsFilterNav from "../components/PostsFilterNav";
 import VerificationError from "../../../shared/components/VerificationError";
 import FollowUnfollowBtn from "../../../shared/components/FollowUnfollowBtn";
 import PostCard from "../../posts/components/PostCard";
@@ -13,7 +10,7 @@ import { useAuth } from "../../auth/hooks/useAuth";
 import FollowingsModal from "../components/FollowingsModal";
 import FollowersModal from "../components/FollowersModal";
 import AvatarImg from "../components/AvatarImg";
-import { CameraOff, Globe, Link, Loader, LockKeyhole, Settings2 } from "lucide-react";
+import { CameraOff, Link, Loader, LockKeyhole, Settings2 } from "lucide-react";
 import useUserPosts from "../hooks/useUserPosts";
 import useInfiniteScroll from "../../../shared/hooks/useInfiniteScroll";
 import ErrorToast from "../../../shared/components/ErrorToast";

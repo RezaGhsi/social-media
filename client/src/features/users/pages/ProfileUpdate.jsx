@@ -1,4 +1,3 @@
-import InfoInput from "../components/InfoInput";
 import { useState } from "react";
 import { useAuth } from "../../auth/hooks/useAuth";
 import AvatarImg from "../components/AvatarImg";
@@ -6,10 +5,9 @@ import { updateUserAvatar, updateUserInfo } from "../api/userApi";
 import { toast } from "sonner";
 import PasswordForm from "../components/PasswordForm";
 import LogoutBtn from "../components/LogoutBtn";
-import Btn from "../../../shared/components/Btn";
 import SuccessToast from "../../../shared/components/SuccessToast";
 import ErrorToast from "../../../shared/components/ErrorToast";
-import { Camera, Loader, Pencil, TriangleAlert, User2 } from "lucide-react";
+import { Camera, Loader, User2 } from "lucide-react";
 import ActionsSidebar from "../../../shared/components/ActionsSidebar";
 import CustomInput from "../../../shared/components/CustomInput";
 ("./../components/InfoInput");

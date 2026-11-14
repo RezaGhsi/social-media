@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Btn from "../../../shared/components/Btn";
-import InfoInput from "./InfoInput";
 import PasswordInput from "./../../../shared/components/PasswordInput";
 import { changePassRequest } from "../../auth/api/authApi";
 import { toast } from "sonner";
