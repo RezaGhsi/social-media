@@ -22,7 +22,7 @@ const NewComment = ({ postId }) => {
       } catch (error) {
         ErrorToast(
           error.response?.data?.message ||
-            "Something went wrong while submitting your comment",
+          "Something went wrong while submitting your comment",
         );
       } finally {
         setLoading(false);
@@ -32,7 +32,7 @@ const NewComment = ({ postId }) => {
   };
 
   return (
-    <div className="w-132 p-4 pb-4">
+    <div className="sm:w-110 md:w-130 w-80 p-4 pb-4">
       <hr className="text-neutral-300" />
       <div className="font-Poppins-Medium mt-4">
         <h4>Add a comment</h4>

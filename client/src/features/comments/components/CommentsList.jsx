@@ -24,7 +24,7 @@ const CommentsList = ({ postId }) => {
   const comments = data?.pages.flatMap((p) => p.comments) ?? [];
 
   return (
-    <div className="w-132 rounded-b-lg p-4 py-8">
+    <div className="sm:w-110 md:w-130 w-80 rounded-b-lg p-4 py-8">
       <h4 className="font-Poppins-Medium mb-3">Comments</h4>
 
       {isLoading && (
