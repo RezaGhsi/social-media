@@ -1,18 +1,14 @@
-import { LoginForm } from "..";
+import Layout from "../components/Layout";
+import WelcomeCard from "../components/WelcomeCard";
+import LoginForm from './../components/LoginForm'
 
 const LoginPage = () => {
   return (
-    <div className="flex h-dvh w-dvw justify-between">
-      <section className="flex h-full w-[50%] items-center justify-center">
+    <div className="flex flex-col items-center h-dvh">
+      <Layout>
+        <WelcomeCard title1={"Less scrolling."} title2={"More belonging."} />
         <LoginForm />
-      </section>
-
-      <img
-        src="/images/bg.jpg"
-        alt="bg-image"
-        className="w-[50%]"
-        loading="lazy"
-      />
+      </Layout>
     </div>
   );
 };

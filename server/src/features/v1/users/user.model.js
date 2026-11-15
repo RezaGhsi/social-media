@@ -28,6 +28,12 @@ const schema = new mongoose.Schema(
     biography: {
       type: String,
     },
+    country: {
+      type: String,
+    },
+    website: {
+      type: String,
+    },
     profilePic: {
       type: String,
     },
@@ -52,12 +58,6 @@ const schema = new mongoose.Schema(
     avatarUrl: {
       type: String,
       default: "images/default-profile-pic.png",
-    },
-    address: {
-      country: String,
-      city: String,
-      info: String,
-      postalCode: Number,
     },
   },
   {

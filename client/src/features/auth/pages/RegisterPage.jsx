@@ -1,18 +1,14 @@
-import { RegisterForm } from "./../index";
+import Layout from "../components/Layout";
+import { RegisterForm } from "../index";
+import WelcomeCard from "../components/WelcomeCard";
 
 const RegisterPage = () => {
   return (
-    <div className="flex h-[100dvh] w-[100dvw] justify-between">
-      <section className="flex h-[100%] w-[50%] items-center justify-center">
+    <div className="flex flex-col items-center h-dvh">
+      <Layout>
+        <WelcomeCard title1={"Your world."} title2={"A little closer."} className="lg:h-200" />
         <RegisterForm />
-      </section>
-
-      <img
-        src="/images/bg.jpg"
-        alt="bg-image"
-        className="w-[50%]"
-        loading="lazy"
-      />
+      </Layout>
     </div>
   );
 };

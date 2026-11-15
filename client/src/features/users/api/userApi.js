@@ -1,4 +1,4 @@
-import api from "./../../../lib/axiosInstance";
+import api from "../../../lib/axiosInstance";
 
 export const getUserProfile = async (username) =>
   await api.get(`/user/${username}`);

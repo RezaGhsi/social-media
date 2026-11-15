@@ -1,5 +1,6 @@
 const userModel = require("./user.model");
 const followModel = require("./../follow/follow.model");
+const postModel = require("./../posts/post.model");
 const likeModel = require("./../like/like.model");
 const saveModel = require("./../save/save.model");
 const AppError = require("../../../shared/utils/AppError");
@@ -37,19 +38,22 @@ exports.getUserPage = async (req, res, next) => {
 
     if (!userProfile) throw new AppError("Page not Found", 404);
 
-    const [followersCount, followingsCount, isFollowing] = await Promise.all([
-      followModel.countDocuments({
-        following: userProfile.username,
-      }),
-      followModel.countDocuments({
-        follower: userProfile.username,
-      }),
-      isFollowingUser(req.user.username, userProfile.username),
-    ]);
+    const [followersCount, followingsCount, postsCount, isFollowing] =
+      await Promise.all([
+        followModel.countDocuments({
+          following: userProfile.username,
+        }),
+        followModel.countDocuments({
+          follower: userProfile.username,
+        }),
+        postModel.countDocuments({ user: userProfile._id }),
+        isFollowingUser(req.user.username, userProfile.username),
+      ]);
 
     Object.assign(userProfile, {
       followersCount,
       followingsCount,
+      postsCount,
       isFollowing,
     });
 
@@ -111,16 +115,7 @@ exports.updateUserInfo = async (req, res, next) => {
   try {
     if (Object.keys(req.body).length < 1) throw new AppError("Invalid Input");
 
-    const { country, info, city, postalCode, ...restOfBody } = req.body;
-
-    const addressFields = { country, info, city, postalCode };
-    const updateFields = { ...restOfBody };
-
-    for (const [key, value] of Object.entries(addressFields)) {
-      if (value !== undefined) {
-        updateFields[`address.${key}`] = value;
-      }
-    }
+    const updateFields = req.body;
 
     const user = await userModel.findByIdAndUpdate(
       req.user._id,

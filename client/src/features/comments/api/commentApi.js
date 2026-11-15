@@ -1,4 +1,4 @@
-import api from "./../../../lib/axiosInstance";
+import api from "../../../lib/axiosInstance";
 
 export const newComment = async (text, postId) =>
   await api.post("/comment", { text, postId });

@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
 import ActionsSidebar from "../shared/components/ActionsSidebar";
-import MessageCard from "../shared/components/MessageCard";
-import MessagesFilter from "../shared/components/MessagesFilter";
-import StoryCard from "../shared/components/StoryCard";
-import { getHomePagePosts } from "../features/posts/api/postApi";
 import PostCard from "../features/posts/components/PostCard";
-import { CameraOff, Loader, PenBox, Search, Star } from "lucide-react";
-import PopularPostCard from "../shared/components/PopularPostCard";
-import RequestCard from "../shared/components/RequestCard";
+import { CameraOff, CheckCheck, Loader } from "lucide-react";
 import useHomeFeed from "../shared/hooks/useHomeFeed";
 import useInfiniteScroll from "../shared/hooks/useInfiniteScroll";
+import MobileNav from "../shared/components/MobileNav";
 
-const HomePage = () => {
+const HomePage = ({ feed = "following" }) => {
   // const [loadingPosts, setLoadingPosts] = useState(true);
   // const [posts, setPosts] = useState(null);
   // useEffect(() => {
@@ -31,8 +25,6 @@ const HomePage = () => {
   const {
     data,
     isLoading,
-    isError,
-    error,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
@@ -47,57 +39,38 @@ const HomePage = () => {
     { enabled: hasNextPage },
   );
   return (
-    <div className="flex flex-col items-center bg-[#F1F1F1]">
-      <main className="mx-4 my-8 flex justify-between gap-4">
+    <div className="flex pt-8 flex-1 flex-col scroll-smooth items-center bg-[#F7F7FA]">
+      <main className="flex gap-8 px-1 md:px-8 2xl:px-0 justify-between">
         <ActionsSidebar />
 
-        <section className="max-w-170">
-          {/* <div className="mb-10 flex w-full justify-between gap-4">
-            <StoryCard
-              storyUrl="/images/story-1.jpg"
-              avatarUrl="/images/profile-13.jpg"
-              name="Elisabet Johnson"
-            />
-            <StoryCard
-              storyUrl="/images/story-2.jpg"
-              avatarUrl="/images/profile-13.jpg"
-              name="Elisabet Johnson"
-            />
-            <StoryCard
-              storyUrl="/images/story-3.jpg"
-              avatarUrl="/images/profile-14.jpg"
-              name="Elisabet Johnson"
-            />
-            <StoryCard
-              storyUrl="/images/story-4.jpg"
-              avatarUrl="/images/profile-15.jpg"
-              name="Elisabet Johnson"
-            />
-            <StoryCard
-              storyUrl="/images/story-5.jpg"
-              avatarUrl="/images/profile-16.jpg"
-              name="Elisabet Johnson"
-            />
-          </div> */}
+        <section className="">
 
           {isLoading ? (
-            <div className="font-Poppins-SemiBold flex h-40 w-170 items-center justify-center gap-3">
-              Loading posts
+            <div className="font-Poppins-SemiBold flex flex-col h-40 w-170 items-center justify-center gap-3">
               <Loader className="size-10 animate-spin" />
+              Loading posts
             </div>
           ) : (
             <section
-              id="feeds"
-              className="min-w-120 *:mb-4 *:rounded-lg *:bg-white *:p-2"
+              className="max-w-155 md:flex-1 mb-6 scroll-smooth lg:mx-0 mx-4 flex flex-col gap-6"
             >
+              <div className="flex flex-col gap-1.5">
+                <h3 className="text-4xl font-Poppins-Medium">A little inspiration</h3>
+                <p className="text-neutral-500">Fresh moments from the people you follow</p>
+              </div>
+
+              <div className={`flex gap-6 transition-colors`}>
+                <span className={`${feed === "following" ? "text-violet-700 border-b-3 font-Poppins-Medium -mt-2 border-violet-500" : "text-neutral-500"}`}>Following</span>
+                <span className={`${feed === "forYou" ? "text-violet-700 border-b-3 font-Poppins-Medium -mt-2 border-violet-500" : "text-neutral-500"}`}>For you</span>
+              </div>
               {posts.length > 0 ? (
                 posts.map((post) => (
                   <PostCard key={post._id} post={post} user={post.user} />
                 ))
               ) : (
-                <div className="flex h-120 w-full flex-col items-center justify-center rounded-lg">
-                  <CameraOff className="size-24 text-neutral-800" />
-                  <h4 className="font-Poppins-Bold p-3 text-center text-4xl text-neutral-800">
+                <div className="flex h-90 flex-col items-center bg-white border-2 border-neutral-200 justify-center rounded-2xl">
+                  <CameraOff className="size-24 text-violet-900/80" />
+                  <h4 className="font-Poppins-SemiBold p-3 w-full text-center text-4xl">
                     No Posts Available.
                     <br /> Follow some users to see their posts.
                   </h4>
@@ -120,107 +93,27 @@ const HomePage = () => {
               )}
             </section>
           )}
+
+          {posts.length > 0 && !hasNextPage &&
+            <div className="w-full flex flex-col p-6 gap-2 items-center">
+              <CheckCheck size={28} className="text-violet-800/75" />
+              <p className="text-lg font-Poppins-Medium">You’re all caught up.</p>
+              <p className="text-neutral-500 text-sm">Time to make a little moment of your own.</p>
+            </div>
+          }
+
+          <MobileNav />
         </section>
 
-        <aside id="right-sidebar" className="max-w-110">
-          <section className="rounded-lg bg-white p-4 shadow">
-            <header>
-              <div className="mb-4 flex justify-between">
-                <p>
-                  <strong> Messages </strong>
-                </p>
-                <button className="max-w-max">
-                  <PenBox />
-                </button>
-              </div>
-
-              <div className="relative mb-6 flex items-center rounded-full bg-[#f1f1f1] py-3">
-                <span className="top-2-5 absolute left-3 text-gray-500">
-                  <Search size={16} />
-                </span>
-                <input
-                  type="text"
-                  className="placeholder:font-Poppins-SemiBold ml-9 w-full text-sm outline-0"
-                  maxLength="40"
-                  placeholder="Search messages.."
-                />
-              </div>
-
-              <MessagesFilter />
-            </header>
-            <main className="mt-4">
-              <MessageCard />
-              <MessageCard />
-              <MessageCard />
-              <MessageCard />
-            </main>
+        <aside className="hidden lg:block">
+          <section className="rounded-2xl max-w-86 flex flex-col gap-3 bg-violet-200/40 p-6 shadow">
+            <h6 className="text-xs text-violet-700 font-Poppins-SemiBold">THE EVERY DAY EDIT</h6>
+            <h5 className="text-2xl font-Poppins-Medium">Ordinary days. Extraordinary little things.</h5>
+            <h6 className="text-xs text-neutral-500">A reminder to notice what’s already around you.</h6>
           </section>
 
-          <section className="mt-10 w-full rounded-lg bg-white p-4">
-            <header>
-              <div className="flex justify-between">
-                <p>
-                  <strong> Popular posts </strong>
-                </p>
-              </div>
-            </header>
-            <main className="mt-4 flex flex-col gap-8 pb-5">
-              <PopularPostCard
-                mediaUrl={"/images/feed-10.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
+          {/* <section className="mt-10 w-full rounded-lg bg-white p-4">
 
-              <PopularPostCard
-                mediaUrl={"/images/feed-9.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-
-              <PopularPostCard
-                mediaUrl={"/images/feed-4.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-
-              <PopularPostCard
-                mediaUrl={"/images/feed-2.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-            </main>
-          </section>
-
-          <section className="mt-10 w-full rounded-lg bg-white p-4">
-            <header>
-              <div className="flex justify-between gap-1">
-                <div className="flex items-center gap-2">
-                  <span>
-                    <Star color="#FFD700" fill="#FFD700" size={22} />
-                  </span>
-                  <p>
-                    <strong> Popular users </strong>
-                  </p>
-                </div>
-              </div>
-            </header>
-            <main className="mt-4 flex flex-col gap-8 pb-5">
-              <PopularPostCard
-                mediaUrl={"/images/feed-10.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-
-              <PopularPostCard
-                mediaUrl={"/images/feed-9.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-
-              <PopularPostCard
-                mediaUrl={"/images/feed-4.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-
-              <PopularPostCard
-                mediaUrl={"/images/feed-2.jpg"}
-                description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inciduntquod deserunt distinctio."
-              />
-            </main>
           </section>
 
           <section className="mt-10 flex w-full flex-col gap-2 rounded-lg">
@@ -244,7 +137,7 @@ const HomePage = () => {
                 avatarUrl={"/images/profile-14.jpg"}
               />
             </section>
-          </section>
+          </section> */}
         </aside>
       </main>
     </div>

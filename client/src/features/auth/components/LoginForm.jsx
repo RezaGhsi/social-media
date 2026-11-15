@@ -2,13 +2,18 @@ import { toast } from "sonner";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import CustomInput from "../../../shared/components/CustomInput";
+import PasswordInput from "../../../shared/components/PasswordInput";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const { login, loading, error, clearError, user } = useAuth();
   const [form, setForm] = useState({
     identifier: "",
     password: "",
   });
+  const [keepSignedIn, setKeepSignedIn] = useState(true)
+
+  const isValidForm = form.identifier === "" || form.password === "" || form.identifier.length < 5 || form.password.length < 8
 
   const location = useLocation();
   const redirectTo = location.state?.from?.pathname;
@@ -45,104 +50,48 @@ const RegisterForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-[31.3dvw] rounded-md p-3">
-      <header>
-        <h2 className="font-Poppins-SemiBold mb-3 text-3xl">Welcome Back 🌞</h2>
-        <div className="mt-1 flex items-center gap-1 text-sm text-gray-800">
-          <span>Don't Have an account?</span>
-          <a href="/register" className="font-Poppins-SemiBold text-indigo-700">
-            Register
-          </a>
-        </div>
-        <div>
-          {displayError && (
-            <h3 className="font-Poppins-SemiBold mt-6 -mb-5 text-2xl text-red-600">
-              {displayError}
-            </h3>
-          )}
-        </div>
-      </header>
+    <section className="flex flex-col mt-12 md:mt-22 gap-7 max-w-113.5 transition-colors ">
+      <div className="flex flex-col gap-1.5 ">
+        <h5 className="text-[#8060C5] text-xs font-Poppins-Medium ">MAKE YOURSELF AT HOME</h5>
+        <h2 className="text-4xl font-Poppins-SemiBold">Hey, welcome back.</h2>
+        <p className="text-neutral-500">Your people and your little moments are waiting.</p>
 
-      <main className="mt-8">
-        <div className="auth-input-card">
-          <label htmlFor="identifier" className="font-Poppins-Medium">
-            Username or Email
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="identifier"
-              type="text"
-              className="placeholder:font-Poppins-SemiBold mt-2 mb-4 h-10 w-[70%] rounded-md bg-[#00000012] pr-6 pl-10.5 text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Email Address..."
-              required
-              name="identifier"
-              value={form.identifier}
-              onChange={handleChange}
-            />
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-              </svg>
-            </span>
+        {displayError && (
+          <h3 className="font-Poppins-SemiBold text-2xl max-w-100 text-red-600">
+            {displayError}
+          </h3>
+        )}
+
+      </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5 ">
+        <CustomInput value={form.identifier} label={"Email or Username"} name={"identifier"} placeholder="Enter your Email or Username" handleChange={handleChange} />
+
+        <PasswordInput value={form.password} label={"Password"} name={"password"} placeholder="Enter your Password" handleChange={handleChange} />
+
+
+        <div className="mt-4 flex justify-between items-center text-sm">
+          <div className="flex gap-1">
+            <input type="checkbox" defaultChecked name="keepSignedIn" id="keepSignedIn" onChange={() => setKeepSignedIn(!keepSignedIn)} value={keepSignedIn} className="cursor-pointer w-4" />
+            <label className="cursor-pointer " htmlFor="keepSignedIn">Keep me signed in</label>
           </div>
+
+          <a href="#" className="text-[#8060C5] font-Poppins-Medium active:text-purple-800 active:underline cursor-pointer ">Forgot password?</a>
         </div>
 
-        <div className="auth-input-card">
-          <label htmlFor="password" className="font-Poppins-Medium">
-            Password
-          </label>
-          <div className="input-card relative flex items-center">
-            <input
-              id="password"
-              type="password"
-              className="placeholder:font-Poppins-SemiBold mt-2 mb-4 h-10 w-[70%] rounded-md bg-[#00000012] pr-6 pl-10.5 text-[15px] outline-0 placeholder:text-[13px]"
-              placeholder="Please Enter Your Password..."
-              required
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-            />
-            <span className="absolute top-4 left-2 text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" />
-              </svg>
-            </span>
-          </div>
-        </div>
-        <div className="mt-4 flex items-center gap-1 text-sm">
-          <span>Forget the password?</span>
-          <span>
-            <strong>
-              <a href="#" className="text-indigo-700">
-                recovery
-              </a>
-            </strong>
-          </span>
-        </div>
-      </main>
-      <footer className="mt-4">
         <button
-          disabled={loading}
+          disabled={loading || isValidForm}
           type="submit"
-          className="h-10 w-[70%] cursor-pointer rounded-sm bg-indigo-700 text-white active:bg-indigo-500"
+          className={`h-11.5 px-5 w-full disabled:cursor-not-allowed cursor-pointer rounded-2xl bg-[#8060C5] text-white active:bg-purple-800 disabled:bg-purple-950/40`}
         >
-          {loading ? "Logging you in ..." : "Continue"}
+          {loading ? "Logging you in ..." : "Log in"}
         </button>
-      </footer>
-    </form>
+      </form>
+      <div className="flex justify-center text-sm gap-1">
+        <p className="text-neutral-500">New around here?</p>
+        <a href="/register" className="font-Poppins-Medium text-[#8060C5] ">Create an account</a>
+      </div>
+    </section>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

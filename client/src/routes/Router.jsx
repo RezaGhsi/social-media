@@ -4,7 +4,7 @@ import LoginPage from "../features/auth/pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import RootLayout from "../shared/components/layout/RootLayout";
 import ProtectedRoute from "./ProtectedRoute";
-import ProfilePage from "./../features/users/pages/ProfilePage";
+import ProfilePage from "../features/users/pages/ProfilePage";
 import UploadPage from "../features/posts/pages/UploadPage";
 import NotFound from "../pages/NotFound";
 import ProfileUpdate from "../features/users/pages/ProfileUpdate";
@@ -37,9 +37,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/manage",
-        element: <ProfileUpdate />,
+        element:
+          <RootLayout>
+            <ProfileUpdate />
+          </RootLayout>,
       },
-      { path: "/upload", element: <UploadPage /> },
+      {
+        path: "/upload", element:
+          <RootLayout>
+            <UploadPage />
+          </RootLayout>
+      },
       {
         path: "/saved-posts",
         element: <SavedPosts />,

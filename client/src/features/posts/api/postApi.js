@@ -1,4 +1,4 @@
-import api from "./../../../lib/axiosInstance";
+import api from "../../../lib/axiosInstance";
 
 export const upload = async (formData, setUploadProgress) => {
   await await api.post("/auth/refresh");

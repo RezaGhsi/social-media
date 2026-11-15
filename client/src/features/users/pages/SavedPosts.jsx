@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import ActionsSidebar from "../../../shared/components/ActionsSidebar";
-import PostCard from "./../../posts/components/PostCard";
+import PostCard from "../../posts/components/PostCard";
 import { getSavedPosts } from "../../posts/api/postApi";
 import ErrorToast from "../../../shared/components/ErrorToast";
 import Header from "../../../shared/components/layout/Header";
 import Footer from "../../../shared/components/layout/Footer";
 import { CameraOff } from "lucide-react";
+import MobileNav from "../../../shared/components/MobileNav";
 
 const SavedPosts = () => {
   const [savedPosts, setSavedPosts] = useState(null);
@@ -19,7 +20,7 @@ const SavedPosts = () => {
       } catch (error) {
         ErrorToast(
           error.response.data.message ||
-            "there was error while loading saved posts",
+          "there was error while loading saved posts",
         );
       } finally {
         setLoading(false);
@@ -31,9 +32,9 @@ const SavedPosts = () => {
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
-      <div className="flex h-full flex-1 justify-center bg-[#F1F1F1] pt-8">
+      <div className="flex h-full flex-1 justify-center bg-[#F7F7FA] pt-8">
         <main className="mx-4 flex w-300 justify-between gap-4">
-          <ActionsSidebar />
+          <ActionsSidebar activeTab="saved" />
           <section className="flex-4 rounded-lg">
             {!loading && savedPosts?.length ? (
               <div>
@@ -58,6 +59,8 @@ const SavedPosts = () => {
           </section>
         </main>
       </div>
+      <MobileNav activeTab="saved" />
+
       <Footer />
     </div>
   );

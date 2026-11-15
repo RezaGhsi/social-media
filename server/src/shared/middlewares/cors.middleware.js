@@ -5,7 +5,7 @@ const allowedOrigin = process.env.AllowedOrigin;
 const corsMiddleware = cors({
   origin: (origin, callBack) => {
     if (!origin || allowedOrigin.includes(origin)) {
-      callBack(null, allowedOrigin);
+      callBack(null, allowedOrigin.split(","));
     } else {
       callBack(
         new Error(`CORS: Request is Not Allowed From This Origin ${origin}`),
