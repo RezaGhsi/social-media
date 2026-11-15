@@ -17,13 +17,13 @@ const ProfileUpdate = () => {
   const { user } = useAuth();
 
   const [form, setForm] = useState({
-    name: user?.name,
-    bio: user?.biography,
-    username: user?.username,
-    email: user?.email,
+    name: user?.name || "",
+    bio: user?.biography || "",
+    username: user?.username || "",
+    email: user?.email || "",
     birthDate: user.birthDate?.split("T")[0] || "",
-    country: user?.country,
-    website: user?.website,
+    country: user?.country || "",
+    website: user?.website || "",
   });
 
   const [userAvatar, setUserAvatar] = useState(user.avatarUrl);
@@ -232,7 +232,7 @@ const ProfileUpdate = () => {
                       placeholder={"bio"}
                       className="h-26 resize-none outline-purple-200 w-full min-w-40 border bg-white border-neutral-300 rounded-xl p-3.5"
                     />
-                    <span className="text-xs text-neutral-500">{form.bio.length} / 160 characters</span>
+                    <span className="text-xs text-neutral-500">{form.bio?.length} / 160 characters</span>
                   </div>
 
                   <div className="grid md:grid-cols-2 w-full gap-y-7 gap-x-5">
