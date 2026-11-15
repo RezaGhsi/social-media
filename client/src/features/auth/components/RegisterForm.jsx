@@ -37,26 +37,26 @@ const RegisterForm = () => {
 
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-    if (e.target.name === "password" && /[A-Za-z]/.test(e.target.value)) {
-      setStrongPassword((prev) => ({ ...prev, containsWord: true }));
-    }
-    else { setStrongPassword((prev) => ({ ...prev, containsWord: false })) }
+    if (e.target.name === "password") {
+      if (/[A-Za-z]/.test(e.target.value)) {
+        setStrongPassword((prev) => ({ ...prev, containsWord: true }));
+      } else { setStrongPassword((prev) => ({ ...prev, containsWord: false })) }
 
-    if (e.target.name === "password" && e.target.value.length > 7) {
-      setStrongPassword((prev) => ({ ...prev, char8: true }));
-    }
-    else { setStrongPassword((prev) => ({ ...prev, char8: false })) }
+      if (e.target.value.length > 7) {
+        setStrongPassword((prev) => ({ ...prev, char8: true }));
+      }
+      else { setStrongPassword((prev) => ({ ...prev, char8: false })) }
 
-    if (e.target.name === "password" && /\d/.test(e.target.value)) {
-      setStrongPassword((prev) => ({ ...prev, containsNumber: true }));
-    }
-    else { setStrongPassword((prev) => ({ ...prev, containsNumber: false })) }
+      if (/\d/.test(e.target.value)) {
+        setStrongPassword((prev) => ({ ...prev, containsNumber: true }));
+      }
+      else { setStrongPassword((prev) => ({ ...prev, containsNumber: false })) }
 
-    if (e.target.name === "password" && /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(e.target.value)) {
-      setStrongPassword((prev) => ({ ...prev, containsSymbol: true }));
+      if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(e.target.value)) {
+        setStrongPassword((prev) => ({ ...prev, containsSymbol: true }));
+      }
+      else { setStrongPassword((prev) => ({ ...prev, containsSymbol: false })) }
     }
-    else { setStrongPassword((prev) => ({ ...prev, containsSymbol: false })) }
-
   };
 
   const handleSubmit = (e) => {
@@ -96,7 +96,7 @@ const RegisterForm = () => {
         <CustomInput value={form.name} label={"Full name"} name={"name"} placeholder="Enter your Full Name" handleChange={handleChange} />
         <div>
           <CustomInput value={form.username} label={"Username"} name={"username"} placeholder="Enter a Username" handleChange={handleChange} />
-          <p className="text-xs text-neutral-500 mt-2">Your unique corner of nekoSocial. You can change it later.</p>
+          <p className="text-xs text-neutral-500 mt-2">5+ characters. Your unique corner of nekoSocial. You can change it later.</p>
         </div>
         <CustomInput value={form.email} type="email" label={"Email address"} name={"email"} placeholder="Enter your Email address" handleChange={handleChange} />
 
