@@ -10,6 +10,7 @@ import ErrorToast from "../../../shared/components/ErrorToast";
 import { Camera, Loader, User2 } from "lucide-react";
 import ActionsSidebar from "../../../shared/components/ActionsSidebar";
 import CustomInput from "../../../shared/components/CustomInput";
+import MobileNav from "../../../shared/components/MobileNav";
 ("./../components/InfoInput");
 
 const ProfileUpdate = () => {
@@ -111,7 +112,7 @@ const ProfileUpdate = () => {
     <div className="flex bg-[#F7F7FA] items-center flex-col">
       <main className="flex gap-8 justify-center w-7xl max-w-full shrink md:p-8 px-4">
 
-        <ActionsSidebar />
+        <ActionsSidebar activeTab="settings" />
 
 
         <div className="flex flex-col gap-6 max-w-full mt-4 md:mt-0 shrink flex-1">
@@ -286,6 +287,8 @@ const ProfileUpdate = () => {
           )}
         </div>
       </main>
+
+      <MobileNav activeTab="profile" />
 
     </div>
   );

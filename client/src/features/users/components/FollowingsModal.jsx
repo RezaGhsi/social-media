@@ -36,23 +36,25 @@ const FollowingsModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => onClose(false)} title={"Following"}>
-        <div className="rounded-b-2xl bg-white p-2 px-5">
-          <hr className="mb-3 text-neutral-300" />
+      <Modal isOpen={isOpen} onClose={() => onClose(false)} title={"Following's"}>
+        <div className="rounded-b-2xl bg-white">
+          <hr className="text-neutral-300" />
           {loading ? (
             <Loader />
           ) : (
-            followings.map((user, i) => {
-              return (
-                <UserCard
-                  name={user.name}
-                  username={user.username}
-                  avatarUrl={user.avatarUrl}
-                  isFollowing={user.isFollowing}
-                  key={i}
-                />
-              );
-            })
+            <div className="p-3 sm:p-5 w-82 sm:w-120 gap-4 flex flex-col">
+              {followings.map((user, i) => {
+                return (
+                  <UserCard
+                    name={user.name}
+                    username={user.username}
+                    avatarUrl={user.avatarUrl}
+                    isFollowing={user.isFollowing}
+                    key={i}
+                  />
+                );
+              })}
+            </div>
           )}
         </div>
       </Modal>

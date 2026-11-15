@@ -31,10 +31,10 @@ const LogoutBtn = () => {
         onClose={() => setIsLogoutModalOpen(false)}
         title={"LogOut"}
       >
-        <div className="flex w-130 flex-col items-center rounded-b-xl bg-white p-3 px-6 pt-10 pb-6">
+        <div className="flex w-full flex-col items-center rounded-b-xl bg-white p-3 py-5 sm:p-5">
           <h2 className="font-Poppins-Medium text-lg">
             Are You Sure You Want to
-            <span className="font-Poppins-SemiBold text-red-500"> LogOut </span>
+            <span className="font-Poppins-SemiBold text-red-500 underline underline-offset-2"> LogOut </span>
             of Your Account ?
           </h2>
           <div className="mt-10 flex w-full justify-between px-2">
